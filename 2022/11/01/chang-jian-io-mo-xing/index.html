@@ -4,17 +4,13 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="DNS查询流程, 才疏学浅的木子">
-    <meta name="description" content="查询服务器域名对应的IP地址其中域名的层级关系类似于一个树状结构
+    <meta name="keywords" content="常见IO模型, 才疏学浅的木子">
+    <meta name="description" content="用户空间与内核空间
+进程的寻址空间会划分为两部分：内核空间、用户空间用户空间只能执行受限的命令，而且不能直接调用系统资源，必须通过内核提供的接口来访问内核空间可以执行特权命令。调用一切系统资源
 
-根DNS服务器(.)
-顶级域名服务器(.com)
-权威DNS服务器(server.com)
+阻塞IO
 
-
-域名解析工作流程
-
-1. 客户端发起一个DNS请求，先查看本地浏览器是否有这">
+在客户端连接数量不高的情况下，是">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -26,7 +22,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>DNS查询流程 | 才疏学浅的木子</title>
+    <title>常见IO模型 | 才疏学浅的木子</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -281,12 +277,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">DNS查询流程</h1>
+                    <h1 class="description center-align post-title">常见IO模型</h1>
                 </div>
             </div>
         </div>
@@ -310,8 +306,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/DNS/">
-                                <span class="chip bg-color">DNS</span>
+                            <a href="/tags/IO%E6%A8%A1%E5%9E%8B/">
+                                <span class="chip bg-color">IO模型</span>
                             </a>
                         
                     </div>
@@ -322,8 +318,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E8%AE%A1%E7%BD%91/" class="post-category">
-                                计网
+                            <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-category">
+                                操作系统
                             </a>
                         
                     </div>
@@ -335,7 +331,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-12-03
+                    2022-11-01
                 </div>
                 
 
@@ -344,7 +340,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    366
+                    1.1k
                 </div>
                 
 
@@ -361,20 +357,52 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>查询服务器域名对应的IP地址<br>其中域名的层级关系类似于一个树状结构</p>
-<ul>
-<li>根DNS服务器(.)</li>
-<li>顶级域名服务器(.com)</li>
-<li>权威DNS服务器(server.com)</li>
-</ul>
-<p><img src="https://img-blog.csdnimg.cn/b245b4ca07494033aad56103c92e90c2.png" alt="在这里插入图片描述"></p>
-<p><strong>域名解析工作流程</strong><br><img src="https://img-blog.csdnimg.cn/63fb956ff3504d7a8d069e9bc5f1fc17.png" alt="在这里插入图片描述"></p>
+                <h2 id="用户空间与内核空间"><a href="#用户空间与内核空间" class="headerlink" title="用户空间与内核空间"></a>用户空间与内核空间</h2><blockquote>
+<p>进程的寻址空间会划分为两部分：<strong>内核空间</strong>、<strong>用户空间</strong><br>用户空间只能执行受限的命令，而且不能直接调用系统资源，必须通过内核提供的接口来访问<br>内核空间可以执行特权命令。调用一切系统资源</p>
+</blockquote>
+<h2 id="阻塞IO"><a href="#阻塞IO" class="headerlink" title="阻塞IO"></a>阻塞IO</h2><p><img src="https://img-blog.csdnimg.cn/019f0f84ac15423d8961009537138dbd.png" alt="在这里插入图片描述"></p>
 <blockquote>
-<p><strong>1. 客户端发起一个DNS请求，先查看本地浏览器是否有这个域名的缓存，有解析结束<br>2. 没有则去看操作系统是否有缓存，有解析结束<br>3. 没有则去看本地host文件，有解析结束<br>4. 没有则发送该请求到本地DNS服务器，如果本地DNS服务器存在则返回<br>5. 不存在本地DNS服务器则请求根域名服务器，比如请求”<a target="_blank" rel="noopener" href="http://www.baidu.com&quot;,根域名服务器告诉本地dns/">www.baidu.com&quot;，根域名服务器告诉本地DNS</a> “.com” 顶级域名服务器的位置<br>6. 本地DNS服务器收到顶级域名服务器位置后则向顶级域名服务器请求”<a target="_blank" rel="noopener" href="http://www.baidu.com&quot;的ip地址,顶级域名服务器收到后则告诉本地dns服务器&quot;www.baidu.com&quot;的权威域名服务器地址/">www.baidu.com&quot;的IP地址，顶级域名服务器收到后则告诉本地DNS服务器&quot;www.baidu.com&quot;的权威域名服务器地址</a><br>7. 本地DNS服务器再向权威DNS服务器发起请求，权威DNS服务器查询后将对应的IP地址告诉本地DNS<br>8. 本地DNS服务器缓存该域名与对应IP然后返回IP给客户端<br>9. 浏览器根据TTL缓存该值</strong></p>
+<p>在客户端连接数量不高的情况下，是没问题的。但是，当面对十万甚至百万级连接的时候，传统的 BIO 模型是无能为力的。因此，我们需要一种更高效的 I/O 处理模型来应对更高的并发量</p>
+</blockquote>
+<h2 id="非阻塞IO"><a href="#非阻塞IO" class="headerlink" title="非阻塞IO"></a>非阻塞IO</h2><p><img src="https://img-blog.csdnimg.cn/7f28d4e3982a4ddca1108ad520db91ed.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>应用程序不断进行 I/O 系统调用轮询数据是否已经准备好的过程是十分消耗 CPU 资源的。</p>
+</blockquote>
+<h2 id="IO多路复用"><a href="#IO多路复用" class="headerlink" title="IO多路复用"></a>IO多路复用</h2><blockquote>
+<p>如果调用recvform时，恰好没有数据，阻塞IO会使进程阻塞，非阻塞IO使CPU空转，不能充分发挥CPU作用<br>如果调用recvform时恰好有数据，则用户进程进入第二个阶段，读取并处理数据   </p>
 </blockquote>
 <blockquote>
-<p><strong>注意：其中1-4为递归查询，5-7为迭代查询</strong></p>
+<p><strong>文件描述符：</strong> 简称FD，是一个从0开始递增的无符号整数，用来关联Linux中的一个文件。在Linux中一切皆文件。<br><strong>IO多路复用：</strong> 是利用单个线程来同时监听多个FD，并在某个FD可读、可写时得到通知，从而避免无效的等待，充分利用CPU资源<br>不同监听FD的方式、通知的方式有多种实现，常见的有：<br>select<br>poll<br>epoll<br><strong>差异</strong><br>select和poll只会通知进程有FD就绪，但不确定具体是那个FD，需要用户进程逐个遍历FD来确认<br>epoll则会通知用户进程FD就绪的同时，把已就绪的FD写入用户空间</p>
 </blockquote>
+<p><img src="https://img-blog.csdnimg.cn/f7bb98ad6b574ee8b8fda12126532b4a.png" alt="在这里插入图片描述"></p>
+<h3 id="IO多路复用-select"><a href="#IO多路复用-select" class="headerlink" title="IO多路复用-select"></a>IO多路复用-select</h3><p><img src="https://img-blog.csdnimg.cn/e9e290fb506a48febe905729b32053e3.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p><strong>缺点</strong><br>需要将整个fd_set从用户空间拷贝到内核空间，select结束还要再次拷贝回用户空间<br>select无法得知具体是那个fd就绪，需要遍历整个fd_set<br>fd_set监听的fd数量不能超过1024</p>
+</blockquote>
+<h3 id="IO多路复用-poll"><a href="#IO多路复用-poll" class="headerlink" title="IO多路复用-poll"></a>IO多路复用-poll</h3><p><img src="https://img-blog.csdnimg.cn/7ed80652660f4ec6994225ee57b00602.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p><strong>流程</strong><br>创建pollfd数组，向其中添加关注fd信息，数组大小自定义<br>调用poll函数，将pollfd数组拷贝到内核空间，转链表存储，无上限<br>内核遍历fd，判断是否就绪<br>数据就绪或超时后，拷贝pollfd数组到用户空间，返回就绪fd数量<br>用户进程判断n是否大于0<br>大于0则遍历pollfd数组，找到就绪数组</p>
+</blockquote>
+<blockquote>
+<p><strong>与select对比</strong><br>select模式中的fd_set大小固定为1024，而pollfd在内核中采用链表，理论上无上限<br>监听FD越多，每次遍历消耗时间也越久，性能反而会下降</p>
+</blockquote>
+<h3 id="IO多路复用-epoll"><a href="#IO多路复用-epoll" class="headerlink" title="IO多路复用-epoll"></a>IO多路复用-epoll</h3><p><img src="https://img-blog.csdnimg.cn/7f80bb9e3f6341d3b09aa8fb4f47049e.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/9206d0cd9a0b44d1b41beb0030a9537a.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>基于epoll实例中的红黑树保存要监听的FD，理论上无上限，而且增删改查效率都非常高，性能不会随着监听的FD数量增多而下降<br>每个FD只需执行一次epoll_ctl添加到红黑树，以后每次epol_wait无需传递任何参数，无需重复拷贝FD到内核空间<br>内核会将就绪的FD直接拷贝到用户空间的指定位置，用户进程无需遍历所有的FD就知道就绪的FD是谁</p>
+</blockquote>
+<h3 id="IO多路复用-事件通知机制"><a href="#IO多路复用-事件通知机制" class="headerlink" title="IO多路复用-事件通知机制"></a>IO多路复用-事件通知机制</h3><blockquote>
+<p>当FD有数据可读时，我们调用epoll_wait就可以得到通知，但是事件通知的模型有两种：<br>LevelTriggered：简称LT，当FD有数据可读时，会重复通知多次，直到数据处理完成<br>EdgeTriggered：简称ET，当FD有数据可读时，只会通知一次，不管数据是否处理完成</p>
+</blockquote>
+<h2 id="信号驱动IO"><a href="#信号驱动IO" class="headerlink" title="信号驱动IO"></a>信号驱动IO</h2><blockquote>
+<p>信号驱动IO是与内核建立SIGIO的信号关联并设置回调，当内核有FD就绪时，会发出SIGIO信号通知用户，期间用户应用可以执行其它业务，无需阻塞等待<br><img src="https://img-blog.csdnimg.cn/0a77023eb35c4d8cb78e533402c4bc7a.png" alt="在这里插入图片描述"></p>
+</blockquote>
+<blockquote>
+<p>当有大量IO操作时，信号较多，SIGIO处理函数不能及时处理可能导致信号队列溢出<br>而且内核空间与用户空间的频繁交互性能较低</p>
+</blockquote>
+<h2 id="异步IO"><a href="#异步IO" class="headerlink" title="异步IO"></a>异步IO</h2><blockquote>
+<p>异步IO的整个过程都是非阻塞的，用户进程调用完异步API后就可以去做其它事情，内核等待数据就绪并拷贝到用户空间才会递交信号</p>
+</blockquote>
+<p><img src="https://img-blog.csdnimg.cn/d33e4630516745168739acdd679f13ad.png" alt="在这里插入图片描述"></p>
 
                 
             </div>
@@ -401,7 +429,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://cn-lixiaobo.github.io/2022/12/03/dns-cha-xun-liu-cheng/">http://cn-lixiaobo.github.io/2022/12/03/dns-cha-xun-liu-cheng/</a>
+                    <a href="http://cn-lixiaobo.github.io/2022/11/01/chang-jian-io-mo-xing/">http://cn-lixiaobo.github.io/2022/11/01/chang-jian-io-mo-xing/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -439,8 +467,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/DNS/">
-                                    <span class="chip bg-color">DNS</span>
+                                <a href="/tags/IO%E6%A8%A1%E5%9E%8B/">
+                                    <span class="chip bg-color">IO模型</span>
                                 </a>
                             
                         </div>
@@ -523,55 +551,6 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2022/12/03/chang-jian-io-mo-xing/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="常见IO模型">
-                        
-                        <span class="card-title">常见IO模型</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-12-03
-                        </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-category">
-                                    操作系统
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/IO%E6%A8%A1%E5%9E%8B/">
-                        <span class="chip bg-color">IO模型</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
                 <a href="/2022/11/03/longadder-de-yuan-ma-xue-xi/">
                     <div class="card-image">
                         
@@ -588,9 +567,9 @@
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-11-03
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-11-03
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -608,6 +587,55 @@
                     
                     <a href="/tags/%E6%BA%90%E7%A0%81/">
                         <span class="chip bg-color">源码</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/10/05/dns-cha-xun-liu-cheng/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="DNS查询流程">
+                        
+                        <span class="card-title">DNS查询流程</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-10-05
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E8%AE%A1%E7%BD%91/" class="post-category">
+                                    计网
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/DNS/">
+                        <span class="chip bg-color">DNS</span>
                     </a>
                     
                 </div>
