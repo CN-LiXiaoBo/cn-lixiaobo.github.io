@@ -4,35 +4,6 @@
   
     
     <entry>
-      <title>索引的学习与理解</title>
-      <link href="/2022/12/03/%E7%B4%A2%E5%BC%95%E7%9A%84%E5%AD%A6%E4%B9%A0%E4%B8%8E%E7%90%86%E8%A7%A3/"/>
-      <url>/2022/12/03/%E7%B4%A2%E5%BC%95%E7%9A%84%E5%AD%A6%E4%B9%A0%E4%B8%8E%E7%90%86%E8%A7%A3/</url>
-      
-        <content type="html"><![CDATA[<h2 id="为什么使用索引"><a href="#为什么使用索引" class="headerlink" title="为什么使用索引"></a>为什么使用索引</h2><p>索引是存储引擎用于快速找到数据记录的一种数据结构。MySQL在进行数据查找时，首先查看查询条件是否命中某条索引，符合则<strong>通过索引查找</strong>相关数据，如果不符合则<strong>全表扫描</strong>，建索引目的就是为了<strong>减少磁盘I/O次数</strong>，加快查询效率。</p><h2 id="索引及其优缺点"><a href="#索引及其优缺点" class="headerlink" title="索引及其优缺点"></a>索引及其优缺点</h2><h3 id="索引概述"><a href="#索引概述" class="headerlink" title="索引概述"></a>索引概述</h3><blockquote><p><strong>索引本质</strong>：索引是数据结构。这些数据结构以某种方式指向数据，这样可以在这些数据结构的基础上实现高效查找算法。<br><strong>索引是在存储引擎实现的</strong>，因此每种存储引擎的索引不一定完全相同，并且每种存储引擎不一定支持所有类型的索引。同时存储引擎可以定义每个表的最大索引数和最大索引长度。所有存储引擎支持每个表至少16个索引，总索引长度至少为256字节。</p></blockquote><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><blockquote><p>1、提高数据检索的效率，降低数据库的I/O成本<br>2、通过创建唯一索引，可以保证数据库表中每一行数据的唯一性<br>3、可以加速表和表之间的连接。对于有依赖关系的子表和父表联合查询时，可以提高查询速度<br>4、在使用分组和排序子句进行数据查询时，可以显著减少查询中分组和排序的时间，降低CPU的消耗</p></blockquote><h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><blockquote><p>1、创建索引和维护索引要耗费时间<br>2、索引需要占磁盘空间，存储在磁盘上<br>3、虽然索引大大提高了查询 速度，同时也会降低更新表的速度</p></blockquote><h2 id="InnoDB中的索引"><a href="#InnoDB中的索引" class="headerlink" title="InnoDB中的索引"></a>InnoDB中的索引</h2><h3 id="常见索引概念"><a href="#常见索引概念" class="headerlink" title="常见索引概念"></a>常见索引概念</h3><blockquote><p><strong>聚簇索引</strong> 并不是一种单独的索引类型，而是一种数据存储方式（所有的用户记录都存储在了叶子节点）。<br><strong>特点</strong><br>1、使用主键值的大小进行记录和页的排序<br>页内的记录是按照主键大小顺序排成一个单向链表<br>各个存放用户记录的页排序成一个双向链表<br>存放目录项的页也排成一个双向链表<br>2、B+树的叶子节点存储的是完整的用户记录<br><strong>优点</strong><br>数据访问更快，因为聚簇索引将索引和数据保存在同一个B+树中，因此从聚簇索引获取数据比非聚簇索引更快<br>聚簇索引对于主键的排序查找和范围查找更快<br>因为聚簇索引排列顺序，查询显示一定范围数据时不用从多个数据块中提取数据，节省了大量I/O操作<br><strong>缺点</strong><br>插入速度严重依赖插入顺序，按照主键的顺序插入是最快的方式，否则会出现页分裂，严重影响性能<br>更新主键的代价很高，因为将会导致被更新的行移动<br>二级索引需要两次索引查找</p></blockquote><blockquote><p><strong>非聚簇索引</strong>与聚簇索引的区别就是叶子节点放的是主键</p></blockquote><h2 id="索引的代价"><a href="#索引的代价" class="headerlink" title="索引的代价"></a>索引的代价</h2><blockquote><p><strong>空间上的代价</strong><br>每建立一颗B+树，每一颗B+树的每一个节点都是一个数据页，一个页默认占用16kb的存储空间，一颗很大的B+树由许多数据页组成<br><strong>时间上的代价</strong><br>每次对表中数据进行<strong>增删改</strong>操作时，都需要去修改各个B+树索引</p></blockquote><h2 id="索引的声明与使用"><a href="#索引的声明与使用" class="headerlink" title="索引的声明与使用"></a>索引的声明与使用</h2><h3 id="索引的分类"><a href="#索引的分类" class="headerlink" title="索引的分类"></a>索引的分类</h3><blockquote><p>从<strong>功能逻辑</strong>分为普通索引、唯一索引、主键索引、全文索引<br>从<strong>物理实现</strong>方式分聚簇索引和非聚簇索引<br>从<strong>作用字段个数</strong>分单列索引和联合索引</p></blockquote><blockquote><p><strong>普通索引</strong><br>在创建索引时，不附加任何限制条件，只是用于提高查询效率。这类索引可以创建在任何数据类型</p></blockquote><blockquote><p><strong>唯一索引</strong><br>使用UNIQUE参数可以设置唯一性索引，在创建唯一性索引时限制该索引的值必须是唯一的，但允许有空值。一张数据表里可以有多个唯一索引</p></blockquote><blockquote><p><strong>主键索引</strong><br>主键索引就是一种特殊的唯一性索引，不能为空且最多只有一个主键索引</p></blockquote><blockquote><p><strong>单列索引</strong><br>在单个字段创建索引</p></blockquote><blockquote><p><strong>多列索引</strong><br>多个字段组合上创建一个索引，使用组合索引时需要遵循<strong>最左前缀集合</strong></p></blockquote><blockquote><p><strong>全文索引</strong><br>利用分词技术等多种算法智能分析出文本文字中关键词的频率和重要性，然后按照一定的算法智能的筛选出我们想要的搜索结果。全文索引适合大型数据集，对于小的数据集，用处不大。<br>使用参数FULLTEXT设置全文索引</p></blockquote><h3 id="索引的创建"><a href="#索引的创建" class="headerlink" title="索引的创建"></a>索引的创建</h3><blockquote><p>查看索引<br>show create table 表名；<br>show index from 表名；</p></blockquote><blockquote><p>在<strong>创建表的定义语句</strong>中指定索引列，使用<strong>alter table</strong>语句或者<strong>create index</strong></p></blockquote><blockquote><p><strong>创建表时</strong><br><strong>隐式创建索引</strong><br>添加约束的时候自动创建<br><strong>显示创建索引</strong><br>create table table_name(<br>name varchar(30),<br>[unique | fulltext | spatial] [index | key] (col_name [length]) [asc | desc])<br><strong>alter table</strong><br>alter table 表名 add index 索引名(字段名)<br><strong>create index</strong><br>create index 索引名 on 表名(字段名)</p></blockquote><h3 id="索引的删除"><a href="#索引的删除" class="headerlink" title="索引的删除"></a>索引的删除</h3><blockquote><p>alter table .. drop index …<br>drop index … on table_name</p></blockquote><h2 id="索引的设计原则"><a href="#索引的设计原则" class="headerlink" title="索引的设计原则"></a>索引的设计原则</h2><blockquote><p>1.针对数据量较大,且查询比较频繁的表建立索引<br>2.针对于常作为查询条件(where)、排序(order by)、分组(group by)操作的字段建立索引<br>3.尽量选择区分度高的列作为索引,尽量建立唯一索引,区分度越高,使用索引的效率越高<br>4.如果是字符串类型的字段,字段的长度较长,可以针对字段的特点建立前缀索引<br>5.尽量使用联合索引,减少单列索引,查询时,联合索引很多时候可以覆盖索引,节省存储空间,避免回表,提高查询效率<br>6.要控制索引的数量,索引并不是多多益善,索引越多,维护索引结构的代价也就越大,会影响增删改的效率<br>7.如果索引列不能存储NULL值,请在创建表时使用NOT NULL约束它.当优化器知道每列是否包含NULL值时,它可以更好的确定那个索引最有效的用于查询</p></blockquote>]]></content>
-      
-      
-      <categories>
-          
-          <category> MySQL </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> MySQL </tag>
-            
-            <tag> 面试 </tag>
-            
-            <tag> 索引 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>如何定位慢查询SQL以及优化</title>
       <link href="/2022/10/03/%E5%A6%82%E4%BD%95%E5%AE%9A%E4%BD%8D%E6%85%A2%E6%9F%A5%E8%AF%A2SQL%E4%BB%A5%E5%8F%8A%E4%BC%98%E5%8C%96/"/>
       <url>/2022/10/03/%E5%A6%82%E4%BD%95%E5%AE%9A%E4%BD%8D%E6%85%A2%E6%9F%A5%E8%AF%A2SQL%E4%BB%A5%E5%8F%8A%E4%BC%98%E5%8C%96/</url>
@@ -54,6 +25,35 @@
             <tag> SQL优化 </tag>
             
             <tag> 面试 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>索引的学习与理解</title>
+      <link href="/2022/10/02/%E7%B4%A2%E5%BC%95%E7%9A%84%E5%AD%A6%E4%B9%A0%E4%B8%8E%E7%90%86%E8%A7%A3/"/>
+      <url>/2022/10/02/%E7%B4%A2%E5%BC%95%E7%9A%84%E5%AD%A6%E4%B9%A0%E4%B8%8E%E7%90%86%E8%A7%A3/</url>
+      
+        <content type="html"><![CDATA[<h2 id="为什么使用索引"><a href="#为什么使用索引" class="headerlink" title="为什么使用索引"></a>为什么使用索引</h2><p>索引是存储引擎用于快速找到数据记录的一种数据结构。MySQL在进行数据查找时，首先查看查询条件是否命中某条索引，符合则<strong>通过索引查找</strong>相关数据，如果不符合则<strong>全表扫描</strong>，建索引目的就是为了<strong>减少磁盘I/O次数</strong>，加快查询效率。</p><h2 id="索引及其优缺点"><a href="#索引及其优缺点" class="headerlink" title="索引及其优缺点"></a>索引及其优缺点</h2><h3 id="索引概述"><a href="#索引概述" class="headerlink" title="索引概述"></a>索引概述</h3><blockquote><p><strong>索引本质</strong>：索引是数据结构。这些数据结构以某种方式指向数据，这样可以在这些数据结构的基础上实现高效查找算法。<br><strong>索引是在存储引擎实现的</strong>，因此每种存储引擎的索引不一定完全相同，并且每种存储引擎不一定支持所有类型的索引。同时存储引擎可以定义每个表的最大索引数和最大索引长度。所有存储引擎支持每个表至少16个索引，总索引长度至少为256字节。</p></blockquote><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><blockquote><p>1、提高数据检索的效率，降低数据库的I/O成本<br>2、通过创建唯一索引，可以保证数据库表中每一行数据的唯一性<br>3、可以加速表和表之间的连接。对于有依赖关系的子表和父表联合查询时，可以提高查询速度<br>4、在使用分组和排序子句进行数据查询时，可以显著减少查询中分组和排序的时间，降低CPU的消耗</p></blockquote><h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><blockquote><p>1、创建索引和维护索引要耗费时间<br>2、索引需要占磁盘空间，存储在磁盘上<br>3、虽然索引大大提高了查询 速度，同时也会降低更新表的速度</p></blockquote><h2 id="InnoDB中的索引"><a href="#InnoDB中的索引" class="headerlink" title="InnoDB中的索引"></a>InnoDB中的索引</h2><h3 id="常见索引概念"><a href="#常见索引概念" class="headerlink" title="常见索引概念"></a>常见索引概念</h3><blockquote><p><strong>聚簇索引</strong> 并不是一种单独的索引类型，而是一种数据存储方式（所有的用户记录都存储在了叶子节点）。<br><strong>特点</strong><br>1、使用主键值的大小进行记录和页的排序<br>页内的记录是按照主键大小顺序排成一个单向链表<br>各个存放用户记录的页排序成一个双向链表<br>存放目录项的页也排成一个双向链表<br>2、B+树的叶子节点存储的是完整的用户记录<br><strong>优点</strong><br>数据访问更快，因为聚簇索引将索引和数据保存在同一个B+树中，因此从聚簇索引获取数据比非聚簇索引更快<br>聚簇索引对于主键的排序查找和范围查找更快<br>因为聚簇索引排列顺序，查询显示一定范围数据时不用从多个数据块中提取数据，节省了大量I/O操作<br><strong>缺点</strong><br>插入速度严重依赖插入顺序，按照主键的顺序插入是最快的方式，否则会出现页分裂，严重影响性能<br>更新主键的代价很高，因为将会导致被更新的行移动<br>二级索引需要两次索引查找</p></blockquote><blockquote><p><strong>非聚簇索引</strong>与聚簇索引的区别就是叶子节点放的是主键</p></blockquote><h2 id="索引的代价"><a href="#索引的代价" class="headerlink" title="索引的代价"></a>索引的代价</h2><blockquote><p><strong>空间上的代价</strong><br>每建立一颗B+树，每一颗B+树的每一个节点都是一个数据页，一个页默认占用16kb的存储空间，一颗很大的B+树由许多数据页组成<br><strong>时间上的代价</strong><br>每次对表中数据进行<strong>增删改</strong>操作时，都需要去修改各个B+树索引</p></blockquote><h2 id="索引的声明与使用"><a href="#索引的声明与使用" class="headerlink" title="索引的声明与使用"></a>索引的声明与使用</h2><h3 id="索引的分类"><a href="#索引的分类" class="headerlink" title="索引的分类"></a>索引的分类</h3><blockquote><p>从<strong>功能逻辑</strong>分为普通索引、唯一索引、主键索引、全文索引<br>从<strong>物理实现</strong>方式分聚簇索引和非聚簇索引<br>从<strong>作用字段个数</strong>分单列索引和联合索引</p></blockquote><blockquote><p><strong>普通索引</strong><br>在创建索引时，不附加任何限制条件，只是用于提高查询效率。这类索引可以创建在任何数据类型</p></blockquote><blockquote><p><strong>唯一索引</strong><br>使用UNIQUE参数可以设置唯一性索引，在创建唯一性索引时限制该索引的值必须是唯一的，但允许有空值。一张数据表里可以有多个唯一索引</p></blockquote><blockquote><p><strong>主键索引</strong><br>主键索引就是一种特殊的唯一性索引，不能为空且最多只有一个主键索引</p></blockquote><blockquote><p><strong>单列索引</strong><br>在单个字段创建索引</p></blockquote><blockquote><p><strong>多列索引</strong><br>多个字段组合上创建一个索引，使用组合索引时需要遵循<strong>最左前缀集合</strong></p></blockquote><blockquote><p><strong>全文索引</strong><br>利用分词技术等多种算法智能分析出文本文字中关键词的频率和重要性，然后按照一定的算法智能的筛选出我们想要的搜索结果。全文索引适合大型数据集，对于小的数据集，用处不大。<br>使用参数FULLTEXT设置全文索引</p></blockquote><h3 id="索引的创建"><a href="#索引的创建" class="headerlink" title="索引的创建"></a>索引的创建</h3><blockquote><p>查看索引<br>show create table 表名；<br>show index from 表名；</p></blockquote><blockquote><p>在<strong>创建表的定义语句</strong>中指定索引列，使用<strong>alter table</strong>语句或者<strong>create index</strong></p></blockquote><blockquote><p><strong>创建表时</strong><br><strong>隐式创建索引</strong><br>添加约束的时候自动创建<br><strong>显示创建索引</strong><br>create table table_name(<br>name varchar(30),<br>[unique | fulltext | spatial] [index | key] (col_name [length]) [asc | desc])<br><strong>alter table</strong><br>alter table 表名 add index 索引名(字段名)<br><strong>create index</strong><br>create index 索引名 on 表名(字段名)</p></blockquote><h3 id="索引的删除"><a href="#索引的删除" class="headerlink" title="索引的删除"></a>索引的删除</h3><blockquote><p>alter table .. drop index …<br>drop index … on table_name</p></blockquote><h2 id="索引的设计原则"><a href="#索引的设计原则" class="headerlink" title="索引的设计原则"></a>索引的设计原则</h2><blockquote><p>1.针对数据量较大,且查询比较频繁的表建立索引<br>2.针对于常作为查询条件(where)、排序(order by)、分组(group by)操作的字段建立索引<br>3.尽量选择区分度高的列作为索引,尽量建立唯一索引,区分度越高,使用索引的效率越高<br>4.如果是字符串类型的字段,字段的长度较长,可以针对字段的特点建立前缀索引<br>5.尽量使用联合索引,减少单列索引,查询时,联合索引很多时候可以覆盖索引,节省存储空间,避免回表,提高查询效率<br>6.要控制索引的数量,索引并不是多多益善,索引越多,维护索引结构的代价也就越大,会影响增删改的效率<br>7.如果索引列不能存储NULL值,请在创建表时使用NOT NULL约束它.当优化器知道每列是否包含NULL值时,它可以更好的确定那个索引最有效的用于查询</p></blockquote>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> MySQL </tag>
+            
+            <tag> 面试 </tag>
+            
+            <tag> 索引 </tag>
             
         </tags>
       
