@@ -22,48 +22,7 @@
     
 
 
-    <!-- index cover -->
-    <!-- <link rel="stylesheet preload" type="text/css" href="/css/indexcover.css"> -->
-    <style>
-        .carousel-control {
-            width: 45px;
-            height: 45px;
-            line-height: 55px;
-            border-radius: 45px;
-            background: transparent;
-            cursor: pointer;
-            z-index: 100;
-        }
-        
-        #prev-cover {
-            position: absolute;
-            top: 48%;
-            left: 8px;
-        }
-        
-        #next-cover {
-            position: absolute;
-            top: 48%;
-            right: 8px;;
-        }
-        
-        #prev-cover i {
-            margin-right: 3px;
-        }
-        
-        #next-cover i {
-            margin-left: 3px;
-        }
-        
-        .carousel-control:hover {
-            background-color: rgba(0, 0, 0, .4);
-        }
-        
-        .carousel-control i {
-            color: #fff;
-            font-size: 2.4rem;
-        }
-    </style>
+    <!-- bg-cover style     -->
 
 
 
@@ -306,14 +265,9 @@
 </header>
 
     
-
-
-<div class="carousel carousel-slider center index-cover" data-indicators="true" style="margin-top: -64px;">
-    
-
-    <div class="carousel-item  white-text bg-cover about-cover">
-        <div class="container">
-            <div class="row">
+    <div class="bg-cover pd-header about-cover">
+    <div class="container">
+    <div class="row">
     <div class="col s10 offset-s1 m8 offset-m2 l8 offset-l2">
         <div class="brand">
             <div class="title center-align">
@@ -356,151 +310,12 @@
 </script>
 
 
-
-            <div class="cover-btns">
-                <a href="#indexCard" class="waves-effect waves-light btn">
-                    <i class="fa fa-angle-double-down"></i>开始阅读
-                </a>
-
-                
-            </div>
-            <div class="cover-social-link">
-    <a href="https://github.com/CN-LiXiaoBo" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
-        <i class="fab fa-github"></i>
-    </a>
-
-
-
-    <a href="mailto:2565477149@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
-        <i class="fas fa-envelope-open"></i>
-    </a>
-
-
-
-
-
-
-
-    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2565477149" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 2565477149" data-position="top" data-delay="50">
-        <i class="fab fa-qq"></i>
-    </a>
-
-
-
-
-
-
-
-</div>
-        </div>
     </div>
-
-    
 </div>
-
-<script>
-    $(function () {
-        let coverSlider = $('.carousel');
-
-        //用户触摸轮播自动 restartPlay 是否生效
-        let initUserPressedOrDraggedActive = false
-
-        //用户触摸轮播自动 restartPlay
-        function initUserPressedOrDragged(instance) {
-            setInterval(() => {
-                if (instance.pressed || instance.dragged) {
-                    // console.log('initUserPressedOrDragged: ',instance.pressed,instance.dragged)
-                    restartPlay()
-                }
-            }, 1000)
-        }
-
-        coverSlider.carousel({
-            duration: Number('120'),
-            fullWidth: true,
-            indicators: 'true' === 'true',
-            onCycleTo() {
-                if (!initUserPressedOrDraggedActive) {
-                    // console.log('initUserPressedOrDraggedActive')
-                    initUserPressedOrDragged(this)
-                    initUserPressedOrDraggedActive = true
-                }
-            },
-        })
-
-        let carouselIntervalId;
-        
-        // Loop to call the next cover article picture.
-        let autoCarousel = function () {
-            carouselIntervalId = setInterval(function () {
-                coverSlider.carousel('next');
-            }, 5000);
-        };
-        autoCarousel();
-        
-
-        function restartPlay() {
-            
-            clearInterval(carouselIntervalId);
-            autoCarousel();
-            
-        };
-
-        
-        // prev and next cover post.
-        $('#prev-cover').click(function () {
-            coverSlider.carousel('prev');
-            restartPlay();
-        });
-        $('#next-cover').click(function () {
-            coverSlider.carousel('next');
-            restartPlay();
-        });
-        
-    });
-</script>
-
 
 
 <main class="content">
 
-    
-    <div id="indexCard" class="index-card">
-        <div class="container ">
-            <div class="card">
-                <div class="card-content">
-                    
-                        <div class="dream">
-    
-    <div class="title center-align">
-        <i class="far fa-lightbulb"></i>&nbsp;&nbsp;我的梦想
-    </div>
-    
-    <div class="row">
-        <div class="col l8 offset-l2 m10 offset-m1 s10 offset-s1 center-align text">
-            不是每个人都应该像我这样去建造一座水晶大教堂，但是每个人都应该拥有自己的梦想，设计自己的梦想，追求自己的梦想，实现自己的梦想。梦想是生命的灵魂，是心灵的灯塔，是引导人走向成功的信仰。有了崇高的梦想，只要矢志不渝地追求，梦想就会成为现实，奋斗就会变成壮举，生命就会创造奇迹。——罗伯·舒乐
-        </div>
-    </div>
-</div>
-
-                    
-
-                    
-
-                    
-
-                    
-                    <div id="recommend-sections" class="recommend">
-                        
-
-
-
-                    </div>
-                    
-                </div>
-            </div>
-        </div>
-    </div>
     
 
     
@@ -512,32 +327,38 @@
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2022/11/03/longadder-de-yuan-ma-xue-xi/">
+                    <a href="/2022/05/20/pai-xu-suan-fa/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="LongAdder的源码学习">
+                            <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="排序算法">
                             
-                            <span class="card-title">LongAdder的源码学习</span>
+                            <span class="card-title">排序算法</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                LongAdder源码的学习与理解,主要是理解cells数组,@sun.misc.Contended注解,以及LongAdder中的add方法和longAccumulate方法
+                                冒泡排序
+
+平均时间复杂度： o(n^2)最好时间： o(n)最坏时间： o(n^2)空间复杂度： o(1)是否稳定： 稳定
+
+简单的冒泡排序
+    public int[] bubbleSort(int [] nums){
+      
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-11-03
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-05-20
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/Java/" class="post-category">
-                                    Java
+                                <a href="/categories/%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/" class="post-category">
+                                    常见算法
                                 </a>
                                 
                                 
@@ -548,8 +369,8 @@
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/%E6%BA%90%E7%A0%81/">
-                            <span class="chip bg-color">源码</span>
+                        <a href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">
+                            <span class="chip bg-color">排序算法</span>
                         </a>
                         
                     </div>
@@ -561,88 +382,26 @@
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2022/11/01/chang-jian-io-mo-xing/">
+                    <a href="/2022/02/04/xss-gong-ji-yu-yu-fang/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="常见IO模型">
+                            <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="XSS攻击与预防">
                             
-                            <span class="card-title">常见IO模型</span>
+                            <span class="card-title">XSS攻击与预防</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                用户空间与内核空间
-进程的寻址空间会划分为两部分：内核空间、用户空间用户空间只能执行受限的命令，而且不能直接调用系统资源，必须通过内核提供的接口来访问内核空间可以执行特权命令。调用一切系统资源
-
-阻塞IO
-
-在客户端连接数量不高的情况下，是
+                                什么是XSS攻击
+XSS跨站脚本攻击（Cross Site Scripting）的本质是攻击者在web页面插入恶意的script代码，当用户浏览该网页之时，嵌入其中的script代码就会被执行，从而达到恶意攻击用户的目的，比如读cookie
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-11-01
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-category">
-                                    操作系统
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/IO%E6%A8%A1%E5%9E%8B/">
-                            <span class="chip bg-color">IO模型</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2022/10/05/dns-cha-xun-liu-cheng/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="DNS查询流程">
-                            
-                            <span class="card-title">DNS查询流程</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                查询服务器域名对应的IP地址其中域名的层级关系类似于一个树状结构
-
-根DNS服务器(.)
-顶级域名服务器(.com)
-权威DNS服务器(server.com)
-
-
-域名解析工作流程
-
-1. 客户端发起一个DNS请求，先查看本地浏览器是否有这
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-10-05
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-02-04
                             </span>
                             <span class="publish-author">
                                 
@@ -660,8 +419,8 @@
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/DNS/">
-                            <span class="chip bg-color">DNS</span>
+                        <a href="/tags/XSS/">
+                            <span class="chip bg-color">XSS</span>
                         </a>
                         
                     </div>
@@ -673,29 +432,81 @@
              <!-- 隐藏某个文章 -->
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2022/10/03/cookie-session-token-qu-bie/">
+                    <a href="/2022/02/03/springboot-can-shu-xiao-yan/">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="Cookie、Session、Token区别">
+                            <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="SpringBoot参数校验">
                             
-                            <span class="card-title">Cookie、Session、Token区别</span>
+                            <span class="card-title">SpringBoot参数校验</span>
                         </div>
                     </a>
 
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                
-由于HTTP协议本身是无状态的，及服务器无法判断用户身份。cookie与session都是用来跟踪浏览器用户身份的会话
-
-Cookie
-Cookie其实是浏览器保存在电脑中的一些key-value结构形式的文本数据，其中包含了我们以及服务
+                                一、参数校验1.普通做法写多个if来判断条件
+实体类
+@Data
+public class User {
+    private String username;
+    private String password;
+    priva
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-10-03
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-02-03
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/SpringBoot/" class="post-category">
+                                    SpringBoot
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/%E5%8F%82%E6%95%B0%E6%A0%A1%E9%AA%8C/">
+                            <span class="chip bg-color">参数校验</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- 隐藏某个文章 -->
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2022/02/03/csrf-li-jie-yu-yu-fang/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="CSRF理解与预防">
+                            
+                            <span class="card-title">CSRF理解与预防</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                CSRF
+CSRF即跨站请求攻击。简单来说是攻击者通过一些技术手段欺骗用户浏览器去访问一个自己以前认证过的站点并运行一些操作，因为浏览器之前认证过，所以被访问的站点会觉得这是真正的用户操作。这就利用了web用户身份认证的一个漏洞：简单的身份
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-02-03
                             </span>
                             <span class="publish-author">
                                 
@@ -713,120 +524,8 @@ Cookie其实是浏览器保存在电脑中的一些key-value结构形式的文�
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/Cookie/">
-                            <span class="chip bg-color">Cookie</span>
-                        </a>
-                        
-                        <a href="/tags/Session/">
-                            <span class="chip bg-color">Session</span>
-                        </a>
-                        
-                        <a href="/tags/Token/">
-                            <span class="chip bg-color">Token</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2022/10/03/dong-tai-huan-cun-re-dian-shu-ju/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="动态缓存热点数据">
-                            
-                            <span class="card-title">动态缓存热点数据</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-写在前面，因为我们最近的大作业项目需要用到热点排行这个功能，因为我们是要使用Elasticsearch来存储数据，然后最初设想是在ES中实现这个热点排行的功能，但是经过仔细思考，在我们这个项目中使用ES来做热点排行是一个很蠢的方式，因为我
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-10-03
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E5%9C%BA%E6%99%AF/" class="post-category">
-                                    场景
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E7%83%AD%E7%82%B9%E7%BC%93%E5%AD%98/">
-                            <span class="chip bg-color">热点缓存</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2022/10/03/ru-he-ding-wei-man-cha-xun-sql-yi-ji-you-hua/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="如何定位慢查询SQL以及优化">
-                            
-                            <span class="card-title">如何定位慢查询SQL以及优化</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                慢查询日志记录慢SQL定位慢SQL可以通过慢查询日志来查看慢SQL，默认的情况下，MySQL数据库不开启慢查询日志(slow query log)，需要手动把它打开SET GLOBAL slow_query_log = ‘ON’;
-查看下慢
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-10-03
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/MySQL/" class="post-category">
-                                    MySQL
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E9%9D%A2%E8%AF%95/">
-                            <span class="chip bg-color">面试</span>
-                        </a>
-                        
-                        <a href="/tags/SQL%E4%BC%98%E5%8C%96/">
-                            <span class="chip bg-color">SQL优化</span>
+                        <a href="/tags/CSRF/">
+                            <span class="chip bg-color">CSRF</span>
                         </a>
                         
                     </div>
@@ -845,18 +544,18 @@ Cookie其实是浏览器保存在电脑中的一些key-value结构形式的文�
     <div class="row">
         <div class="col s6 m4 l4">
             
-            <a class="left btn-floating btn-large disabled">
+            <a href="/page/2/"
+               class="left btn-floating btn-large waves-effect waves-light bg-color">
                 <i class="fas fa-angle-left"></i>
             </a>
             
         </div>
         <div class="page-info col m4 l4 hide-on-small-only">
-            <div class="center-align b-text-gray">1 / 3</div>
+            <div class="center-align b-text-gray">3 / 3</div>
         </div>
         <div class="col s6 m4 l4">
             
-            <a href="/page/2/"
-               class="right btn-floating btn-large waves-effect waves-light bg-color">
+            <a class="right btn-floating btn-large disabled">
                 <i class="fas fa-angle-right"></i>
             </a>
             
