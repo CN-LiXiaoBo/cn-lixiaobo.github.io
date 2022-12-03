@@ -5,13 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="LongAdder的源码学习, 才疏学浅的木子">
-    <meta name="description" content="// 累加单元组，懒惰初始化
-transient volatile Cell[] cells;
-
-// 基础值，如果没有竞争，则用cas累加这个值
-transient volatile long base;
-
-//在cells创建或者扩容时">
+    <meta name="description" content="LongAdder源码的学习与理解">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -306,10 +300,6 @@ transient volatile long base;
                 <div class="col s7">
                     
                     <div class="article-tag">
-                        
-                            <a href="/tags/%E6%8C%81%E4%B9%85%E5%8C%96/">
-                                <span class="chip bg-color">持久化</span>
-                            </a>
                         
                             <a href="/tags/%E6%BA%90%E7%A0%81/">
                                 <span class="chip bg-color">源码</span>
@@ -657,10 +647,6 @@ transient volatile long base;
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E6%8C%81%E4%B9%85%E5%8C%96/">
-                                    <span class="chip bg-color">持久化</span>
-                                </a>
-                            
                                 <a href="/tags/%E6%BA%90%E7%A0%81/">
                                     <span class="chip bg-color">源码</span>
                                 </a>
@@ -758,7 +744,7 @@ transient volatile long base;
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            
+                            LongAdder源码的学习与理解
                         
                     </div>
                     <div class="publish-info">
@@ -780,10 +766,6 @@ transient volatile long base;
 
                 
                 <div class="card-action article-tags">
-                    
-                    <a href="/tags/%E6%8C%81%E4%B9%85%E5%8C%96/">
-                        <span class="chip bg-color">持久化</span>
-                    </a>
                     
                     <a href="/tags/%E6%BA%90%E7%A0%81/">
                         <span class="chip bg-color">源码</span>
