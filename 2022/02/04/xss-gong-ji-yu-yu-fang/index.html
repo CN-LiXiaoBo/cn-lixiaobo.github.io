@@ -4,8 +4,9 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Redis持久化, 才疏学浅的木子">
-    <meta name="description" content="Redis如何实现数据不丢失Redis的读写操作都是在内存中，所以Redis性能才会高，但是当Redis重启后，内存中的数据就会丢失，那为了保存内存中的数据不会丢失，Redis实现了数据持久化机制，会把数据保存到磁盘，这样Redis重启就能">
+    <meta name="keywords" content="XSS攻击与预防, 才疏学浅的木子">
+    <meta name="description" content="什么是XSS攻击
+XSS跨站脚本攻击（Cross Site Scripting）的本质是攻击者在web页面插入恶意的script代码，当用户浏览该网页之时，嵌入其中的script代码就会被执行，从而达到恶意攻击用户的目的，比如读cookie">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -17,7 +18,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Redis持久化 | 才疏学浅的木子</title>
+    <title>XSS攻击与预防 | 才疏学浅的木子</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -272,12 +273,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Redis持久化</h1>
+                    <h1 class="description center-align post-title">XSS攻击与预防</h1>
                 </div>
             </div>
         </div>
@@ -301,12 +302,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E6%8C%81%E4%B9%85%E5%8C%96/">
-                                <span class="chip bg-color">持久化</span>
-                            </a>
-                        
-                            <a href="/tags/%E9%9D%A2%E8%AF%95/">
-                                <span class="chip bg-color">面试</span>
+                            <a href="/tags/XSS/">
+                                <span class="chip bg-color">XSS</span>
                             </a>
                         
                     </div>
@@ -317,8 +314,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/Redis/" class="post-category">
-                                Redis
+                            <a href="/categories/%E8%AE%A1%E7%BD%91/" class="post-category">
+                                计网
                             </a>
                         
                     </div>
@@ -330,7 +327,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-10-01
+                    2022-02-04
                 </div>
                 
 
@@ -339,7 +336,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.6k
+                    928
                 </div>
                 
 
@@ -356,55 +353,47 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="Redis如何实现数据不丢失"><a href="#Redis如何实现数据不丢失" class="headerlink" title="Redis如何实现数据不丢失"></a>Redis如何实现数据不丢失</h2><p>Redis的读写操作都是在内存中，所以Redis性能才会高，但是当Redis重启后，内存中的数据就会丢失，那为了保存内存中的数据不会丢失，Redis实现了数据持久化机制，会把数据保存到磁盘，这样Redis重启就能够从磁盘恢复原有的数据</p>
-<p>Redis提供了三种数据持久化方式</p>
-<blockquote>
-<p><strong>AOF日志</strong>：每执行一条写操作命令就把该命令以追加的方式写入一个文件里<br><strong>RDB快照</strong>：将某一时刻的内存数据以二进制的方式写入磁盘<br><strong>混合持久化</strong>：集成了AOF与RDB的优点</p>
+                <h2 id="什么是XSS攻击"><a href="#什么是XSS攻击" class="headerlink" title="什么是XSS攻击"></a>什么是XSS攻击</h2><blockquote>
+<p><strong>XSS跨站脚本攻击</strong>（Cross Site Scripting）的本质是攻击者在web页面插入恶意的script代码，当用户浏览该网页之时，嵌入其中的script代码就会被执行，从而达到恶意攻击用户的目的，比如读cookie，sesssion，tokens，或者网站其它敏感信息。</p>
 </blockquote>
-<h2 id="AOF"><a href="#AOF" class="headerlink" title="AOF"></a>AOF</h2><p><strong>AOF步骤</strong><br>Redis在执行完一条命令后就会把该命令以追加的方式写到一个文件，然后Redis重启时，会读取该命令然后逐一执行命令的方式来进行数据恢复</p>
-<p><img src="https://img-blog.csdnimg.cn/134afa3dbfc347a0aeea66e5c560e653.png" alt="在这里插入图片描述"></p>
-<blockquote>
-<p><strong>why先执行命令后写入磁盘？</strong></p>
+<h2 id="XSS攻击的危害"><a href="#XSS攻击的危害" class="headerlink" title="XSS攻击的危害"></a>XSS攻击的危害</h2><blockquote>
+<p>1、通过document.cookie<strong>盗取cookie</strong>中的信息<br>2、使用js或css<strong>破坏页面正常的结构与样式</strong><br>3、<strong>流量劫持</strong>(通过访问某段具有window.location.href 定位到其他页面)<br>4、<strong>ddos攻击</strong>：利用合理的客户端请求来占用过多的服务器，从而使合法用户无法得到服务器响应<br>5、<strong>控制企业数据</strong>，包括读取、篡改、删除等</p>
 </blockquote>
-<p>避免额外的检查开销：因为如果先将写操作记录到AOF日志中，再执行该命令的话，如果当前命令有问题如果不检查的话，Redis使用该命令进行恢复的时候就可能会出错<br>不会阻塞当前写操作命令的执行：因为是在当前线程的写操作之后</p>
-<ul>
-<li>数据可能会丢失：当前线程执行完命令而还没有写入磁盘时就宕机了</li>
-<li>可能阻塞其它操作：因为记录AOF日志也是在主线程中执行，所以当Redis把日志写入磁盘时会阻塞后续的命令</li>
-</ul>
-<p><strong>AOF的写回策略</strong></p>
-<blockquote>
-<p><strong>Always</strong>：每次写操作命令都会执行完后，同步AOF日志数据写回硬盘<br><strong>Everysec</strong>：每次写操作命令执行完后，先写入AOF日志缓冲区，每秒写回磁盘<br><strong>No</strong>：不由Redis控制写回磁盘，每次都写入AOF日志缓冲区，再由操作系统决定何时写回磁盘</p>
+<h2 id="XSS攻击的类型"><a href="#XSS攻击的类型" class="headerlink" title="XSS攻击的类型"></a>XSS攻击的类型</h2><h3 id="反射型XSS攻击"><a href="#反射型XSS攻击" class="headerlink" title="反射型XSS攻击"></a>反射型XSS攻击</h3><blockquote>
+<p>反射型XSS漏洞常见于通过<strong>URL传递参数</strong>的功能，如网站搜索、跳转等，由于需要用户主动打开恶意的URL才能生效，攻击者往往会结合多种手段诱导用户点击</p>
 </blockquote>
-<p><img src="https://img-blog.csdnimg.cn/27c09236c66d461ea1e16e0aebb80d61.png" alt="在这里插入图片描述"></p>
-<p><strong>AOF日志文件过大怎么办?</strong></p>
-<p>AOF日志是一个文件，随着写命令的执行，文件会越来越大，如果文件过大就会带来性能问题，比如AOF恢复中执行的命令就会很多就会导致恢复过程很慢<br>所以Redis提供了AOF重写机制，当AOF文件大小超过设定的阈值时AOF就会启用重写机制来压缩AOF文件，比如set name lixiaobo 与set name lidabo 就会设置为一条指令set name lidabo</p>
-<p><strong>重写AOF日志过程</strong></p>
-<p>Redis的重写AOF过程是由后台子进程bgwriteaof来完成的，这么做的好处：</p>
+<p><strong>反射型XSS攻击的步骤</strong></p>
 <blockquote>
-<p> 1、子进程进行AOF重写期间，主进程可以继续处理命令请求，从而避免阻塞主进程<br>2、子进程带有父进程的数据副本，之所以不使用多线程是因为多线程会共享内存那么修改时候就需要加锁来保证数据安全而这样就会降低性能。而使用子进程，创建子进程时候父子进程是共享内存数据，而当父子进程任意一方修改就会发生写时复制</p>
+<p>1、攻击者构造出特殊的URL,其中包含恶意代码<br>2、用户打开有恶意代码的URL时，网站服务器端将恶意代码从URL取出，拼接在HTML返回给浏览器<br>3、用户浏览器接收到响应后解析执行。混在其中的恶意代码也会被执行<br>4、恶意代码窃取用户数据并发送到攻击者的网站，或者冒充用户行为，调用目标网站接口执行攻击者的指定的操作</p>
 </blockquote>
-<p>触发重写机制后，主进程会创建重写AOF的子进程，此时子进程只会对这个内存进行只读，重写AOF子进程会读取所有指令，并逐一把内存数据的键值对转换成另一条命令，再将命令记录到重写日志(新的AOF文件)<br>但是重写过程中，主进程依然可以正常处理命令，所以就出现了问题，如果主进程修改了已经存在的key-value，那么就会发生写时复制，此时这个key-value数据在子进程的内存数据就与主进程的内存数据不一样了<br>为了解决这种数据不一致，Redis设置了一个<strong>AOF重写缓冲区</strong>，这个缓冲区在创建bgwriteaof子进程之后开始使用<br>在重写AOF期间，当Redis执行完一个写命令之后，它会同时把这个写命令放入AOF缓冲区与AOF<strong>重写缓冲区</strong><br>也就是说在bgwriteaof期间，主进程需要执行三个工作</p>
+<p><img src="https://img-blog.csdnimg.cn/5c1d0b88255945008c2bb2a7cd61108d.png" alt="在这里插入图片描述"></p>
+<p><strong>防御反射型XSS攻击</strong></p>
 <blockquote>
-<p> 1、 执行客户端发来的命令<br> 2、将执行后的命令写入AOF缓冲区<br> 3、将执行后的命令写入AOF重写缓冲区</p>
+<p><strong>对输入进行检查：</strong> 对请求参数进行检查，一旦发现可疑的特殊字符就拒绝请求。<br><strong>对输出进行转义再显示：</strong> 对潜在的威胁的字符进行编码、转义</p>
 </blockquote>
-<p>当子进程重写完成之后会向主进程发送一条信号，信号是进程间通信的一种方式<br>主进程收到该信号后，会调用一个信号处理函数</p>
+<h3 id="存储型XSS攻击"><a href="#存储型XSS攻击" class="headerlink" title="存储型XSS攻击"></a>存储型XSS攻击</h3><blockquote>
+<p>恶意脚本<strong>永久存储在目标服务器</strong>上，当浏览器请求数据时，脚本从服务器传回执行，影响范围比反射型和DOM型XSS更大。存储型XSS攻击的原因是没有做好数据过滤：前端提交数据到服务端时，没有做好过滤，服务器端接收到数据时，在存储之前没有做过滤，前端从服务器请求到数据时，没有过滤输出</p>
+</blockquote>
+<p><strong>存储型XSS攻击步骤</strong></p>
 <blockquote>
-<p>1、将AOF重写缓冲区中的所有内容追加到新的AOF文件中，使得新旧两个AOF所保存的数据一致<br>2、新的AOF的文件进行改名，覆盖现有的AOF文件</p>
+<p>1、攻击者将恶意代码提交到目标网站的数据库中<br>2、用户打开目标网站时，网站服务端将恶意代码从数据库中取出，拼接在HTML中返回给浏览器<br>3、用户浏览器接收到响应后解析执行，混在其中的恶意代码也被执行<br>4、恶意代码窃取用户数据并发送到攻击者的网站，或冒充用户行为，调用目标网站接口等</p>
 </blockquote>
-<p><img src="https://img-blog.csdnimg.cn/442937bc9f6b4b3fad68ff93403d1349.png" alt="在这里插入图片描述"></p>
-<h2 id="RDB"><a href="#RDB" class="headerlink" title="RDB"></a>RDB</h2><p>RDB记录的是某一个瞬间的内存数据，记录的是实际数据，因此在数据恢复时，RDB恢复数据的效率比AOF高些</p>
-<p><strong>如何进行RDB</strong></p>
-<p>redis提供了两个命令来执行RDB</p>
+<p><img src="https://img-blog.csdnimg.cn/310adeb47925420fbd249fcf44a20e91.png" alt="在这里插入图片描述"></p>
+<p><strong>防御存储型XSS攻击</strong></p>
 <blockquote>
-<p><strong>save</strong>：执行save会在主线程生成RDB文件，所以会阻塞主线程<br><strong>bgsave</strong>：创建一个子进程来生成RDB文件，避免阻塞主线程</p>
+<p>服务器接收到数据在存储数据库之前进行转义或过滤<br>前端接收到服务器传递过来的数据，在展示页面之前先进行转义或过滤</p>
 </blockquote>
-<p>Redis的快照是全量快照，也就是每次执行快照都会把内存中的数据都记录到磁盘，所以这是一个比较重的操作</p>
-<p><strong>RDB执行快照时候数据能修改？</strong></p>
-<p>可以修改，在执行bgsave过程，Redis依旧可以继续处理操作命令，也就是数据是能被修改，关键技术还是写时复制</p>
-<h2 id="混合持久化"><a href="#混合持久化" class="headerlink" title="混合持久化"></a>混合持久化</h2><p><strong>混合持久化步骤</strong></p>
-<p>AOF的优点是丢失数据少，但是数据恢复慢，而RDB是优点是恢复速度快而快照的频率不好把握，如果频率过低，数据丢失的量就比较多，如果频率高就会影响性能<br>所以退出了混合持久化集成两者优点，在AOF重写日志时，fork出来的子进程会把当前主线程共享的内存数据以RDB方式写入到AOF文件，然后主线程处理的命令被记录到重写缓冲区中，重写缓冲区中的命令会以追加AOF的形式存在AOF日志中</p>
-<p><img src="https://img-blog.csdnimg.cn/225c19b532ba4bf886564bfdd8e05a24.png" alt="在这里插入图片描述"></p>
-<p>混合持久化的优缺点<br><strong>优点</strong><br>集成了AOF与RDB的优点<br><strong>缺点</strong><br>文件可读性变差</p>
+<h3 id="DOM型XSS攻击"><a href="#DOM型XSS攻击" class="headerlink" title="DOM型XSS攻击"></a>DOM型XSS攻击</h3><blockquote>
+<p>DOM型XSS攻击实际上就是前端JavaScript代码不够严谨，把不可信的内容插入到了页面</p>
+</blockquote>
+<p><strong>DOM型XSS攻击步骤</strong></p>
+<blockquote>
+<p>1、 攻击者构造出特殊数据，其中包含恶意代码<br>2、用户浏览器执行了恶意代码<br>3、窃取用户数据并发送到攻击者的网站或冒充用户</p>
+</blockquote>
+<p><strong>防疫DOM型XSS攻击</strong></p>
+<blockquote>
+<p>在使用.innerHTML   outerHTML document.write()时不要把不可信的数据插入到HTML页面中，应尽量使用.textContent .setAttribute()等</p>
+</blockquote>
 
                 
             </div>
@@ -431,7 +420,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://cn-lixiaobo.github.io/2022/10/01/redis-chi-jiu-hua/">http://cn-lixiaobo.github.io/2022/10/01/redis-chi-jiu-hua/</a>
+                    <a href="http://cn-lixiaobo.github.io/2022/02/04/xss-gong-ji-yu-yu-fang/">http://cn-lixiaobo.github.io/2022/02/04/xss-gong-ji-yu-yu-fang/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -469,12 +458,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E6%8C%81%E4%B9%85%E5%8C%96/">
-                                    <span class="chip bg-color">持久化</span>
-                                </a>
-                            
-                                <a href="/tags/%E9%9D%A2%E8%AF%95/">
-                                    <span class="chip bg-color">面试</span>
+                                <a href="/tags/XSS/">
+                                    <span class="chip bg-color">XSS</span>
                                 </a>
                             
                         </div>
@@ -557,13 +542,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2022/10/02/suo-yin-de-xue-xi-yu-li-jie/">
+                <a href="/2022/05/20/pai-xu-suan-fa/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="索引的学习与理解">
+                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="排序算法">
                         
-                        <span class="card-title">索引的学习与理解</span>
+                        <span class="card-title">排序算法</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -574,14 +559,14 @@
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-10-02
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-05-20
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/MySQL/" class="post-category">
-                                    MySQL
+                            <a href="/categories/%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/" class="post-category">
+                                    常见算法
                                 </a>
                             
                             
@@ -591,12 +576,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E9%9D%A2%E8%AF%95/">
-                        <span class="chip bg-color">面试</span>
-                    </a>
-                    
-                    <a href="/tags/%E7%B4%A2%E5%BC%95/">
-                        <span class="chip bg-color">索引</span>
+                    <a href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">
+                        <span class="chip bg-color">排序算法</span>
                     </a>
                     
                 </div>
@@ -610,13 +591,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/07/10/tcp-xiang-jie/">
+                <a href="/2022/02/03/csrf-li-jie-yu-yu-fang/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="TCP详解">
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="CSRF理解与预防">
                         
-                        <span class="card-title">TCP详解</span>
+                        <span class="card-title">CSRF理解与预防</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -627,7 +608,7 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-07-10
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-02-03
                             </span>
                         <span class="publish-author">
                             
@@ -644,12 +625,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E9%9D%A2%E8%AF%95/">
-                        <span class="chip bg-color">面试</span>
-                    </a>
-                    
-                    <a href="/tags/TCP/">
-                        <span class="chip bg-color">TCP</span>
+                    <a href="/tags/CSRF/">
+                        <span class="chip bg-color">CSRF</span>
                     </a>
                     
                 </div>
