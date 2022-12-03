@@ -4,9 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="如何定位慢查询SQL以及优化, 才疏学浅的木子">
-    <meta name="description" content="慢查询日志记录慢SQL定位慢SQL可以通过慢查询日志来查看慢SQL，默认的情况下，MySQL数据库不开启慢查询日志(slow query log)，需要手动把它打开SET GLOBAL slow_query_log = ‘ON’;
-查看下慢">
+    <meta name="keywords" content="Redis持久化, 才疏学浅的木子">
+    <meta name="description" content="Redis如何实现数据不丢失Redis的读写操作都是在内存中，所以Redis性能才会高，但是当Redis重启后，内存中的数据就会丢失，那为了保存内存中的数据不会丢失，Redis实现了数据持久化机制，会把数据保存到磁盘，这样Redis重启就能">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -18,7 +17,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>如何定位慢查询SQL以及优化 | 才疏学浅的木子</title>
+    <title>Redis持久化 | 才疏学浅的木子</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -272,12 +271,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">如何定位慢查询SQL以及优化</h1>
+                    <h1 class="description center-align post-title">Redis持久化</h1>
                 </div>
             </div>
         </div>
@@ -301,12 +300,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E9%9D%A2%E8%AF%95/">
-                                <span class="chip bg-color">面试</span>
+                            <a href="/tags/%E6%8C%81%E4%B9%85%E5%8C%96/">
+                                <span class="chip bg-color">持久化</span>
                             </a>
                         
-                            <a href="/tags/SQL%E4%BC%98%E5%8C%96/">
-                                <span class="chip bg-color">SQL优化</span>
+                            <a href="/tags/%E9%9D%A2%E8%AF%95/">
+                                <span class="chip bg-color">面试</span>
                             </a>
                         
                     </div>
@@ -317,8 +316,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/MySQL/" class="post-category">
-                                MySQL
+                            <a href="/categories/Redis/" class="post-category">
+                                Redis
                             </a>
                         
                     </div>
@@ -330,12 +329,17 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-10-03
+                    2022-10-01
                 </div>
                 
 
                 
 
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    1.6k
+                </div>
                 
 
                 
@@ -351,66 +355,55 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="慢查询日志记录慢SQL"><a href="#慢查询日志记录慢SQL" class="headerlink" title="慢查询日志记录慢SQL"></a>慢查询日志记录慢SQL</h2><p>定位慢SQL可以通过慢查询日志来查看慢SQL，默认的情况下，MySQL数据库不开启慢查询日志(slow query log)，需要手动把它打开<br>SET GLOBAL slow_query_log = ‘ON’;<br><img src="https://img-blog.csdnimg.cn/ca5a435941b34b31ac9d3667f4b1796f.png" alt="在这里插入图片描述"></p>
-<p><strong>查看下慢查询日志配置</strong><br>SHOW VARIABLES LIKE ‘slow_query_log%’</p>
-<p>slow_query_log：表示慢查询开启的状态<br>slow_query_log_file：表示慢查询日志存放的位置</p>
-<p><strong>查看超过多少时间，才记录到慢查询日志</strong><br>SHOW VARIABLES LIKE ‘long_query_time’</p>
-<p>注意： 这样配置是临时的如果需要永久修改需要去配置文件(/etc/my.cnf)</p>
-<h2 id="explain查看分析SQL执行计划"><a href="#explain查看分析SQL执行计划" class="headerlink" title="explain查看分析SQL执行计划"></a>explain查看分析SQL执行计划</h2><p>通过慢查询日志定位出查询效率较低的SQL，可以使用explain查看SQL的执行计划<br><img src="https://img-blog.csdnimg.cn/363d74d85a864fafb0c7dc973c65b02f.png" alt="在这里插入图片描述"></p>
-<p><strong>id</strong></p>
+                <h2 id="Redis如何实现数据不丢失"><a href="#Redis如何实现数据不丢失" class="headerlink" title="Redis如何实现数据不丢失"></a>Redis如何实现数据不丢失</h2><p>Redis的读写操作都是在内存中，所以Redis性能才会高，但是当Redis重启后，内存中的数据就会丢失，那为了保存内存中的数据不会丢失，Redis实现了数据持久化机制，会把数据保存到磁盘，这样Redis重启就能够从磁盘恢复原有的数据</p>
+<p>Redis提供了三种数据持久化方式</p>
 <blockquote>
-<p><strong>1. id 值相同时，被视为一组从上向下执行。</strong><br><strong>2. 如果是子查询，id 值会递增，id 值越高，优先级越高</strong><br><strong>3. id为NULL最后执行</strong></p>
+<p><strong>AOF日志</strong>：每执行一条写操作命令就把该命令以追加的方式写入一个文件里<br><strong>RDB快照</strong>：将某一时刻的内存数据以二进制的方式写入磁盘<br><strong>混合持久化</strong>：集成了AOF与RDB的优点</p>
 </blockquote>
-<p><strong>select_type</strong></p>
+<h2 id="AOF"><a href="#AOF" class="headerlink" title="AOF"></a>AOF</h2><p><strong>AOF步骤</strong><br>Redis在执行完一条命令后就会把该命令以追加的方式写到一个文件，然后Redis重启时，会读取该命令然后逐一执行命令的方式来进行数据恢复</p>
+<p><img src="https://img-blog.csdnimg.cn/134afa3dbfc347a0aeea66e5c560e653.png" alt="在这里插入图片描述"></p>
 <blockquote>
-<p><strong>1. simple: 简单的select, 查询中不包含子查询或者 union。例如: select name from student where id= 100<br>2. primary: 子查询中最外层查询, 查询中若包含任何复杂的子部分, 最外层的select被标记为primary<br>3. derived：在 from 的列表中包含的子查询被标记成 derived（派生表）。例如: explain select id from (select id,name from student) student1 where name= ‘name100’<br>4. subquery：在 select 或 where 列表中包含了子查询，则子查询被标记成 subquery。例如: explain select id from student where score = (select score from student where<br>name=’name100’);<br>5. union: union中的第二个或后面的select语句. 例如: EXPLAIN select id from student where id&lt;12691055 UNION all select id from student where id&lt;12691060;</strong></p>
+<p><strong>why先执行命令后写入磁盘？</strong></p>
 </blockquote>
-<p><strong>table</strong></p>
+<p>避免额外的检查开销：因为如果先将写操作记录到AOF日志中，再执行该命令的话，如果当前命令有问题如果不检查的话，Redis使用该命令进行恢复的时候就可能会出错<br>不会阻塞当前写操作命令的执行：因为是在当前线程的写操作之后</p>
+<ul>
+<li>数据可能会丢失：当前线程执行完命令而还没有写入磁盘时就宕机了</li>
+<li>可能阻塞其它操作：因为记录AOF日志也是在主线程中执行，所以当Redis把日志写入磁盘时会阻塞后续的命令</li>
+</ul>
+<p><strong>AOF的写回策略</strong></p>
 <blockquote>
-<p><strong>显示这一步所访问数据库中表名称. 有时候不是真实的表名, 可能是简称</strong></p>
+<p><strong>Always</strong>：每次写操作命令都会执行完后，同步AOF日志数据写回硬盘<br><strong>Everysec</strong>：每次写操作命令执行完后，先写入AOF日志缓冲区，每秒写回磁盘<br><strong>No</strong>：不由Redis控制写回磁盘，每次都写入AOF日志缓冲区，再由操作系统决定何时写回磁盘</p>
 </blockquote>
-<p><strong>partitions</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/27c09236c66d461ea1e16e0aebb80d61.png" alt="在这里插入图片描述"></p>
+<p><strong>AOF日志文件过大怎么办?</strong></p>
+<p>AOF日志是一个文件，随着写命令的执行，文件会越来越大，如果文件过大就会带来性能问题，比如AOF恢复中执行的命令就会很多就会导致恢复过程很慢<br>所以Redis提供了AOF重写机制，当AOF文件大小超过设定的阈值时AOF就会启用重写机制来压缩AOF文件，比如set name lixiaobo 与set name lidabo 就会设置为一条指令set name lidabo</p>
+<p><strong>重写AOF日志过程</strong></p>
+<p>Redis的重写AOF过程是由后台子进程bgwriteaof来完成的，这么做的好处：</p>
 <blockquote>
-<p><strong>该字段看table所在的分区, 值为NULL表示表未被分区</strong></p>
+<p> 1、子进程进行AOF重写期间，主进程可以继续处理命令请求，从而避免阻塞主进程<br>2、子进程带有父进程的数据副本，之所以不使用多线程是因为多线程会共享内存那么修改时候就需要加锁来保证数据安全而这样就会降低性能。而使用子进程，创建子进程时候父子进程是共享内存数据，而当父子进程任意一方修改就会发生写时复制</p>
 </blockquote>
-<p><strong>possible_keys</strong></p>
+<p>触发重写机制后，主进程会创建重写AOF的子进程，此时子进程只会对这个内存进行只读，重写AOF子进程会读取所有指令，并逐一把内存数据的键值对转换成另一条命令，再将命令记录到重写日志(新的AOF文件)<br>但是重写过程中，主进程依然可以正常处理命令，所以就出现了问题，如果主进程修改了已经存在的key-value，那么就会发生写时复制，此时这个key-value数据在子进程的内存数据就与主进程的内存数据不一样了<br>为了解决这种数据不一致，Redis设置了一个<strong>AOF重写缓冲区</strong>，这个缓冲区在创建bgwriteaof子进程之后开始使用<br>在重写AOF期间，当Redis执行完一个写命令之后，它会同时把这个写命令放入AOF缓冲区与AOF<strong>重写缓冲区</strong><br>也就是说在bgwriteaof期间，主进程需要执行三个工作</p>
 <blockquote>
-<p><strong>可能会使用到的索引(ps.其实不太重要)</strong></p>
+<p> 1、 执行客户端发来的命令<br> 2、将执行后的命令写入AOF缓冲区<br> 3、将执行后的命令写入AOF重写缓冲区</p>
 </blockquote>
-<p><strong>重点关注的字段</strong><br><strong>type</strong></p>
+<p>当子进程重写完成之后会向主进程发送一条信号，信号是进程间通信的一种方式<br>主进程收到该信号后，会调用一个信号处理函数</p>
 <blockquote>
-<p><strong>表示连接类型，查看索引执行情况的一个重要指标 以下性能从好到坏依次：system &gt; const &gt; eq_ref &gt; ref &gt;<br>ref_or_null &gt; index_merge &gt; unique_subquery &gt; index_subquery &gt; range &gt;<br>index &gt; ALL<br>system：这种类型要求数据库表中只有一条数据，是const类型的一个特例，一般情况下是不会出现的<br>const：通过一次索引就能找到数据，一般用于主键或唯一索引作为条件，这类扫描效率极高，速度非常快<br>eq_ref：常用于主键或唯一索引扫描，一般指使用主键的关联查询 ref : 常用于非主键和唯一索引扫描<br>ref_or_null：这种连接类型类似于ref，区别在于MySQL会额外搜索包含NULL值的行<br>index_merge：使用了索引合并优化方法，查询使用了两个以上的索引<br>unique_subquery：类似于eq_ref，条件用了in子查询<br>index_subquery：区别于unique_subquery，用于非唯一索引，可以返回重复值<br>range：常用于范围查询，比如：between … and 或 In 等操作 index：全索引扫描 ALL：全表扫描</strong></p>
+<p>1、将AOF重写缓冲区中的所有内容追加到新的AOF文件中，使得新旧两个AOF所保存的数据一致<br>2、新的AOF的文件进行改名，覆盖现有的AOF文件</p>
 </blockquote>
-<p><strong>key</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/442937bc9f6b4b3fad68ff93403d1349.png" alt="在这里插入图片描述"></p>
+<h2 id="RDB"><a href="#RDB" class="headerlink" title="RDB"></a>RDB</h2><p>RDB记录的是某一个瞬间的内存数据，记录的是实际数据，因此在数据恢复时，RDB恢复数据的效率比AOF高些</p>
+<p><strong>如何进行RDB</strong></p>
+<p>redis提供了两个命令来执行RDB</p>
 <blockquote>
-<p><strong>实际使用到的索引</strong></p>
+<p><strong>save</strong>：执行save会在主线程生成RDB文件，所以会阻塞主线程<br><strong>bgsave</strong>：创建一个子进程来生成RDB文件，避免阻塞主线程</p>
 </blockquote>
-<p><strong>key_len</strong></p>
-<blockquote>
-<p><strong>实际使用到的索引的长度</strong></p>
-</blockquote>
-<p><strong>rows</strong></p>
-<blockquote>
-<p><strong>该列表示MySQL估算找到我们所需的记录，需要读取的行数</strong></p>
-</blockquote>
-<p><strong>filtered</strong></p>
-<blockquote>
-<p><strong>该列是一个百分比，是满足条件的记录数量与我们查询了多少记录数量的比值</strong></p>
-</blockquote>
-<p><strong>extra</strong></p>
-<blockquote>
-<p><strong>该字段包含有关MySQL如何解析查询的其他信息，它一般会出现这几个值：<br>● Usingfilesort：表示按文件排序，一般是在指定的排序和索引排序不一致的情况才会出现，一般见于order by语句<br>● Using index：表示是否用了覆盖索引<br>● Using temporary: 表示是否使用了临时表,性能特别差，需要重点优化，一般多见于groupby语句，或者union语句<br>● Using where : 表示使用了where条件过滤<br>● Using index condition：MySQL5.6之后新增的索引下推，在存储引擎层进行数据过滤，而不是在服务层过滤，利用索引现有的数据减少回表的数据</strong></p>
-</blockquote>
-<h2 id="profile分析执行耗时"><a href="#profile分析执行耗时" class="headerlink" title="profile分析执行耗时"></a>profile分析执行耗时</h2><blockquote>
-<p><strong>explain只是看到SQL预估的执行计划，如果要了解SQL真正的执行线程状态及消耗的时间，需要使用profiling，开启profiling参数后，后续执行的SQL语句都会记录其资源开销，包括IO，上下文切换，CPU，内存等等，可以根据这些开销进一步分析当前慢SQL的瓶颈再进一步进行优化</strong></p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/c556a8c892074bc08daf7cac58ba8d5f.png" alt="在这里插入图片描述"></p>
-<h2 id="Optimizer-Trace分析详情"><a href="#Optimizer-Trace分析详情" class="headerlink" title="Optimizer Trace分析详情"></a>Optimizer Trace分析详情</h2><blockquote>
-<p><strong>profile只能查看到SQL的执行耗时，但无法看到SQL真正执行的过程信息，不知道MySQL优化器是如何选择执行计划，这时候，可以使用Optimizer<br>Trace，它可以跟踪执行语句的解析优化执行的全过程</strong></p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/f1315716958849f9a15717c99201a7f0.png" alt="在这里插入图片描述"></p>
-<p>三个阶段分为对应：准备阶段、分析阶段、执行阶段</p>
-<h1 id="确定问题采用响应措施"><a href="#确定问题采用响应措施" class="headerlink" title="确定问题采用响应措施"></a>确定问题采用响应措施</h1><p>● 多数慢SQL都跟索引有关，比如不加索引，索引不生效、不合理等，这时候，可以优化索引<br>● 还可以优化SQL语句，比如一些in元素过多问题(分批)，深分页问题(基于上一次数据过滤等)，进行时间分段查询<br>● SQL没办法很好优化，可以改用ES的方式，或者数仓<br>● 如果单表数据量过大导致慢查询，可以考虑分库分表<br>● 如果数据库在刷脏页导致慢查询，考虑是否可以优化一些参数<br>● 如果存量数据量太大，考虑是否可以让部分数据归档</p>
+<p>Redis的快照是全量快照，也就是每次执行快照都会把内存中的数据都记录到磁盘，所以这是一个比较重的操作</p>
+<p><strong>RDB执行快照时候数据能修改？</strong></p>
+<p>可以修改，在执行bgsave过程，Redis依旧可以继续处理操作命令，也就是数据是能被修改，关键技术还是写时复制</p>
+<h2 id="混合持久化"><a href="#混合持久化" class="headerlink" title="混合持久化"></a>混合持久化</h2><p><strong>混合持久化步骤</strong></p>
+<p>AOF的优点是丢失数据少，但是数据恢复慢，而RDB是优点是恢复速度快而快照的频率不好把握，如果频率过低，数据丢失的量就比较多，如果频率高就会影响性能<br>所以退出了混合持久化集成两者优点，在AOF重写日志时，fork出来的子进程会把当前主线程共享的内存数据以RDB方式写入到AOF文件，然后主线程处理的命令被记录到重写缓冲区中，重写缓冲区中的命令会以追加AOF的形式存在AOF日志中</p>
+<p><img src="https://img-blog.csdnimg.cn/225c19b532ba4bf886564bfdd8e05a24.png" alt="在这里插入图片描述"></p>
+<p>混合持久化的优缺点<br><strong>优点</strong><br>集成了AOF与RDB的优点<br><strong>缺点</strong><br>文件可读性变差</p>
 
                 
             </div>
@@ -437,7 +430,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://cn-lixiaobo.github.io/2022/10/03/%E5%A6%82%E4%BD%95%E5%AE%9A%E4%BD%8D%E6%85%A2%E6%9F%A5%E8%AF%A2SQL%E4%BB%A5%E5%8F%8A%E4%BC%98%E5%8C%96/">http://cn-lixiaobo.github.io/2022/10/03/%E5%A6%82%E4%BD%95%E5%AE%9A%E4%BD%8D%E6%85%A2%E6%9F%A5%E8%AF%A2SQL%E4%BB%A5%E5%8F%8A%E4%BC%98%E5%8C%96/</a>
+                    <a href="http://cn-lixiaobo.github.io/2022/10/01/redis-chi-jiu-hua/">http://cn-lixiaobo.github.io/2022/10/01/redis-chi-jiu-hua/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -475,12 +468,12 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E9%9D%A2%E8%AF%95/">
-                                    <span class="chip bg-color">面试</span>
+                                <a href="/tags/%E6%8C%81%E4%B9%85%E5%8C%96/">
+                                    <span class="chip bg-color">持久化</span>
                                 </a>
                             
-                                <a href="/tags/SQL%E4%BC%98%E5%8C%96/">
-                                    <span class="chip bg-color">SQL优化</span>
+                                <a href="/tags/%E9%9D%A2%E8%AF%95/">
+                                    <span class="chip bg-color">面试</span>
                                 </a>
                             
                         </div>
@@ -559,66 +552,11 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
-            <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;本篇
-            </div>
-            <div class="card">
-                <a href="/2022/10/03/%E5%A6%82%E4%BD%95%E5%AE%9A%E4%BD%8D%E6%85%A2%E6%9F%A5%E8%AF%A2SQL%E4%BB%A5%E5%8F%8A%E4%BC%98%E5%8C%96/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="如何定位慢查询SQL以及优化">
-                        
-                        <span class="card-title">如何定位慢查询SQL以及优化</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-10-03
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/MySQL/" class="post-category">
-                                    MySQL
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/%E9%9D%A2%E8%AF%95/">
-                        <span class="chip bg-color">面试</span>
-                    </a>
-                    
-                    <a href="/tags/SQL%E4%BC%98%E5%8C%96/">
-                        <span class="chip bg-color">SQL优化</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
         <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2022/10/02/%E7%B4%A2%E5%BC%95%E7%9A%84%E5%AD%A6%E4%B9%A0%E4%B8%8E%E7%90%86%E8%A7%A3/">
+                <a href="/2022/10/02/suo-yin-de-xue-xi-yu-li-jie/">
                     <div class="card-image">
                         
                         
@@ -634,9 +572,9 @@
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-10-02
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-10-02
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -658,6 +596,59 @@
                     
                     <a href="/tags/%E7%B4%A2%E5%BC%95/">
                         <span class="chip bg-color">索引</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/07/10/tcp-xiang-jie/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="TCP详解">
+                        
+                        <span class="card-title">TCP详解</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-07-10
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E8%AE%A1%E7%BD%91/" class="post-category">
+                                    计网
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E9%9D%A2%E8%AF%95/">
+                        <span class="chip bg-color">面试</span>
+                    </a>
+                    
+                    <a href="/tags/TCP/">
+                        <span class="chip bg-color">TCP</span>
                     </a>
                     
                 </div>
@@ -849,6 +840,9 @@
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
             |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
             <br>
+            
+                &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                        class="white-color">7.7k</span>
             
             
             
