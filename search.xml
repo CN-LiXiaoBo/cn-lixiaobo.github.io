@@ -4,31 +4,6 @@
   
     
     <entry>
-      <title>SpringMVC执行流程</title>
-      <link href="/2022/12/04/springmvc-zhi-xing-liu-cheng/"/>
-      <url>/2022/12/04/springmvc-zhi-xing-liu-cheng/</url>
-      
-        <content type="html"><![CDATA[<p><img src="https://img-blog.csdnimg.cn/53aa66e68fd444e1874b90f90ec8421e.png" alt="在这里插入图片描述"></p><h2 id="SpringMVC的流程"><a href="#SpringMVC的流程" class="headerlink" title="SpringMVC的流程"></a>SpringMVC的流程</h2><ol><li>整个过程开始于客户端发出的一个HTTP请求，Web应用服务器接收到这个请求。如果匹配DispatcherServlet的请求映射路径，则Web容器将该请求转交给DispatcherServlet处理。</li><li>DispatcherServlet接收到这个请求后，将根据请求的信息（包括URL、HTTP方法、请求报文头、请求参数、Cookie等）及HandlerMapping的配置找到处理请求的处理器（Handler）。可将HandlerMapping看做路由控制器，将Handler看做目标主机。值得注意的是，在Spring MVC中并没有定义一个Handler接口，实际上任何一个Object都可以成为请求处理器。</li><li>当DispatcherServlet根据HandlerMapping得到对应当前请求的Handler后，通过HandlerAdapter对Handler进行封装，再以统一的适配器接口调用Handler。HandlerAdapter是Spring MVC框架级接口，顾名思义，HandlerAdapter是一个适配器，它用统一的接口对各种Handler方法进行调用。</li><li>处理器完成业务逻 辑的处理后，将返回一个ModelAndView给DispatcherServlet，ModelAndView包含了视图逻辑名和模型数据信息。</li><li>ModelAndView中包含的是“逻辑视图名”而非真正的视图对象，DispatcherServlet借由ViewResolver完成逻辑视图名到真实视图对象的解析工作。</li><li>当得到真实的视图对象View后，DispatcherServlet就使用这个View对象对ModelAndView中的模型数据进行视图渲染。</li><li>最终客户端得到的响应消息可能是一个普通的HTML页面，也可能是一个XML或JSON串，甚至是一张图片或一个PDF文档等不同的媒体形式。</li></ol><h2 id="SpringMVC中重要组件"><a href="#SpringMVC中重要组件" class="headerlink" title="SpringMVC中重要组件"></a>SpringMVC中重要组件</h2><ul><li>前端控制器 DispatcherServlet：接收请求、响应结果，相当于转发器，有了 DispatcherServlet 就减少了其它组件之间的耦合度</li><li>处理器映射器 HandlerMapping：根据请求的 URL 来查找 Handler</li><li>处理器适配器 HandlerAdapter：负责执行 Handler</li><li>处理器 Handler：处理业务逻辑的 Java 类（我们自己写的 Controller 类）</li><li>视图解析器 ViewResolver：进行视图的解析，根据视图逻辑名将 ModelAndView 解析成真正的视图（view） </li><li>视图 View：View 是一个接口， 它的实现类支持不同的视图类型，如 jsp，freemarker， pdf 等</li></ul>]]></content>
-      
-      
-      <categories>
-          
-          <category> SpringMVC </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> 执行流程 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>LongAdder的源码学习</title>
       <link href="/2022/11/03/longadder-de-yuan-ma-xue-xi/"/>
       <url>/2022/11/03/longadder-de-yuan-ma-xue-xi/</url>
@@ -281,6 +256,31 @@
         <tags>
             
             <tag> BlockingQueue </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>SpringMVC执行流程</title>
+      <link href="/2022/07/13/springmvc-zhi-xing-liu-cheng/"/>
+      <url>/2022/07/13/springmvc-zhi-xing-liu-cheng/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://img-blog.csdnimg.cn/53aa66e68fd444e1874b90f90ec8421e.png" alt="在这里插入图片描述"></p><h2 id="SpringMVC的流程"><a href="#SpringMVC的流程" class="headerlink" title="SpringMVC的流程"></a>SpringMVC的流程</h2><ol><li>整个过程开始于客户端发出的一个HTTP请求，Web应用服务器接收到这个请求。如果匹配DispatcherServlet的请求映射路径，则Web容器将该请求转交给DispatcherServlet处理。</li><li>DispatcherServlet接收到这个请求后，将根据请求的信息（包括URL、HTTP方法、请求报文头、请求参数、Cookie等）及HandlerMapping的配置找到处理请求的处理器（Handler）。可将HandlerMapping看做路由控制器，将Handler看做目标主机。值得注意的是，在Spring MVC中并没有定义一个Handler接口，实际上任何一个Object都可以成为请求处理器。</li><li>当DispatcherServlet根据HandlerMapping得到对应当前请求的Handler后，通过HandlerAdapter对Handler进行封装，再以统一的适配器接口调用Handler。HandlerAdapter是Spring MVC框架级接口，顾名思义，HandlerAdapter是一个适配器，它用统一的接口对各种Handler方法进行调用。</li><li>处理器完成业务逻 辑的处理后，将返回一个ModelAndView给DispatcherServlet，ModelAndView包含了视图逻辑名和模型数据信息。</li><li>ModelAndView中包含的是“逻辑视图名”而非真正的视图对象，DispatcherServlet借由ViewResolver完成逻辑视图名到真实视图对象的解析工作。</li><li>当得到真实的视图对象View后，DispatcherServlet就使用这个View对象对ModelAndView中的模型数据进行视图渲染。</li><li>最终客户端得到的响应消息可能是一个普通的HTML页面，也可能是一个XML或JSON串，甚至是一张图片或一个PDF文档等不同的媒体形式。</li></ol><h2 id="SpringMVC中重要组件"><a href="#SpringMVC中重要组件" class="headerlink" title="SpringMVC中重要组件"></a>SpringMVC中重要组件</h2><ul><li>前端控制器 DispatcherServlet：接收请求、响应结果，相当于转发器，有了 DispatcherServlet 就减少了其它组件之间的耦合度</li><li>处理器映射器 HandlerMapping：根据请求的 URL 来查找 Handler</li><li>处理器适配器 HandlerAdapter：负责执行 Handler</li><li>处理器 Handler：处理业务逻辑的 Java 类（我们自己写的 Controller 类）</li><li>视图解析器 ViewResolver：进行视图的解析，根据视图逻辑名将 ModelAndView 解析成真正的视图（view） </li><li>视图 View：View 是一个接口， 它的实现类支持不同的视图类型，如 jsp，freemarker， pdf 等</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> SpringMVC </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 执行流程 </tag>
             
         </tags>
       
