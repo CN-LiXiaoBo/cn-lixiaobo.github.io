@@ -343,6 +343,31 @@
     
     
     <entry>
+      <title>Bean的生命周期</title>
+      <link href="/2022/05/21/bean-de-sheng-ming-zhou-qi/"/>
+      <url>/2022/05/21/bean-de-sheng-ming-zhou-qi/</url>
+      
+        <content type="html"><![CDATA[<p>先直接说出过程，再来演示具体的操作</p><h2 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h2><p><img src="https://img-blog.csdnimg.cn/eefabac9b74d4a568d1d12b99edf2fef.png" alt="在这里插入图片描述"></p><p>简化来说就是</p><p>1、首先是实例化Bean，当客户向容器请求一个尚未初始化的bean时，或初始化bean的时候需要注入另一个尚末初始化的依赖时，容器就会调用doCreateBean()方法进行实例化，实际上就是通过反射的方式创建出一个bean对象</p><p>2、Bean实例创建出来后，接着就是给这个Bean对象进行属性填充，也就是注入这个Bean依赖的其它bean对象</p><p>3、属性填充完成后，进行初始化Bean操作，初始化阶段又可以分为几个步骤：</p><ul><li>执行Aware接口的方法<br>Spring会检测该对象是否实现了xxxAware接口，通过Aware类型的接口，可以让我们拿到Spring容器的些资源。如实现<br>BeanNameAware接口可以获取到BeanName，实现BeanFactoryAware接口可以获取到工厂对象BeanFactory等</li><li>执行BeanPostProcessor的前置处理方法postProcessBeforelnitialization()，对Bean进行一些自定义的前置处理</li><li>判断Bean是否实现了InitializingBean接口，如果实现了，将会执行lnitializingBean的afeterPropertiesSet()初始化方法；</li><li>执行用户自定义的初始化方法，如init-method等；</li><li>执行BeanPostProcessor的后置处理方法postProcessAfterinitialization()</li></ul><p>4、初始化完成后，Bean就成功创建了，之后就可以使用这个Bean， 当Bean不再需要时，会进行销毁操作，</p><ul><li>首先判断Bean是否实现了DestructionAwareBeanPostProcessor接口，如果实现了，则会执行DestructionAwareBeanPostProcessor后置处理器的销毁回调方法</li><li>其次会判断Bean是否实现了DisposableBean接口，如果实现了将会调用其实现的destroy()方法</li><li>最后判断这个Bean是否配置了dlestroy-method等自定义的销毁方法，如果有的话，则会自动调用其配置的销毁方法；</li></ul><h2 id="调用构造方法"><a href="#调用构造方法" class="headerlink" title="调用构造方法"></a>调用构造方法</h2><p><img src="https://img-blog.csdnimg.cn/7f13e6c23c304091adba8ce12b1f0221.png" alt="在这里插入图片描述"></p><h2 id="设置属性"><a href="#设置属性" class="headerlink" title="设置属性"></a>设置属性</h2><p><img src="https://img-blog.csdnimg.cn/7c939ac76d3b4e2196a4fbe5b218c668.png" alt="在这里插入图片描述"></p><h2 id="看是否实现了xxxAware接口"><a href="#看是否实现了xxxAware接口" class="headerlink" title="看是否实现了xxxAware接口"></a>看是否实现了xxxAware接口</h2><p><img src="https://img-blog.csdnimg.cn/43e923c7c11341df9b1e76e32fcbeedb.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/ed99df09f7bf430a8c6723fea2d49910.png" alt="在这里插入图片描述"></p><h2 id="看是否设置了BeanPostProcessor接口中的postProcessBeforeInitialization方法"><a href="#看是否设置了BeanPostProcessor接口中的postProcessBeforeInitialization方法" class="headerlink" title="看是否设置了BeanPostProcessor接口中的postProcessBeforeInitialization方法"></a>看是否设置了BeanPostProcessor接口中的postProcessBeforeInitialization方法</h2><p><img src="https://img-blog.csdnimg.cn/fd30615bfd8242528710f303a065adac.png" alt="在这里插入图片描述"></p><h2 id="看是否设置了初始化方法"><a href="#看是否设置了初始化方法" class="headerlink" title="看是否设置了初始化方法"></a>看是否设置了初始化方法</h2><p><img src="https://img-blog.csdnimg.cn/91dc723d716e4ff9af988e9779c2dd5e.png" alt="在这里插入图片描述"></p><h2 id="看是否设置了BeanPostProcessor接口中的postProcessAfterInitialization方法"><a href="#看是否设置了BeanPostProcessor接口中的postProcessAfterInitialization方法" class="headerlink" title="看是否设置了BeanPostProcessor接口中的postProcessAfterInitialization方法"></a>看是否设置了BeanPostProcessor接口中的postProcessAfterInitialization方法</h2><p><img src="https://img-blog.csdnimg.cn/b7f2f5b11a02465497a5bc235460ba02.png" alt="在这里插入图片描述"></p><h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p><img src="https://img-blog.csdnimg.cn/485cd05a4fa34ab48633e5b4098ecdda.png" alt="在这里插入图片描述"></p><h2 id="看是否设置了销毁前的方法"><a href="#看是否设置了销毁前的方法" class="headerlink" title="看是否设置了销毁前的方法"></a>看是否设置了销毁前的方法</h2><p><img src="https://img-blog.csdnimg.cn/5fe09849d565477cbac69c433f14b53b.png" alt="在这里插入图片描述"></p><h2 id="运行结果"><a href="#运行结果" class="headerlink" title="运行结果"></a>运行结果</h2><p><img src="https://img-blog.csdnimg.cn/baed07b4db1e43038e6500ebf7bb10ee.png" alt="在这里插入图片描述"></p><p><img src="https://img-blog.csdnimg.cn/6e8f9778c37448e985c3c9869b28726f.png" alt="在这里插入图片描述"></p><h2 id="初始化和销毁前的方法都有三种方式"><a href="#初始化和销毁前的方法都有三种方式" class="headerlink" title="初始化和销毁前的方法都有三种方式"></a>初始化和销毁前的方法都有三种方式</h2><blockquote><p>声明式注解 @PostConstruct（初始化）@PreDestroy（销毁）<br>接口式  InitializingBean（初始化接口）、DisposableBean（销毁接口）<br>自定义式 xml/@Bean方式<br>顺序都是<strong>声明式-&gt;接口式-&gt;自定义式</strong></p></blockquote><p><img src="https://img-blog.csdnimg.cn/a109766b3e9844fda0ad61ccde1551da.png" alt="在这里插入图片描述"></p><p><img src="https://img-blog.csdnimg.cn/75c6399eb36f4fd3933e52f4201bf735.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/6b2fa7656d81449e98d89e271d1fe075.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/0fb4c885e3b1477fba18bb5b6373ff96.png" alt="在这里插入图片描述"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Spring </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Bean </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>线程池</title>
       <link href="/2022/05/20/xian-cheng-chi/"/>
       <url>/2022/05/20/xian-cheng-chi/</url>
