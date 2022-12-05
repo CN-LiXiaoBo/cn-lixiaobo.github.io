@@ -4,8 +4,9 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="才疏学浅的木子">
-    <meta name="description" content="才疏学浅的木子">
+    <meta name="keywords" content="MuziDB数据库—0.项目描述, 才疏学浅的木子">
+    <meta name="description" content="前言该项目写完也有一段时间了，为了避免以后忘记该项目的一些实现的原理，所以写下这篇博客来记录一下该项目的设计等
+项目整体MuziDB分为前端与后端，前后端交互通过socket进行交互，前端的作用就是读取用户输入并发送到后端进行执行然后输出返">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -17,7 +18,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>才疏学浅的木子</title>
+    <title>MuziDB数据库—0.项目描述 | 才疏学浅的木子</title>
     <link rel="icon" type="image/png" href="/favicon1.png">
     
 
@@ -43,6 +44,10 @@
 
 
 
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
 
 
 
@@ -265,409 +270,465 @@
 </header>
 
     
-    <div class="bg-cover pd-header about-cover">
-    <div class="container">
-    <div class="row">
-    <div class="col s10 offset-s1 m8 offset-m2 l8 offset-l2">
-        <div class="brand">
-            <div class="title center-align">
-                
-                CN-LiXiaoBo
-                
-            </div>
 
-            <div class="description center-align">
-                
-                <span id="subtitle"></span>
-                <script src="/libs/typed/typed.js"></script>
-                <script>
-                    var typed = new Typed("#subtitle", {
-                        strings: [ 
-                            
-                                "从来没有真正的绝境, 只有心灵的迷途",
-                            
-                                "Never really desperate, only the lost of the soul",
-                            
-                        ],
-                        startDelay: 300,
-                        typeSpeed: 100,
-                        loop: true,
-                        backSpeed: 50,
-                        showCursor: true
-                    });
-                </script>
-                
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">MuziDB数据库—0.项目描述</h1>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/MuziDB/">
+                                <span class="chip bg-color">MuziDB</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E4%BC%98%E8%B4%A8%E9%A1%B9%E7%9B%AE/" class="post-category">
+                                优质项目
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2022-11-01
+                </div>
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    960
+                </div>
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>该项目写完也有一段时间了，为了避免以后忘记该项目的一些实现的原理，所以写下这篇博客来记录一下该项目的设计等</p>
+<h2 id="项目整体"><a href="#项目整体" class="headerlink" title="项目整体"></a>项目整体</h2><p>MuziDB分为前端与后端，前后端交互通过socket进行交互，前端的作用就是读取用户输入并发送到后端进行执行然后输出返回结果，并等待下一次的输入，后端则需要解析SQL，尝试执行并返回结果。MuziDB的后端分为五个模块</p>
+<blockquote>
+<p><strong>Transaction Manager (TM )<br>Data Manager (DM)<br>Version Manager (VM)<br>Index Manager (IM)<br>Table Manager (TBM)</strong></p>
+</blockquote>
+<h2 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h2><p><img src="https://img-blog.csdnimg.cn/0f4136332f944455b7e27eb66425df43.png" alt="在这里插入图片描述"></p>
+<p>TM：维护XID文件来维护事务的状态，并提供接口给其它模块来查询某个事务的状态<br>DM：直接管理数据的DB文件和日志文件<br>VM：基于两段锁协议实现调度序列的可串行化，并实现了MVCC消除读写阻塞<br>IM：实现了B+树的索引<br>TBM：实现了对字段和表的管理，同时解析SQL语句并根据语句操作表</p>
+<h2 id="项目涉及四个文件"><a href="#项目涉及四个文件" class="headerlink" title="项目涉及四个文件"></a>项目涉及四个文件</h2><p><img src="https://img-blog.csdnimg.cn/0661dd745eed4b8f8ba8e104a4289963.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>根据<strong>UID</strong>可以定位到是那个页面多少偏移量，因为pgno是int类型，offset是short类型，而我们返回的UID是long类型所以long占八个字节而UID = ((long)pgno &lt;&lt; 32) | (long)offset，所以前四个字节是pgno所占用的，最后2个字节是offset占用的，所以只需要再经过简单换算就可以换算出来对应的pgno与offset，所以.db中的每个资源都有着唯一的UID，所以<strong>UID的作用可以相当于一个资源定位符</strong></p>
+</blockquote>
+<p><strong>.bt文件</strong><br>该文件只有8个字节，当创建一张新表的时候就会把新表的UID复制到这个文件保存</p>
+<p><strong>.xid文件</strong><br>这个文件就是管理事务的文件，里面会保存首先8个字节的XIDCounter，然后接下来的每个字节就是保存一个事务的状态<br><img src="https://img-blog.csdnimg.cn/efe0e53fed44496b955c666e8c8d527d.png" alt="在这里插入图片描述"></p>
+<p>这个文件对应的功能就是比较简单的TM，只需要保证事务的开启、提交、取消即可<br>事务对应着三种状态</p>
+<blockquote>
+<p><strong>0 - active<br>1 - committed<br>2 - aborted</strong></p>
+</blockquote>
+<p><strong>.log文件</strong></p>
+<p>为什么一直不说.db文件呢，因为.db文件中的要素过多留到最后来讲<br>.log文件就是记录操作过程中产生的日志，为什么要记录日志呢，有了.db文件，.db文件中不是就已经存储了数据了吗?那MySQL数据中为啥又会存在redo、undo log日志呢，而且记录日志有助于后面实现可重复读，假如不记录日志的话，那么可重复读就不能够实现</p>
+<p>日志文件格式如下 前四个字节记录所有日志的校验和，后面就是一个一个的[Log]对象即 [xchecksum] [log1] [log2] … [logn] [BadTail] ，badTail有可能会出现，比如当你记录最后一条日志的时候但是你没有记录完但是数据库宕机了那么这就是badTail<br>每个日志对象即[log]的形式是 [size][checksum][data]<br>其中size占四个字节，checksum占四个字节，data所占字节就是size所描述的</p>
+<p><img src="https://img-blog.csdnimg.cn/83816ef0860341bfa2615ac015c72a26.png" alt="在这里插入图片描述"></p>
+<p><strong>.db文件</strong></p>
+<p>.db文件是最重要的一个文件了，里面包含表结构数据、表中数据、Node节点数据等，.db文件中保存的都是一个一个的DataItem结构,.db文件是以页来区分，每个页面大小为8k但是你也可以设置更大的容量，每个页面的前2个字节为该页面的偏移量(便宜量就是当前页面要从哪里开始写入新数据)，<br>DataItem中存在三个字段<br>ValidFlag 1字节的标志位代表是否有效<br>Size 2字节Data的字段的大小<br>Data 就是数据</p>
+<p><img src="https://img-blog.csdnimg.cn/c6b6e9c35aa24598856bbeb34d7a2376.png" alt="在这里插入图片描述"></p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">才疏学浅的木子</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://cn-lixiaobo.github.io/2022/11/01/muzidb-shu-ju-ku-0-xiang-mu-miao-shu/">http://cn-lixiaobo.github.io/2022/11/01/muzidb-shu-ju-ku-0-xiang-mu-miao-shu/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">才疏学浅的木子</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/MuziDB/">
+                                    <span class="chip bg-color">MuziDB</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="qq,wechat" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
-    // 每天切换 banner 图.  Switch banner image every day.
-    var bannerUrl = "/medias/banner/" + new Date().getDay() + '.jpg';
-    $('.bg-cover').css('background-image', 'url(' + bannerUrl + ')');
+    $(function () {
+        $('.tabs').tabs();
+    });
 </script>
 
-
+            
+        </div>
     </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2022/11/01/chang-jian-io-mo-xing/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="常见IO模型">
+                        
+                        <span class="card-title">常见IO模型</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-11-01
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-category">
+                                    操作系统
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/IO%E6%A8%A1%E5%9E%8B/">
+                        <span class="chip bg-color">IO模型</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/10/05/dns-cha-xun-liu-cheng/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="DNS查询流程">
+                        
+                        <span class="card-title">DNS查询流程</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-10-05
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E8%AE%A1%E7%BD%91/" class="post-category">
+                                    计网
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/DNS/">
+                        <span class="chip bg-color">DNS</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
 </div>
 
 
-<main class="content">
 
-    
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
 
-    
 
-    <!-- 所有文章卡片 -->
-    <article id="articles" class="container articles">
-        <div class="row article-row">
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2022/10/03/ru-he-ding-wei-man-cha-xun-sql-yi-ji-you-hua/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="如何定位慢查询SQL以及优化">
-                            
-                            <span class="card-title">如何定位慢查询SQL以及优化</span>
-                        </div>
-                    </a>
 
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                慢查询日志记录慢SQL定位慢SQL可以通过慢查询日志来查看慢SQL，默认的情况下，MySQL数据库不开启慢查询日志(slow query log)，需要手动把它打开SET GLOBAL slow_query_log = ‘ON’;
-查看下慢
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-10-03
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/MySQL/" class="post-category">
-                                    MySQL
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
+<!-- 代码语言 -->
 
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E9%9D%A2%E8%AF%95/">
-                            <span class="chip bg-color">面试</span>
-                        </a>
-                        
-                        <a href="/tags/SQL%E4%BC%98%E5%8C%96/">
-                            <span class="chip bg-color">SQL优化</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2022/10/02/suo-yin-de-xue-xi-yu-li-jie/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="索引的学习与理解">
-                            
-                            <span class="card-title">索引的学习与理解</span>
-                        </div>
-                    </a>
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
 
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                为什么使用索引索引是存储引擎用于快速找到数据记录的一种数据结构。MySQL在进行数据查找时，首先查看查询条件是否命中某条索引，符合则通过索引查找相关数据，如果不符合则全表扫描，建索引目的就是为了减少磁盘I/O次数，加快查询效率。
-索引及其优
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-10-02
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/MySQL/" class="post-category">
-                                    MySQL
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
 
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E9%9D%A2%E8%AF%95/">
-                            <span class="chip bg-color">面试</span>
-                        </a>
-                        
-                        <a href="/tags/%E7%B4%A2%E5%BC%95/">
-                            <span class="chip bg-color">索引</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2022/10/01/redis-chi-jiu-hua/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="Redis持久化">
-                            
-                            <span class="card-title">Redis持久化</span>
-                        </div>
-                    </a>
+<!-- 代码块复制 -->
 
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                Redis如何实现数据不丢失Redis的读写操作都是在内存中，所以Redis性能才会高，但是当Redis重启后，内存中的数据就会丢失，那为了保存内存中的数据不会丢失，Redis实现了数据持久化机制，会把数据保存到磁盘，这样Redis重启就能
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-10-01
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/Redis/" class="post-category">
-                                    Redis
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
 
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E6%8C%81%E4%B9%85%E5%8C%96/">
-                            <span class="chip bg-color">持久化</span>
-                        </a>
-                        
-                        <a href="/tags/%E9%9D%A2%E8%AF%95/">
-                            <span class="chip bg-color">面试</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2022/07/16/blockingqueue-er/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="BlockingQueue贰">
-                            
-                            <span class="card-title">BlockingQueue贰</span>
-                        </div>
-                    </a>
 
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                接着上篇BlockingQueue没讲完的
-LinkedTransferQueueLinkedTransferQueue是一个由链表结构组成的无界阻塞队列，相对于其它阻塞队列，LinkedBlockingQueue可以算是LinkedBlo
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-07-16
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/Java/" class="post-category">
-                                    Java
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
+<!-- 代码块收缩 -->
 
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/BlockingQueue/">
-                            <span class="chip bg-color">BlockingQueue</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2022/07/15/blockingqueue-yi/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="BlockingQueue壹">
-                            
-                            <span class="card-title">BlockingQueue壹</span>
-                        </div>
-                    </a>
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
 
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-网上看了好多文章将线程池的但是似乎都没的多少人会详细讲解里面的任务队列，所以只有自己动手学习其中的任务队列
 
-BlockingQueue要学习其中的任务队列就需要先学习BlockingQueue，Blocking是一个接口，其中主要的方法
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-07-15
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/Java/" class="post-category">
-                                    Java
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
 
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/BlockingQueue/">
-                            <span class="chip bg-color">BlockingQueue</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2022/07/13/springmvc-zhi-xing-liu-cheng/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="SpringMVC执行流程">
-                            
-                            <span class="card-title">SpringMVC执行流程</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-SpringMVC的流程
-整个过程开始于客户端发出的一个HTTP请求，Web应用服务器接收到这个请求。如果匹配DispatcherServlet的请求映射路径，则Web容器将该请求转交给DispatcherServlet处理。
-Dispa
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-07-13
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/SpringMVC/" class="post-category">
-                                    SpringMVC
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B/">
-                            <span class="chip bg-color">执行流程</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
         </div>
-    </article>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
 
 </main>
-
-
-<div class="container paging">
-    <div class="row">
-        <div class="col s6 m4 l4">
-            
-            <a href="/"
-               class="left btn-floating btn-large waves-effect waves-light bg-color">
-                <i class="fas fa-angle-left"></i>
-            </a>
-            
-        </div>
-        <div class="page-info col m4 l4 hide-on-small-only">
-            <div class="center-align b-text-gray">2 / 4</div>
-        </div>
-        <div class="col s6 m4 l4">
-            
-            <a href="/page/3/"
-               class="right btn-floating btn-large waves-effect waves-light bg-color">
-                <i class="fas fa-angle-right"></i>
-            </a>
-            
-        </div>
-    </div>
-</div>
 
 
 
