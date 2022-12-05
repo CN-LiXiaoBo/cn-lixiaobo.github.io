@@ -5,7 +5,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="MuziDB数据库—1.TM的实现, 才疏学浅的木子">
-    <meta name="description" content="">
+    <meta name="description" content="TM简述TM是项目中最简单的一个模块，TM主要的功能为
+
+1. 管理事务状态2. 提供接口供其它模块使用
+
+其中文件格式
+
+XID文件文件概述每个事务都有一个XID，这个XID唯一标识了这个事务，事务的XID从1开始自增并且不能重复，如果一">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -299,12 +305,25 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/MuziDB/">
+                                <span class="chip bg-color">MuziDB</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E4%BC%98%E8%B4%A8%E9%A1%B9%E7%9B%AE/" class="post-category">
+                                优质项目
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -313,7 +332,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-12-05
+                    2022-11-01
                 </div>
                 
 
@@ -322,7 +341,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    0
+                    601
                 </div>
                 
 
@@ -339,7 +358,103 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                
+                <h2 id="TM简述"><a href="#TM简述" class="headerlink" title="TM简述"></a>TM简述</h2><p>TM是项目中最简单的一个模块，TM主要的功能为</p>
+<blockquote>
+<p><strong>1. 管理事务状态</strong><br><strong>2. 提供接口供其它模块使用</strong></p>
+</blockquote>
+<p>其中文件格式</p>
+<p><img src="https://img-blog.csdnimg.cn/a65dbef0db394362999d75e9fb9bcee3.png" alt="在这里插入图片描述"></p>
+<h2 id="XID文件"><a href="#XID文件" class="headerlink" title="XID文件"></a>XID文件</h2><h3 id="文件概述"><a href="#文件概述" class="headerlink" title="文件概述"></a>文件概述</h3><p>每个事务都有一个XID，这个XID唯一标识了这个事务，事务的XID从1开始自增并且不能重复，如果一些操作在不需要事务的情况下进行，则可以设置XID为0，XID为0的事务的状态永远是committed<br>XID文件头部占用8个字节，记录了这个XID文件管理的事务的个数，每个事务分配一个字节的空间用来保存其状态，所以事务XID在文件中的起始位置为(XID-1)+8字节处，XID为0的状态不需要记录</p>
+<p>每一个事务都存在三种状态</p>
+<blockquote>
+<p><strong>0 active 活跃的<br>1 committed 已提交的<br>2 aborted 撤销(回滚的)</strong></p>
+</blockquote>
+<h2 id="TM提供接口"><a href="#TM提供接口" class="headerlink" title="TM提供接口"></a>TM提供接口</h2><h3 id="提供接口"><a href="#提供接口" class="headerlink" title="提供接口"></a>提供接口</h3><pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">long</span> <span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 开启一个事务</span>
+
+<span class="token keyword">void</span> <span class="token function">commit</span><span class="token punctuation">(</span><span class="token keyword">long</span> xid<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 提交一个事务</span>
+
+<span class="token keyword">void</span> <span class="token function">abort</span><span class="token punctuation">(</span><span class="token keyword">long</span> xid<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//取消一个事务</span>
+
+<span class="token keyword">boolean</span> <span class="token function">isActive</span><span class="token punctuation">(</span><span class="token keyword">long</span> xid<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 查询一个事务是否处于正在进行状态</span>
+
+<span class="token keyword">boolean</span> <span class="token function">isCommitted</span><span class="token punctuation">(</span><span class="token keyword">long</span> xid<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 查询一个事务是否已经提交</span>
+
+<span class="token keyword">boolean</span> <span class="token function">isAbort</span><span class="token punctuation">(</span><span class="token keyword">long</span> xid<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//查询一个事务是否已经取消</span>
+
+<span class="token keyword">void</span> <span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 关闭tm</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="事务的操作"><a href="#事务的操作" class="headerlink" title="事务的操作"></a>事务的操作</h3><p>事务的开启、提交、取消</p>
+<pre class="line-numbers language-java"><code class="language-java">    <span class="token comment" spellcheck="true">// 开启一个事务</span>
+    <span class="token keyword">public</span> <span class="token keyword">long</span> <span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        counterLock<span class="token punctuation">.</span><span class="token function">lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            <span class="token keyword">long</span> xid <span class="token operator">=</span> xidCounter <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
+            <span class="token function">updateXID</span><span class="token punctuation">(</span>xid<span class="token punctuation">,</span> FIELD_TRAN_ACTIVE<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">incrXIDCounter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> xid<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">finally</span> <span class="token punctuation">{</span>
+            counterLock<span class="token punctuation">.</span><span class="token function">unlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    
+    <span class="token comment" spellcheck="true">// 提交XID事务</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">commit</span><span class="token punctuation">(</span><span class="token keyword">long</span> xid<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">updateXID</span><span class="token punctuation">(</span>xid<span class="token punctuation">,</span> FIELD_TRAN_COMMITTED<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 回滚XID事务</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">abort</span><span class="token punctuation">(</span><span class="token keyword">long</span> xid<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">updateXID</span><span class="token punctuation">(</span>xid<span class="token punctuation">,</span> FIELD_TRAN_ABORTED<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    
+    <span class="token comment" spellcheck="true">//修改状态</span>
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">updateXID</span><span class="token punctuation">(</span><span class="token keyword">long</span> xid<span class="token punctuation">,</span> <span class="token keyword">byte</span> status<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">long</span> offset <span class="token operator">=</span> <span class="token function">getXidPosition</span><span class="token punctuation">(</span>xid<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> tmp <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">byte</span><span class="token punctuation">[</span>XID_FIELD_SIZE<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        tmp<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> status<span class="token punctuation">;</span>
+        ByteBuffer buf <span class="token operator">=</span> ByteBuffer<span class="token punctuation">.</span><span class="token function">wrap</span><span class="token punctuation">(</span>tmp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            fc<span class="token punctuation">.</span><span class="token function">position</span><span class="token punctuation">(</span>offset<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            fc<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>buf<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            Panic<span class="token punctuation">.</span><span class="token function">panic</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            fc<span class="token punctuation">.</span><span class="token function">force</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            Panic<span class="token punctuation">.</span><span class="token function">panic</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="查询事务状态"><a href="#查询事务状态" class="headerlink" title="查询事务状态"></a>查询事务状态</h3><pre class="line-numbers language-java"><code class="language-java">    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">isActive</span><span class="token punctuation">(</span><span class="token keyword">long</span> xid<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>xid <span class="token operator">==</span> SUPER_XID<span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token function">checkXID</span><span class="token punctuation">(</span>xid<span class="token punctuation">,</span> FIELD_TRAN_ACTIVE<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">isCommitted</span><span class="token punctuation">(</span><span class="token keyword">long</span> xid<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>xid <span class="token operator">==</span> SUPER_XID<span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token function">checkXID</span><span class="token punctuation">(</span>xid<span class="token punctuation">,</span> FIELD_TRAN_COMMITTED<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">isAborted</span><span class="token punctuation">(</span><span class="token keyword">long</span> xid<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>xid <span class="token operator">==</span> SUPER_XID<span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token function">checkXID</span><span class="token punctuation">(</span>xid<span class="token punctuation">,</span> FIELD_TRAN_ABORTED<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    
+    <span class="token keyword">private</span> <span class="token keyword">boolean</span> <span class="token function">checkXID</span><span class="token punctuation">(</span><span class="token keyword">long</span> xid<span class="token punctuation">,</span> <span class="token keyword">byte</span> status<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">long</span> offset <span class="token operator">=</span> <span class="token function">getXidPosition</span><span class="token punctuation">(</span>xid<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        ByteBuffer buf <span class="token operator">=</span> ByteBuffer<span class="token punctuation">.</span><span class="token function">wrap</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">byte</span><span class="token punctuation">[</span>XID_FIELD_SIZE<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            fc<span class="token punctuation">.</span><span class="token function">position</span><span class="token punctuation">(</span>offset<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            fc<span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span>buf<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            Panic<span class="token punctuation">.</span><span class="token function">panic</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> buf<span class="token punctuation">.</span><span class="token function">array</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">==</span> status<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>TM就这么具体实现了，可能会有人认为这个项目其实也不是很难，但是这个TM是该项目中最最简单的所以实现的很快，TM基本上就是查询文件，修改文件来维护事务的状态的修改与查询</p>
+
                 
             </div>
             <hr/>
@@ -365,7 +480,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://cn-lixiaobo.github.io/2022/12/05/muzidb-shu-ju-ku-1-tm-de-shi-xian/">http://cn-lixiaobo.github.io/2022/12/05/muzidb-shu-ju-ku-1-tm-de-shi-xian/</a>
+                    <a href="http://cn-lixiaobo.github.io/2022/11/01/muzidb-shu-ju-ku-1-tm-de-shi-xian/">http://cn-lixiaobo.github.io/2022/11/01/muzidb-shu-ju-ku-1-tm-de-shi-xian/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -402,7 +517,11 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
+                            
+                                <a href="/tags/MuziDB/">
+                                    <span class="chip bg-color">MuziDB</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -479,18 +598,17 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;本篇
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2022/12/05/muzidb-shu-ju-ku-1-tm-de-shi-xian/">
+                <a href="/2022/11/01/chang-jian-io-mo-xing/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="MuziDB数据库—1.TM的实现">
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="常见IO模型">
                         
-                        <span class="card-title">MuziDB数据库—1.TM的实现</span>
+                        <span class="card-title">常见IO模型</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -500,18 +618,29 @@
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-12-05
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-11-01
+                        </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            才疏学浅的木子
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-category">
+                                    操作系统
+                                </a>
+                            
                             
                         </span>
                     </div>
                 </div>
-
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/IO%E6%A8%A1%E5%9E%8B/">
+                        <span class="chip bg-color">IO模型</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>
@@ -522,31 +651,31 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/11/03/longadder-de-yuan-ma-xue-xi/">
+                <a href="/2022/11/01/muzidb-shu-ju-ku-0-xiang-mu-miao-shu/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="LongAdder的源码学习">
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="MuziDB数据库—0.项目描述">
                         
-                        <span class="card-title">LongAdder的源码学习</span>
+                        <span class="card-title">MuziDB数据库—0.项目描述</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            LongAdder源码的学习与理解,主要是理解cells数组,@sun.misc.Contended注解,以及LongAdder中的add方法和longAccumulate方法
+                            
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-11-03
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-11-01
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Java/" class="post-category">
-                                    Java
+                            <a href="/categories/%E4%BC%98%E8%B4%A8%E9%A1%B9%E7%9B%AE/" class="post-category">
+                                    优质项目
                                 </a>
                             
                             
@@ -556,8 +685,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E6%BA%90%E7%A0%81/">
-                        <span class="chip bg-color">源码</span>
+                    <a href="/tags/MuziDB/">
+                        <span class="chip bg-color">MuziDB</span>
                     </a>
                     
                 </div>
@@ -751,7 +880,7 @@
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">28.1k</span>
+                        class="white-color">28.7k</span>
             
             
             
