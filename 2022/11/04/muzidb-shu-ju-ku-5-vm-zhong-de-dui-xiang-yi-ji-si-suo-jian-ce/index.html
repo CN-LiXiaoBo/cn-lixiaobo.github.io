@@ -4,9 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="线程池, 才疏学浅的木子">
-    <meta name="description" content="线程过多就容易引发内存溢出，因此我们有必要使用线程池的技术
-线程池的好处降低资源消耗： 通过重复利用已创建的线程降低线程创建和销毁造成的消耗提高响应速度： 当任务到达时，任务可以不需要等待线程创建就能立即执行提高线程管理性： 线程是稀缺资源">
+    <meta name="keywords" content="MuziDB数据库—5.VM中的对象以及死锁检测, 才疏学浅的木子">
+    <meta name="description" content="前面我们已经讲了DM中DataItem与Log对象现在我们就讲一下VM中的对象和什么是事务抽象前面DM与TM都是比较简单的都是基于文件的操作，而VM就比较难，在VM层实现了死锁的检测、两种隔离级别(读已提交与可重复读)所以我们先从简单的讲起">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -18,7 +17,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>线程池 | 才疏学浅的木子</title>
+    <title>MuziDB数据库—5.VM中的对象以及死锁检测 | 才疏学浅的木子</title>
     <link rel="icon" type="image/png" href="/favicon1.png">
     
 
@@ -273,12 +272,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/15.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">线程池</h1>
+                    <h1 class="description center-align post-title">MuziDB数据库—5.VM中的对象以及死锁检测</h1>
                 </div>
             </div>
         </div>
@@ -302,8 +301,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">
-                                <span class="chip bg-color">多线程</span>
+                            <a href="/tags/MuziDB/">
+                                <span class="chip bg-color">MuziDB</span>
                             </a>
                         
                     </div>
@@ -314,8 +313,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/Java/" class="post-category">
-                                Java
+                            <a href="/categories/%E4%BC%98%E8%B4%A8%E9%A1%B9%E7%9B%AE/" class="post-category">
+                                优质项目
                             </a>
                         
                     </div>
@@ -327,7 +326,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-05-20
+                    2022-11-04
                 </div>
                 
 
@@ -336,7 +335,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.5k
+                    1.2k
                 </div>
                 
 
@@ -353,117 +352,137 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>线程过多就容易引发内存溢出，因此我们有必要使用线程池的技术</p>
-<h2 id="线程池的好处"><a href="#线程池的好处" class="headerlink" title="线程池的好处"></a>线程池的好处</h2><p><strong>降低资源消耗：</strong> 通过重复利用已创建的线程降低线程创建和销毁造成的消耗<br><strong>提高响应速度：</strong> 当任务到达时，任务可以不需要等待线程创建就能立即执行<br><strong>提高线程管理性：</strong> 线程是稀缺资源，如果无限制的创建，不仅会消耗系统资源还会降低系统的稳定性，使用线程池可以进行统一的分配、调优和监控</p>
-<h2 id="线程池的创建"><a href="#线程池的创建" class="headerlink" title="线程池的创建"></a>线程池的创建</h2><p>线程池的真正实现类是ThreadPoolExecutor，其中具有七个重要参数</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token function">ThreadPoolExecutor</span><span class="token punctuation">(</span><span class="token keyword">int</span> corePoolSize<span class="token punctuation">,</span>
-                              <span class="token keyword">int</span> maximumPoolSize<span class="token punctuation">,</span>
-                              <span class="token keyword">long</span> keepAliveTime<span class="token punctuation">,</span>
-                              TimeUnit unit<span class="token punctuation">,</span>
-                              BlockingQueue<span class="token operator">&lt;</span>Runnable<span class="token operator">></span> workQueue<span class="token punctuation">,</span>
-                              ThreadFactory threadFactory<span class="token punctuation">,</span>
-                              RejectedExecutionHandler handler<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="corePoolSize"><a href="#corePoolSize" class="headerlink" title="corePoolSize"></a>corePoolSize</h3><p><strong>核心线程数</strong>。默认情况下核心线程会一直存活，但是当将<strong>allowsCoreThreadTimeOut</strong>设置为true时，核心线程也会超时回收。核心线程最开始并不会立即创建而是等任务来了再创建，然后存活下去</p>
-<h3 id="maximumPoolSize"><a href="#maximumPoolSize" class="headerlink" title="maximumPoolSize"></a>maximumPoolSize</h3><p><strong>最大线程数</strong> 。线程池所能容纳的最大线程数。当活跃线程数达到该数值后，后续的新任务将会阻塞。最大线程数 = 核心线程数 + 非核心线程数</p>
-<h3 id="keepAliveTime"><a href="#keepAliveTime" class="headerlink" title="keepAliveTime"></a>keepAliveTime</h3><p><strong>非核心线程闲置超时时间</strong> 。如果超过该时长，非核心线程将会回收</p>
-<h3 id="unit"><a href="#unit" class="headerlink" title="unit"></a>unit</h3><p><strong>超时单位</strong> 。指定KeepAliveTime超时时间的单位。</p>
-<h3 id="workQueue"><a href="#workQueue" class="headerlink" title="workQueue"></a>workQueue</h3><p><strong>任务队列</strong> 。当核心线程全被使用的时候，且任务队列未满时候就会先将任务放到任务队列中</p>
-<h3 id="threadFactory"><a href="#threadFactory" class="headerlink" title="threadFactory"></a>threadFactory</h3><p><strong>线程工厂</strong> 。用于指定为线程创建新线程的方式</p>
-<h3 id="handler"><a href="#handler" class="headerlink" title="handler"></a>handler</h3><p><strong>拒绝策略</strong> 。当最大线程数达到饱和时候需要执行的饱和策略</p>
-<h3 id="任务队列"><a href="#任务队列" class="headerlink" title="任务队列"></a>任务队列</h3><p>任务队列是基于阻塞队列实现的，即采用生产者消费者模式，在Java中需要实现BlockingQueue接口，但Java已经为我们提供了7种阻塞队列的实现</p>
-<blockquote>
-<p><strong>ArrayBlockingQueue</strong></p>
-<p>一个由数组结构构成的有界阻塞队列(数组结构可配合指针实现一个环形队列)</p>
-<p><strong>LinkedBlockingQueue</strong></p>
-<p>一个由链表结构构成的有界阻塞队列，在未指明容量时默认为Integer.MAX_VALUE</p>
-<p><strong>PriorityBlockingQueue</strong></p>
-<p>一个支持优先级排序的无界队列，对元素没有要求，可以实现Comparable接口来进行比较</p>
-<p><strong>DelayQueue</strong></p>
-<p>类似于<strong>PriorityBlockingQueue</strong>，是二叉堆形成的无界优先队列。要求元素都实现DelayQueue接口，通过执行时延从队列中提取任务，时间没到任务取不出来</p>
-<p><strong>SynchronousQueue</strong></p>
-<p>一个不存储元素的阻塞队列，消费者线程调用take()方法时会发生阻塞，直到有一个生产者生产了一个元素，同理生产者调用put()方法</p>
-<p><strong>LinkedBlockingDeque</strong></p>
-<p>使用双向队列实现的有界双端阻塞队列。双端意味着可以像普通队列一样FIFO也可以像栈一样FILO</p>
-<p><strong>LinkedTransferQueue</strong></p>
-<p>这是一个无界队列</p>
-</blockquote>
-<h3 id="拒绝策略"><a href="#拒绝策略" class="headerlink" title="拒绝策略"></a>拒绝策略</h3><p>当线程池的线程达到最大线程数时，需要执行拒绝策略，拒绝策略需要实现RejectedExecutionHandler接口，并实现rejectedExcution方法，Executors为我们实现了4种拒绝策略</p>
-<ol>
-<li>**AbortPolicy(默认)**：丢弃任务并抛出异常</li>
-<li><strong>CallerRunsPolicy</strong>：由调用线程处理该任务</li>
-<li><strong>DiscardPolicy</strong>：丢弃任务，但是不抛出异常</li>
-<li><strong>DiscardOldestPolicy</strong>：丢弃队列中最早未处理的异常</li>
-</ol>
-<p><img src="https://img-blog.csdnimg.cn/e82d158a6ee04d3487c060ad73788716.jpeg" alt="在这里插入图片描述"></p>
-<h2 id="功能线程池"><a href="#功能线程池" class="headerlink" title="功能线程池"></a>功能线程池</h2><h3 id="定长线程池-newFixedThreadPool"><a href="#定长线程池-newFixedThreadPool" class="headerlink" title="定长线程池(newFixedThreadPool)"></a>定长线程池(newFixedThreadPool)</h3><pre class="line-numbers language-java"><code class="language-java">    <span class="token keyword">public</span> <span class="token keyword">static</span> ExecutorService <span class="token function">newFixedThreadPool</span><span class="token punctuation">(</span><span class="token keyword">int</span> nThreads<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">ThreadPoolExecutor</span><span class="token punctuation">(</span>nThreads<span class="token punctuation">,</span> nThreads<span class="token punctuation">,</span>
-                                      0L<span class="token punctuation">,</span> TimeUnit<span class="token punctuation">.</span>MILLISECONDS<span class="token punctuation">,</span>
-                                      <span class="token keyword">new</span> <span class="token class-name">LinkedBlockingQueue</span><span class="token operator">&lt;</span>Runnable<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> ExecutorService <span class="token function">newFixedThreadPool</span><span class="token punctuation">(</span><span class="token keyword">int</span> nThreads<span class="token punctuation">,</span> ThreadFactory threadFactory<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">ThreadPoolExecutor</span><span class="token punctuation">(</span>nThreads<span class="token punctuation">,</span> nThreads<span class="token punctuation">,</span>
-                                      0L<span class="token punctuation">,</span> TimeUnit<span class="token punctuation">.</span>MILLISECONDS<span class="token punctuation">,</span>
-                                      <span class="token keyword">new</span> <span class="token class-name">LinkedBlockingQueue</span><span class="token operator">&lt;</span>Runnable<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-                                      threadFactory<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<blockquote>
-<p><strong>特点</strong> ： 只有核心线程，线程数量固定，全是核心线程任务队列为链表的有界队列<br><strong>应用场景：</strong> 控制线程最大并发数<br><strong>缺点：</strong> 他的任务队列是LinkedBlockingQueue且没有指定容量，则当线程数满了之后就会一直放任务进任务队列，容易造成OOM</p>
-</blockquote>
-<h3 id="单线程化线程池-newSingleThreadExecutor"><a href="#单线程化线程池-newSingleThreadExecutor" class="headerlink" title="单线程化线程池(newSingleThreadExecutor)"></a>单线程化线程池(newSingleThreadExecutor)</h3><pre class="line-numbers language-java"><code class="language-java">    <span class="token keyword">public</span> <span class="token keyword">static</span> ExecutorService <span class="token function">newSingleThreadExecutor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">FinalizableDelegatedExecutorService</span>
-            <span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">ThreadPoolExecutor</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span>
-                                    0L<span class="token punctuation">,</span> TimeUnit<span class="token punctuation">.</span>MILLISECONDS<span class="token punctuation">,</span>
-                                    <span class="token keyword">new</span> <span class="token class-name">LinkedBlockingQueue</span><span class="token operator">&lt;</span>Runnable<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<blockquote>
-<p>与上面类似</p>
-</blockquote>
-<h3 id="可缓存线程池-newCachedThreadPool"><a href="#可缓存线程池-newCachedThreadPool" class="headerlink" title="可缓存线程池(newCachedThreadPool)"></a>可缓存线程池(newCachedThreadPool)</h3><pre class="line-numbers language-java"><code class="language-java">    <span class="token keyword">public</span> <span class="token keyword">static</span> ExecutorService <span class="token function">newCachedThreadPool</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">ThreadPoolExecutor</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> Integer<span class="token punctuation">.</span>MAX_VALUE<span class="token punctuation">,</span>
-                                      60L<span class="token punctuation">,</span> TimeUnit<span class="token punctuation">.</span>SECONDS<span class="token punctuation">,</span>
-                                      <span class="token keyword">new</span> <span class="token class-name">SynchronousQueue</span><span class="token operator">&lt;</span>Runnable<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <p>前面我们已经讲了DM中DataItem与Log对象现在我们就讲一下VM中的对象和什么是事务抽象<br>前面DM与TM都是比较简单的都是基于文件的操作，而VM就比较难，在VM层实现了死锁的检测、两种隔离级别(读已提交与可重复读)<br>所以我们先从简单的讲起</p>
+<h2 id="VM中的对象"><a href="#VM中的对象" class="headerlink" title="VM中的对象"></a>VM中的对象</h2><p>VM中的对象是一个Entry结构，每个Entry对象的结构为</p>
+<p>[xmin][xmax][Data]</p>
+<p>xim 八个字节是创建该记录的事务编号<br>xmax 八个字节是删除该条记录的事务编号<br>data  持有的数据</p>
+<p><img src="https://img-blog.csdnimg.cn/27850c337f364ffb8a232a4220135636.png" alt="在这里插入图片描述"></p>
+<h3 id="Entry对象的包裹"><a href="#Entry对象的包裹" class="headerlink" title="Entry对象的包裹"></a>Entry对象的包裹</h3><pre class="line-numbers language-java"><code class="language-java">    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">wrapEntryRaw</span><span class="token punctuation">(</span><span class="token keyword">long</span> xid<span class="token punctuation">,</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> data<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> xmin <span class="token operator">=</span> Parser<span class="token punctuation">.</span><span class="token function">long2Byte</span><span class="token punctuation">(</span>xid<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> xmax <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">byte</span><span class="token punctuation">[</span><span class="token number">8</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> Bytes<span class="token punctuation">.</span><span class="token function">concat</span><span class="token punctuation">(</span>xmin<span class="token punctuation">,</span> xmax<span class="token punctuation">,</span> data<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<blockquote>
-<p><strong>特点</strong>：没有核心线程数只有非核心线程数，整个线程池表现为线程池数会根据任务量不断增长，没有增长，当任务执行完毕，空闲1分钟后释放线程<br><strong>用途</strong> ：适合任务数比较密集，但每个任务执行时间较短的情况<br><strong>缺点</strong> ： 如果任务多那么线程就会创建过多的线程，创建线程会很耗时并且容易导致OOM</p>
-</blockquote>
-<h3 id="定时线程池-newScheduledThreadPool"><a href="#定时线程池-newScheduledThreadPool" class="headerlink" title="定时线程池(newScheduledThreadPool)"></a>定时线程池(newScheduledThreadPool)</h3><pre class="line-numbers language-java"><code class="language-java">    <span class="token keyword">public</span> <span class="token keyword">static</span> ScheduledExecutorService <span class="token function">newScheduledThreadPool</span><span class="token punctuation">(</span><span class="token keyword">int</span> corePoolSize<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">ScheduledThreadPoolExecutor</span><span class="token punctuation">(</span>corePoolSize<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<h3 id="Entry对象的读取"><a href="#Entry对象的读取" class="headerlink" title="Entry对象的读取"></a>Entry对象的读取</h3><pre class="line-numbers language-java"><code class="language-java">    <span class="token keyword">public</span> <span class="token keyword">static</span> Entry <span class="token function">loadEntry</span><span class="token punctuation">(</span>VersionManager vm<span class="token punctuation">,</span> <span class="token keyword">long</span> uid<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+        DataItem di <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>VersionManagerImpl<span class="token punctuation">)</span>vm<span class="token punctuation">)</span><span class="token punctuation">.</span>dm<span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span>uid<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token function">newEntry</span><span class="token punctuation">(</span>vm<span class="token punctuation">,</span> di<span class="token punctuation">,</span> uid<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="事务抽象"><a href="#事务抽象" class="headerlink" title="事务抽象"></a>事务抽象</h2><p>为什么需要事务的抽象，事务的抽象其实就是内存中的事务结合，而且也是为了能够实现可重复读的关键</p>
+<p>xid 事务id<br>level 当前的隔离级别 (readComitted / repeatableRead)<br>snapshot 当前事务时的快照数据</p>
+<pre class="line-numbers language-java"><code class="language-java">    <span class="token keyword">public</span> <span class="token keyword">long</span> xid<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> level<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> Map<span class="token operator">&lt;</span>Long<span class="token punctuation">,</span> Boolean<span class="token operator">></span> snapshot<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> Exception err<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">boolean</span> autoAborted<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="isInSnapshot"><a href="#isInSnapshot" class="headerlink" title="isInSnapshot"></a>isInSnapshot</h3><p>判断这个事务在不在当前事务开启的时候的快照中</p>
+<pre class="line-numbers language-java"><code class="language-java">    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">isInSnapshot</span><span class="token punctuation">(</span><span class="token keyword">long</span> xid<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>xid <span class="token operator">==</span> TransactionManagerImpl<span class="token punctuation">.</span>SUPER_XID<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> snapshot<span class="token punctuation">.</span><span class="token function">containsKey</span><span class="token punctuation">(</span>xid<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>看到这里是不是感觉VM很简单，哈哈哈那就错了因为难的还在后面</p>
+<h2 id="死锁检测"><a href="#死锁检测" class="headerlink" title="死锁检测"></a>死锁检测</h2><p>为什么需要死锁检测，假如没有死锁检测，假如事务Ti需要给修改数据X然后修改为X+1，然后要继续修改Y，但是事务Tj在事务Ti需修改X的时候修改了Y=Y+1，然后准备修改X，这个事务TI持有X需要修改Y，事务Tj持有Y需要修改X，这个时候就产生了死锁，所有都需要等待对方释放锁，所有可以抽象为有向边Ti -&gt; Tj 就表示 Ti 在等待 Tj，这样无数的有向边就可以形成一个图，检测死锁也就简单了，只需要维护这个图中是否有环</p>
+<h3 id="LockTable"><a href="#LockTable" class="headerlink" title="LockTable"></a>LockTable</h3><pre class="line-numbers language-java"><code class="language-java">    <span class="token keyword">private</span> Map<span class="token operator">&lt;</span>Long<span class="token punctuation">,</span> List<span class="token operator">&lt;</span>Long<span class="token operator">>></span> x2u<span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 某个XID已经获得的资源的UID列表</span>
+    <span class="token keyword">private</span> Map<span class="token operator">&lt;</span>Long<span class="token punctuation">,</span> Long<span class="token operator">></span> u2x<span class="token punctuation">;</span>        <span class="token comment" spellcheck="true">// UID被某个XID持有</span>
+    <span class="token keyword">private</span> Map<span class="token operator">&lt;</span>Long<span class="token punctuation">,</span> List<span class="token operator">&lt;</span>Long<span class="token operator">>></span> wait<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 正在等待UID的XID列表</span>
+    <span class="token keyword">private</span> Map<span class="token operator">&lt;</span>Long<span class="token punctuation">,</span> Lock<span class="token operator">></span> waitLock<span class="token punctuation">;</span>   <span class="token comment" spellcheck="true">// 正在等待资源的XID的锁</span>
+    <span class="token keyword">private</span> Map<span class="token operator">&lt;</span>Long<span class="token punctuation">,</span> Long<span class="token operator">></span> waitU<span class="token punctuation">;</span>      <span class="token comment" spellcheck="true">// XID正在等待的UID</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="isList"><a href="#isList" class="headerlink" title="isList"></a>isList</h3><p>判断当前事务需要的资源在不在当前事务已经获取的资源里面(相当于重入)<br>比如事务T获取数据U1，然后第二次获取U1对于事务T来说也是可见的</p>
+<pre class="line-numbers language-java"><code class="language-java">    <span class="token keyword">private</span> <span class="token keyword">boolean</span> <span class="token function">isInList</span><span class="token punctuation">(</span>Map<span class="token operator">&lt;</span>Long<span class="token punctuation">,</span> List<span class="token operator">&lt;</span>Long<span class="token operator">>></span> listMap<span class="token punctuation">,</span> <span class="token keyword">long</span> uid0<span class="token punctuation">,</span> <span class="token keyword">long</span> uid1<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        List<span class="token operator">&lt;</span>Long<span class="token operator">></span> l <span class="token operator">=</span> listMap<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>uid0<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>l <span class="token operator">==</span> null<span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        Iterator<span class="token operator">&lt;</span>Long<span class="token operator">></span> i <span class="token operator">=</span> l<span class="token punctuation">.</span><span class="token function">iterator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">while</span><span class="token punctuation">(</span>i<span class="token punctuation">.</span><span class="token function">hasNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">long</span> e <span class="token operator">=</span> i<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span>e <span class="token operator">==</span> uid1<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="add"><a href="#add" class="headerlink" title="add"></a>add</h3><p>这就是具体进行死锁检测的方法</p>
+<p>判断步骤如下</p>
+<ol>
+<li>判断当前事务T获取的资源是不是已经在之前被本身事务T获取，如果是返回null(可重入)</li>
+<li>如果当前资源在之前没有被当前事务获取过，那么判断当前资源是否被其它事务占有，如果没有被其它事务占用，那么当前事务占有该数据,并且放入u2x与x2u</li>
+</ol>
+<p>上面的都是成功获取到资源然后放入LockTable中</p>
+<p>如果不满足上面两个条件</p>
+<ol>
+<li>把当前事务放入wait与waitu中</li>
+<li>然后进行死锁检测，如果添加过后存在死锁那么需要移除刚添加的并抛出异常</li>
+<li>如果不存在死锁，那么就可以继续等待</li>
+</ol>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> Lock <span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">long</span> xid<span class="token punctuation">,</span> <span class="token keyword">long</span> uid<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+        lock<span class="token punctuation">.</span><span class="token function">lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">isInList</span><span class="token punctuation">(</span>x2u<span class="token punctuation">,</span> xid<span class="token punctuation">,</span> uid<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">return</span> null<span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span>u2x<span class="token punctuation">.</span><span class="token function">containsKey</span><span class="token punctuation">(</span>uid<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                u2x<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>uid<span class="token punctuation">,</span> xid<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token function">putIntoList</span><span class="token punctuation">(</span>x2u<span class="token punctuation">,</span> xid<span class="token punctuation">,</span> uid<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">return</span> null<span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            waitU<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>xid<span class="token punctuation">,</span> uid<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">putIntoList</span><span class="token punctuation">(</span>wait<span class="token punctuation">,</span> xid<span class="token punctuation">,</span> uid<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">hasDeadLock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                waitU<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span>xid<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token function">removeFromList</span><span class="token punctuation">(</span>wait<span class="token punctuation">,</span> uid<span class="token punctuation">,</span> xid<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">throw</span> Error<span class="token punctuation">.</span>DeadlockException<span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            Lock l <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ReentrantLock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            l<span class="token punctuation">.</span><span class="token function">lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            waitLock<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>xid<span class="token punctuation">,</span> l<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> l<span class="token punctuation">;</span>
+
+        <span class="token punctuation">}</span> <span class="token keyword">finally</span> <span class="token punctuation">{</span>
+            lock<span class="token punctuation">.</span><span class="token function">unlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="死锁检测-1"><a href="#死锁检测-1" class="headerlink" title="死锁检测"></a>死锁检测</h3><p>这里的死锁检测就是通过DFS遍历，如果在这次遍历过程中遍历到了这次遍历过程遇到的事务Ti那么就产生了死锁<br>这里画图来理解(图有点丑)</p>
+<p><img src="https://img-blog.csdnimg.cn/357f28d9faab4d70bb827b8611c708ea.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/b5ac1119aa88413ca82169ae74a57c14.png" alt="在这里插入图片描述"></p>
+<pre class="line-numbers language-java"><code class="language-java">  <span class="token keyword">private</span> <span class="token keyword">boolean</span> <span class="token function">hasDeadLock</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        xidStamp <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        stamp <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">long</span> xid <span class="token operator">:</span> x2u<span class="token punctuation">.</span><span class="token function">keySet</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            Integer s <span class="token operator">=</span> xidStamp<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>xid<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span>s <span class="token operator">!=</span> null <span class="token operator">&amp;&amp;</span> s <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">continue</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            stamp <span class="token operator">++</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">dfs</span><span class="token punctuation">(</span>xid<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 
-    <span class="token keyword">public</span> <span class="token function">ScheduledThreadPoolExecutor</span><span class="token punctuation">(</span><span class="token keyword">int</span> corePoolSize<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">super</span><span class="token punctuation">(</span>corePoolSize<span class="token punctuation">,</span> Integer<span class="token punctuation">.</span>MAX_VALUE<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> NANOSECONDS<span class="token punctuation">,</span>
-              <span class="token keyword">new</span> <span class="token class-name">DelayedWorkQueue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">private</span> <span class="token keyword">boolean</span> <span class="token function">dfs</span><span class="token punctuation">(</span><span class="token keyword">long</span> xid<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        Integer stp <span class="token operator">=</span> xidStamp<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>xid<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>stp <span class="token operator">!=</span> null <span class="token operator">&amp;&amp;</span> stp <span class="token operator">==</span> stamp<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>stp <span class="token operator">!=</span> null <span class="token operator">&amp;&amp;</span> stp <span class="token operator">&lt;</span> stamp<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        xidStamp<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>xid<span class="token punctuation">,</span> stamp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        Long uid <span class="token operator">=</span> waitU<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>xid<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>uid <span class="token operator">==</span> null<span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        Long x <span class="token operator">=</span> u2x<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>uid<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">assert</span> x <span class="token operator">!=</span> null<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token function">dfs</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<blockquote>
-<p><strong>特点：</strong> 和性能线程固定，非核心线程很多，执行完立即删除<br><strong>应用场景：</strong> 执行定时或周期性的任务<br><strong>缺点：</strong> 线程数量上限是Integer.MAX_VALUE</p>
-</blockquote>
-<h2 id="线程池中的方法"><a href="#线程池中的方法" class="headerlink" title="线程池中的方法"></a>线程池中的方法</h2><blockquote>
-<p><strong>void execute(Runnable command);</strong><br>执行任务</p>
-</blockquote>
-<blockquote>
-<p><strong><T> Future<T> submit(Callable<T> task)</T></T></T></strong><br>提交任务task，用返回值Future获取任务执行结果</p>
-</blockquote>
-<blockquote>
-<p><strong><T> List&lt;Future<T>&gt; invokeAll(Collection&lt;? extends Callable<T>&gt; tasks)</T></T></T></strong><br>提交tasks中所有的任务</p>
-</blockquote>
-<blockquote>
-<p><strong><T> List&lt;Future<T>&gt; invokeAll(Collection&lt;? extends Callable<T>&gt; tasks, long timeout, TimeUnit unit)</T></T></T></strong><br>提交tasks中所有的任务带超时时间</p>
-</blockquote>
-<blockquote>
-<p><strong><T> T invokeAny(Collection&lt;? extends Callable<T>&gt; tasks)</T></T></strong><br>提交tasks中的任务那个先执行完毕返回该任务的结果其它任务取消</p>
-</blockquote>
-<blockquote>
-<p><strong><T> T invokeAny(Collection&lt;? extends Callable<T>&gt; tasks,long timeout, TimeUnit unit)</T></T></strong><br>提交tasks中的任务那个先执行完毕返回该任务的结果其它任务取消带超时时间</p>
-</blockquote>
-<p><strong>shutdown与shutdownnow</strong></p>
-<blockquote>
-<p><strong>shutdown</strong><br>线程池状态修改为SHUTDOWN<br>不会接收新的任务，但已提交的会执行完， 只打断空闲线程<br><br><br><strong>shutdownnow</strong><br>修改线程池状态为stop<br>不接收新任务、打断所有线程、会将队列中的任务返回</p>
-</blockquote>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -490,7 +509,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://cn-lixiaobo.github.io/2022/05/20/xian-cheng-chi/">http://cn-lixiaobo.github.io/2022/05/20/xian-cheng-chi/</a>
+                    <a href="http://cn-lixiaobo.github.io/2022/11/04/muzidb-shu-ju-ku-5-vm-zhong-de-dui-xiang-yi-ji-si-suo-jian-ce/">http://cn-lixiaobo.github.io/2022/11/04/muzidb-shu-ju-ku-5-vm-zhong-de-dui-xiang-yi-ji-si-suo-jian-ce/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -528,8 +547,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">
-                                    <span class="chip bg-color">多线程</span>
+                                <a href="/tags/MuziDB/">
+                                    <span class="chip bg-color">MuziDB</span>
                                 </a>
                             
                         </div>
@@ -608,17 +627,18 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2022/05/21/bean-de-sheng-ming-zhou-qi/">
+                <a href="/2022/11/04/muzidb-shu-ju-ku-5-vm-zhong-de-dui-xiang-yi-ji-si-suo-jian-ce/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="Bean的生命周期">
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="MuziDB数据库—5.VM中的对象以及死锁检测">
                         
-                        <span class="card-title">Bean的生命周期</span>
+                        <span class="card-title">MuziDB数据库—5.VM中的对象以及死锁检测</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -628,26 +648,27 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-05-21
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-11-04
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Spring/" class="post-category">
-                                    Spring
+                            <a href="/categories/%E4%BC%98%E8%B4%A8%E9%A1%B9%E7%9B%AE/" class="post-category">
+                                    优质项目
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Bean/">
-                        <span class="chip bg-color">Bean</span>
+                    <a href="/tags/MuziDB/">
+                        <span class="chip bg-color">MuziDB</span>
                     </a>
                     
                 </div>
@@ -661,13 +682,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/05/20/pai-xu-suan-fa/">
+                <a href="/2022/11/03/muzidb-shu-ju-ku-4-dm-ri-zhi-hui-fu-yu-ju-ti-shi-xian/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="排序算法">
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="MuziDB数据库—4.DM日志恢复与具体实现">
                         
-                        <span class="card-title">排序算法</span>
+                        <span class="card-title">MuziDB数据库—4.DM日志恢复与具体实现</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -678,14 +699,14 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-05-20
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-11-03
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/" class="post-category">
-                                    常见算法
+                            <a href="/categories/%E4%BC%98%E8%B4%A8%E9%A1%B9%E7%9B%AE/" class="post-category">
+                                    优质项目
                                 </a>
                             
                             
@@ -695,8 +716,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">
-                        <span class="chip bg-color">排序算法</span>
+                    <a href="/tags/MuziDB/">
+                        <span class="chip bg-color">MuziDB</span>
                     </a>
                     
                 </div>
