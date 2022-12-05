@@ -4,9 +4,9 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="如何定位慢查询SQL以及优化, 才疏学浅的木子">
-    <meta name="description" content="慢查询日志记录慢SQL定位慢SQL可以通过慢查询日志来查看慢SQL，默认的情况下，MySQL数据库不开启慢查询日志(slow query log)，需要手动把它打开SET GLOBAL slow_query_log = ‘ON’;
-查看下慢">
+    <meta name="keywords" content="MuziDB数据库—3.DM中的数据对象, 才疏学浅的木子">
+    <meta name="description" content="前面我们说了页面，那现在就来说一下页面中的存储的Data是什么格式的页面中存储的数据是一个一个的DataItem，所以这样就不会造成数据的混乱
+DataItemDataItem是向上层提供的数据对象，上层通过地址，向DM请求到对应的Data">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -18,7 +18,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>如何定位慢查询SQL以及优化 | 才疏学浅的木子</title>
+    <title>MuziDB数据库—3.DM中的数据对象 | 才疏学浅的木子</title>
     <link rel="icon" type="image/png" href="/favicon1.png">
     
 
@@ -273,12 +273,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">如何定位慢查询SQL以及优化</h1>
+                    <h1 class="description center-align post-title">MuziDB数据库—3.DM中的数据对象</h1>
                 </div>
             </div>
         </div>
@@ -302,12 +302,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E9%9D%A2%E8%AF%95/">
-                                <span class="chip bg-color">面试</span>
-                            </a>
-                        
-                            <a href="/tags/SQL%E4%BC%98%E5%8C%96/">
-                                <span class="chip bg-color">SQL优化</span>
+                            <a href="/tags/MuziDB/">
+                                <span class="chip bg-color">MuziDB</span>
                             </a>
                         
                     </div>
@@ -318,8 +314,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/MySQL/" class="post-category">
-                                MySQL
+                            <a href="/categories/%E4%BC%98%E8%B4%A8%E9%A1%B9%E7%9B%AE/" class="post-category">
+                                优质项目
                             </a>
                         
                     </div>
@@ -331,7 +327,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-10-03
+                    2022-11-02
                 </div>
                 
 
@@ -340,7 +336,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.4k
+                    847
                 </div>
                 
 
@@ -357,66 +353,111 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="慢查询日志记录慢SQL"><a href="#慢查询日志记录慢SQL" class="headerlink" title="慢查询日志记录慢SQL"></a>慢查询日志记录慢SQL</h2><p>定位慢SQL可以通过慢查询日志来查看慢SQL，默认的情况下，MySQL数据库不开启慢查询日志(slow query log)，需要手动把它打开<br>SET GLOBAL slow_query_log = ‘ON’;<br><img src="https://img-blog.csdnimg.cn/ca5a435941b34b31ac9d3667f4b1796f.png" alt="在这里插入图片描述"></p>
-<p><strong>查看下慢查询日志配置</strong><br>SHOW VARIABLES LIKE ‘slow_query_log%’</p>
-<p>slow_query_log：表示慢查询开启的状态<br>slow_query_log_file：表示慢查询日志存放的位置</p>
-<p><strong>查看超过多少时间，才记录到慢查询日志</strong><br>SHOW VARIABLES LIKE ‘long_query_time’</p>
-<p>注意： 这样配置是临时的如果需要永久修改需要去配置文件(/etc/my.cnf)</p>
-<h2 id="explain查看分析SQL执行计划"><a href="#explain查看分析SQL执行计划" class="headerlink" title="explain查看分析SQL执行计划"></a>explain查看分析SQL执行计划</h2><p>通过慢查询日志定位出查询效率较低的SQL，可以使用explain查看SQL的执行计划<br><img src="https://img-blog.csdnimg.cn/363d74d85a864fafb0c7dc973c65b02f.png" alt="在这里插入图片描述"></p>
-<p><strong>id</strong></p>
+                <p>前面我们说了页面，那现在就来说一下页面中的存储的Data是什么格式的<br>页面中存储的数据是一个一个的DataItem，所以这样就不会造成数据的混乱</p>
+<h2 id="DataItem"><a href="#DataItem" class="headerlink" title="DataItem"></a>DataItem</h2><p>DataItem是向上层提供的数据对象，上层通过地址，向DM请求到对应的DataItem，再获取到其中的数据<br>DateItem结构</p>
+<p><img src="https://img-blog.csdnimg.cn/be96abf954974fb5a4ef0a0966218102.png" alt="在这里插入图片描述"></p>
 <blockquote>
-<p><strong>1. id 值相同时，被视为一组从上向下执行。</strong><br><strong>2. 如果是子查询，id 值会递增，id 值越高，优先级越高</strong><br><strong>3. id为NULL最后执行</strong></p>
+<p>记住只要是页面上的数据就都是这种格式</p>
 </blockquote>
-<p><strong>select_type</strong></p>
-<blockquote>
-<p><strong>1. simple: 简单的select, 查询中不包含子查询或者 union。例如: select name from student where id= 100<br>2. primary: 子查询中最外层查询, 查询中若包含任何复杂的子部分, 最外层的select被标记为primary<br>3. derived：在 from 的列表中包含的子查询被标记成 derived（派生表）。例如: explain select id from (select id,name from student) student1 where name= ‘name100’<br>4. subquery：在 select 或 where 列表中包含了子查询，则子查询被标记成 subquery。例如: explain select id from student where score = (select score from student where<br>name=’name100’);<br>5. union: union中的第二个或后面的select语句. 例如: EXPLAIN select id from student where id&lt;12691055 UNION all select id from student where id&lt;12691060;</strong></p>
-</blockquote>
-<p><strong>table</strong></p>
-<blockquote>
-<p><strong>显示这一步所访问数据库中表名称. 有时候不是真实的表名, 可能是简称</strong></p>
-</blockquote>
-<p><strong>partitions</strong></p>
-<blockquote>
-<p><strong>该字段看table所在的分区, 值为NULL表示表未被分区</strong></p>
-</blockquote>
-<p><strong>possible_keys</strong></p>
-<blockquote>
-<p><strong>可能会使用到的索引(ps.其实不太重要)</strong></p>
-</blockquote>
-<p><strong>重点关注的字段</strong><br><strong>type</strong></p>
-<blockquote>
-<p><strong>表示连接类型，查看索引执行情况的一个重要指标 以下性能从好到坏依次：system &gt; const &gt; eq_ref &gt; ref &gt;<br>ref_or_null &gt; index_merge &gt; unique_subquery &gt; index_subquery &gt; range &gt;<br>index &gt; ALL<br>system：这种类型要求数据库表中只有一条数据，是const类型的一个特例，一般情况下是不会出现的<br>const：通过一次索引就能找到数据，一般用于主键或唯一索引作为条件，这类扫描效率极高，速度非常快<br>eq_ref：常用于主键或唯一索引扫描，一般指使用主键的关联查询 ref : 常用于非主键和唯一索引扫描<br>ref_or_null：这种连接类型类似于ref，区别在于MySQL会额外搜索包含NULL值的行<br>index_merge：使用了索引合并优化方法，查询使用了两个以上的索引<br>unique_subquery：类似于eq_ref，条件用了in子查询<br>index_subquery：区别于unique_subquery，用于非唯一索引，可以返回重复值<br>range：常用于范围查询，比如：between … and 或 In 等操作 index：全索引扫描 ALL：全表扫描</strong></p>
-</blockquote>
-<p><strong>key</strong></p>
-<blockquote>
-<p><strong>实际使用到的索引</strong></p>
-</blockquote>
-<p><strong>key_len</strong></p>
-<blockquote>
-<p><strong>实际使用到的索引的长度</strong></p>
-</blockquote>
-<p><strong>rows</strong></p>
-<blockquote>
-<p><strong>该列表示MySQL估算找到我们所需的记录，需要读取的行数</strong></p>
-</blockquote>
-<p><strong>filtered</strong></p>
-<blockquote>
-<p><strong>该列是一个百分比，是满足条件的记录数量与我们查询了多少记录数量的比值</strong></p>
-</blockquote>
-<p><strong>extra</strong></p>
-<blockquote>
-<p><strong>该字段包含有关MySQL如何解析查询的其他信息，它一般会出现这几个值：<br>● Usingfilesort：表示按文件排序，一般是在指定的排序和索引排序不一致的情况才会出现，一般见于order by语句<br>● Using index：表示是否用了覆盖索引<br>● Using temporary: 表示是否使用了临时表,性能特别差，需要重点优化，一般多见于groupby语句，或者union语句<br>● Using where : 表示使用了where条件过滤<br>● Using index condition：MySQL5.6之后新增的索引下推，在存储引擎层进行数据过滤，而不是在服务层过滤，利用索引现有的数据减少回表的数据</strong></p>
-</blockquote>
-<h2 id="profile分析执行耗时"><a href="#profile分析执行耗时" class="headerlink" title="profile分析执行耗时"></a>profile分析执行耗时</h2><blockquote>
-<p><strong>explain只是看到SQL预估的执行计划，如果要了解SQL真正的执行线程状态及消耗的时间，需要使用profiling，开启profiling参数后，后续执行的SQL语句都会记录其资源开销，包括IO，上下文切换，CPU，内存等等，可以根据这些开销进一步分析当前慢SQL的瓶颈再进一步进行优化</strong></p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/c556a8c892074bc08daf7cac58ba8d5f.png" alt="在这里插入图片描述"></p>
-<h2 id="Optimizer-Trace分析详情"><a href="#Optimizer-Trace分析详情" class="headerlink" title="Optimizer Trace分析详情"></a>Optimizer Trace分析详情</h2><blockquote>
-<p><strong>profile只能查看到SQL的执行耗时，但无法看到SQL真正执行的过程信息，不知道MySQL优化器是如何选择执行计划，这时候，可以使用Optimizer<br>Trace，它可以跟踪执行语句的解析优化执行的全过程</strong></p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/f1315716958849f9a15717c99201a7f0.png" alt="在这里插入图片描述"></p>
-<p>三个阶段分为对应：准备阶段、分析阶段、执行阶段</p>
-<h1 id="确定问题采用响应措施"><a href="#确定问题采用响应措施" class="headerlink" title="确定问题采用响应措施"></a>确定问题采用响应措施</h1><p>● 多数慢SQL都跟索引有关，比如不加索引，索引不生效、不合理等，这时候，可以优化索引<br>● 还可以优化SQL语句，比如一些in元素过多问题(分批)，深分页问题(基于上一次数据过滤等)，进行时间分段查询<br>● SQL没办法很好优化，可以改用ES的方式，或者数仓<br>● 如果单表数据量过大导致慢查询，可以考虑分库分表<br>● 如果数据库在刷脏页导致慢查询，考虑是否可以优化一些参数<br>● 如果存量数据量太大，考虑是否可以让部分数据归档</p>
+<p>ValidFlag 0 为合法 1 为非法<br>Size 标识Data长度</p>
+<p>在开始的时候我们就说了DM不仅会管理页面中的数据还会管理日志文件</p>
+<h2 id="LogFile"><a href="#LogFile" class="headerlink" title="LogFile"></a>LogFile</h2><p>DM在每次对底层数据操作的时候，都会记录一条日志到磁盘上，在数据库崩溃之后可以根据日志的内容恢复数据文件</p>
+<h3 id="日志文件格式"><a href="#日志文件格式" class="headerlink" title="日志文件格式"></a>日志文件格式</h3><p>日志文件的格式为</p>
+<p>[XChecksum][log1][log2]…[logn][BadTail]</p>
+<p>XChecksum是一个四字节的整数，是对后续所有日志计算的校验和，log1~logn是常规日志,BadTail是在数据库崩溃时，没有来得及写完的日志数据</p>
+<p>每条日志的格式为<br>[Size][Checksum][Data]<br>Size占四个字节<br>Checksum占四个字节<br>Data所占字节长度就是Size<br>其中size表示的是这条日志中Data的字段数，Checksum则是该条日志的校验和</p>
+<p>这里可以看到在.db文件中与.log文件中分别保存的是DataItem与Log对象，之所以设置为这种，就是为了后面解析的时候更加方便</p>
+<p><img src="https://img-blog.csdnimg.cn/bda2d346cf3b49d2a567df69e3dabd3d.png" alt="在这里插入图片描述"></p>
+<h3 id="读取日志"><a href="#读取日志" class="headerlink" title="读取日志"></a>读取日志</h3><p>这里读取日志返回的也是该Log对象，即三个参数都有<br>读取注意事项</p>
+<ol>
+<li>注意预防边界，避免读取内容数据超过边界所有需要进行判断</li>
+<li>避免文件被修改或其它原因导致数据不一致所有需要进行校验</li>
+</ol>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">private</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">internNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>position <span class="token operator">+</span> OF_DATA <span class="token operator">>=</span> fileSize<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> null<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        ByteBuffer tmp <span class="token operator">=</span> ByteBuffer<span class="token punctuation">.</span><span class="token function">allocate</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            fc<span class="token punctuation">.</span><span class="token function">position</span><span class="token punctuation">(</span>position<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            fc<span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span>tmp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span><span class="token punctuation">(</span>IOException e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            Panic<span class="token punctuation">.</span><span class="token function">panic</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">int</span> size <span class="token operator">=</span> Parser<span class="token punctuation">.</span><span class="token function">parseInt</span><span class="token punctuation">(</span>tmp<span class="token punctuation">.</span><span class="token function">array</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>position <span class="token operator">+</span> size <span class="token operator">+</span> OF_DATA <span class="token operator">></span> fileSize<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> null<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        ByteBuffer buf <span class="token operator">=</span> ByteBuffer<span class="token punctuation">.</span><span class="token function">allocate</span><span class="token punctuation">(</span>OF_DATA <span class="token operator">+</span> size<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            fc<span class="token punctuation">.</span><span class="token function">position</span><span class="token punctuation">(</span>position<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            fc<span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span>buf<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span><span class="token punctuation">(</span>IOException e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            Panic<span class="token punctuation">.</span><span class="token function">panic</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> log <span class="token operator">=</span> buf<span class="token punctuation">.</span><span class="token function">array</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> checkSum1 <span class="token operator">=</span> <span class="token function">calChecksum</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> Arrays<span class="token punctuation">.</span><span class="token function">copyOfRange</span><span class="token punctuation">(</span>log<span class="token punctuation">,</span> OF_DATA<span class="token punctuation">,</span> log<span class="token punctuation">.</span>length<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> checkSum2 <span class="token operator">=</span> Parser<span class="token punctuation">.</span><span class="token function">parseInt</span><span class="token punctuation">(</span>Arrays<span class="token punctuation">.</span><span class="token function">copyOfRange</span><span class="token punctuation">(</span>log<span class="token punctuation">,</span> OF_CHECKSUM<span class="token punctuation">,</span> OF_DATA<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>checkSum1 <span class="token operator">!=</span> checkSum2<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> null<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        position <span class="token operator">+=</span> log<span class="token punctuation">.</span>length<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> log<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>注意：这里还有个方法读取日志即next<br>可以看出用next方法返回的是Log对象里面其中一个字段即data</p>
+<pre class="line-numbers language-java"><code class="language-java">    <span class="token keyword">public</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        lock<span class="token punctuation">.</span><span class="token function">lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> log <span class="token operator">=</span> <span class="token function">internNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span>log <span class="token operator">==</span> null<span class="token punctuation">)</span> <span class="token keyword">return</span> null<span class="token punctuation">;</span>
+            <span class="token keyword">return</span> Arrays<span class="token punctuation">.</span><span class="token function">copyOfRange</span><span class="token punctuation">(</span>log<span class="token punctuation">,</span> OF_DATA<span class="token punctuation">,</span> log<span class="token punctuation">.</span>length<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">finally</span> <span class="token punctuation">{</span>
+            lock<span class="token punctuation">.</span><span class="token function">unlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="日志文件的写入"><a href="#日志文件的写入" class="headerlink" title="日志文件的写入"></a>日志文件的写入</h3><p>这里和DataItem以及其它的都是一样的即你只需要传入本身的数据，而不用过多的去关注如何封装成一个DataItem或者一个一个的Log对象<br>日志文件的步骤</p>
+<ol>
+<li>日志文件写入时传入的只有数据，所有我们需要将其包裹成Log对象</li>
+<li>写入日志后还需要修改日志文件中的校验和</li>
+</ol>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> data<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> log <span class="token operator">=</span> <span class="token function">wrapLog</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        ByteBuffer buf <span class="token operator">=</span> ByteBuffer<span class="token punctuation">.</span><span class="token function">wrap</span><span class="token punctuation">(</span>log<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        lock<span class="token punctuation">.</span><span class="token function">lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            fc<span class="token punctuation">.</span><span class="token function">position</span><span class="token punctuation">(</span>fc<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            fc<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>buf<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span><span class="token punctuation">(</span>IOException e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            Panic<span class="token punctuation">.</span><span class="token function">panic</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">finally</span> <span class="token punctuation">{</span>
+            lock<span class="token punctuation">.</span><span class="token function">unlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token function">updateXChecksum</span><span class="token punctuation">(</span>log<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+   <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">updateXChecksum</span><span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> log<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>xChecksum <span class="token operator">=</span> <span class="token function">calChecksum</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>xChecksum<span class="token punctuation">,</span> log<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            fc<span class="token punctuation">.</span><span class="token function">position</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            fc<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>ByteBuffer<span class="token punctuation">.</span><span class="token function">wrap</span><span class="token punctuation">(</span>Parser<span class="token punctuation">.</span><span class="token function">int2Byte</span><span class="token punctuation">(</span>xChecksum<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            fc<span class="token punctuation">.</span><span class="token function">force</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span><span class="token punctuation">(</span>IOException e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            Panic<span class="token punctuation">.</span><span class="token function">panic</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+
+    <span class="token keyword">private</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">wrapLog</span><span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> data<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> checksum <span class="token operator">=</span> Parser<span class="token punctuation">.</span><span class="token function">int2Byte</span><span class="token punctuation">(</span><span class="token function">calChecksum</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> data<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> size <span class="token operator">=</span> Parser<span class="token punctuation">.</span><span class="token function">int2Byte</span><span class="token punctuation">(</span>data<span class="token punctuation">.</span>length<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> Bytes<span class="token punctuation">.</span><span class="token function">concat</span><span class="token punctuation">(</span>size<span class="token punctuation">,</span> checksum<span class="token punctuation">,</span> data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>所以DM中就只管理了页面中的数据DataItem与Log文件中的Log对象</p>
 
                 
             </div>
@@ -443,7 +484,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://cn-lixiaobo.github.io/2022/10/03/ru-he-ding-wei-man-cha-xun-sql-yi-ji-you-hua/">http://cn-lixiaobo.github.io/2022/10/03/ru-he-ding-wei-man-cha-xun-sql-yi-ji-you-hua/</a>
+                    <a href="http://cn-lixiaobo.github.io/2022/11/02/muzidb-shu-ju-ku-3-dm-zhong-de-shu-ju-dui-xiang/">http://cn-lixiaobo.github.io/2022/11/02/muzidb-shu-ju-ku-3-dm-zhong-de-shu-ju-dui-xiang/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -481,12 +522,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E9%9D%A2%E8%AF%95/">
-                                    <span class="chip bg-color">面试</span>
-                                </a>
-                            
-                                <a href="/tags/SQL%E4%BC%98%E5%8C%96/">
-                                    <span class="chip bg-color">SQL优化</span>
+                                <a href="/tags/MuziDB/">
+                                    <span class="chip bg-color">MuziDB</span>
                                 </a>
                             
                         </div>
@@ -569,31 +606,31 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2022/10/03/dong-tai-huan-cun-re-dian-shu-ju/">
+                <a href="/2022/11/03/longadder-de-yuan-ma-xue-xi/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="动态缓存热点数据">
+                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="LongAdder的源码学习">
                         
-                        <span class="card-title">动态缓存热点数据</span>
+                        <span class="card-title">LongAdder的源码学习</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            
+                            LongAdder源码的学习与理解,主要是理解cells数组,@sun.misc.Contended注解,以及LongAdder中的add方法和longAccumulate方法
                         
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-10-03
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-11-03
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E5%9C%BA%E6%99%AF/" class="post-category">
-                                    场景
+                            <a href="/categories/Java/" class="post-category">
+                                    Java
                                 </a>
                             
                             
@@ -603,8 +640,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E7%83%AD%E7%82%B9%E7%BC%93%E5%AD%98/">
-                        <span class="chip bg-color">热点缓存</span>
+                    <a href="/tags/%E6%BA%90%E7%A0%81/">
+                        <span class="chip bg-color">源码</span>
                     </a>
                     
                 </div>
@@ -618,13 +655,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/10/02/suo-yin-de-xue-xi-yu-li-jie/">
+                <a href="/2022/11/02/muzidb-shu-ju-ku-2-dm-zhong-de-huan-cun-chou-xiang-lei-yu-shu-ju-ye-de-huan-cun/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="索引的学习与理解">
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="MuziDB数据库—2.DM中的缓存抽象类与数据页的缓存">
                         
-                        <span class="card-title">索引的学习与理解</span>
+                        <span class="card-title">MuziDB数据库—2.DM中的缓存抽象类与数据页的缓存</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -635,14 +672,14 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-10-02
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-11-02
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/MySQL/" class="post-category">
-                                    MySQL
+                            <a href="/categories/%E4%BC%98%E8%B4%A8%E9%A1%B9%E7%9B%AE/" class="post-category">
+                                    优质项目
                                 </a>
                             
                             
@@ -652,12 +689,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E9%9D%A2%E8%AF%95/">
-                        <span class="chip bg-color">面试</span>
-                    </a>
-                    
-                    <a href="/tags/%E7%B4%A2%E5%BC%95/">
-                        <span class="chip bg-color">索引</span>
+                    <a href="/tags/MuziDB/">
+                        <span class="chip bg-color">MuziDB</span>
                     </a>
                     
                 </div>
