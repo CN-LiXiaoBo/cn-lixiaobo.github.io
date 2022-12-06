@@ -4,12 +4,16 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Cookie、Session、Token区别, 才疏学浅的木子">
-    <meta name="description" content="
-由于HTTP协议本身是无状态的，及服务器无法判断用户身份。cookie与session都是用来跟踪浏览器用户身份的会话
+    <meta name="keywords" content="三种缓存策略, 才疏学浅的木子">
+    <meta name="description" content="Cache Aside(旁路缓存)Cache Aside（旁路缓存）策略是最常用的，应用程序直接与数据库、缓存交互，并负责对缓存维护，该策略又被分为读策略与写策略
 
-Cookie
-Cookie其实是浏览器保存在电脑中的一些key-value结构形式的文本数据，其中包含了我们以及服务">
+写策略
+
+先更新数据库，再删除缓存
+
+读策略
+
+如果读取的数据命中了缓存，">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -21,7 +25,7 @@ Cookie其实是浏览器保存在电脑中的一些key-value结构形式的文�
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Cookie、Session、Token区别 | 才疏学浅的木子</title>
+    <title>三种缓存策略 | 才疏学浅的木子</title>
     <link rel="icon" type="image/png" href="/favicon1.png">
     
 
@@ -276,12 +280,12 @@ Cookie其实是浏览器保存在电脑中的一些key-value结构形式的文�
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/2.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/8.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Cookie、Session、Token区别</h1>
+                    <h1 class="description center-align post-title">三种缓存策略</h1>
                 </div>
             </div>
         </div>
@@ -305,16 +309,8 @@ Cookie其实是浏览器保存在电脑中的一些key-value结构形式的文�
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/Cookie/">
-                                <span class="chip bg-color">Cookie</span>
-                            </a>
-                        
-                            <a href="/tags/Session/">
-                                <span class="chip bg-color">Session</span>
-                            </a>
-                        
-                            <a href="/tags/Token/">
-                                <span class="chip bg-color">Token</span>
+                            <a href="/tags/%E7%BC%93%E5%AD%98/">
+                                <span class="chip bg-color">缓存</span>
                             </a>
                         
                     </div>
@@ -338,7 +334,7 @@ Cookie其实是浏览器保存在电脑中的一些key-value结构形式的文�
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-10-03
+                    2022-08-24
                 </div>
                 
 
@@ -347,7 +343,7 @@ Cookie其实是浏览器保存在电脑中的一些key-value结构形式的文�
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.2k
+                    1.6k
                 </div>
                 
 
@@ -364,84 +360,47 @@ Cookie其实是浏览器保存在电脑中的一些key-value结构形式的文�
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <blockquote>
-<p><strong>由于HTTP协议本身是无状态的，及服务器无法判断用户身份。cookie与session都是用来跟踪浏览器用户身份的会话</strong></p>
-</blockquote>
-<h2 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie"></a>Cookie</h2><blockquote>
-<p>Cookie其实是浏览器保存在电脑中的一些key-value结构形式的文本数据，其中包含了我们以及服务器的一些信息，当我们向服务器发送请求的时候，这些cookie数据会随着请求报文一起发送服务器，服务器识别当前的cookie，同时服务器也可以在响应报文的头部加上set-cookie希望浏览器可以缓存cookie，浏览器收到响应报文，发现了set-cookie字段就会将其数据保在浏览器</p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/974139e65a0e47bea889fcc7bd851fb0.png" alt="在这里插入图片描述"></p>
+                <h2 id="Cache-Aside-旁路缓存"><a href="#Cache-Aside-旁路缓存" class="headerlink" title="Cache Aside(旁路缓存)"></a>Cache Aside(旁路缓存)</h2><p>Cache Aside（旁路缓存）策略是最常用的，应用程序直接与数据库、缓存交互，并负责对缓存维护，该策略又被分为读策略与写策略</p>
+<p><img src="https://img-blog.csdnimg.cn/8362ddc2cb3545d5b341b84148b1ca9f.png" alt="在这里插入图片描述"></p>
+<p><strong>写策略</strong></p>
 <blockquote>
-<p>由于Cookie是保存在本地文件中，所以是能够长期保存，只需要将过期时间设置的长一些。由于cookie是存储在本地，所以它其实是<strong>不安全</strong>的，并且Cookie能够<strong>保存的数据大小有限</strong>，单个Cookie保存的数据不能超过4K<br><img src="https://img-blog.csdnimg.cn/913f360188f542f8aca93cbfd5dfdda5.png" alt="在这里插入图片描述"></p>
+<p>先更新数据库，再删除缓存</p>
 </blockquote>
-<table>
-<thead>
-<tr>
-<th>参数名</th>
-<th>作用</th>
-<th>后端设置方法</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Max-Age</td>
-<td>设置Cookie的过期时间，单位为秒</td>
-<td>cookie.setMaxAge(60);</td>
-</tr>
-<tr>
-<td>Domain</td>
-<td>指定了Cookie所属的域名</td>
-<td>cookie.setDomain(“”);</td>
-</tr>
-<tr>
-<td>Path</td>
-<td>指定了Cookie所属的路径</td>
-<td>cookie.setPath(“/test”);</td>
-</tr>
-<tr>
-<td>HttpOnly</td>
-<td>告诉浏览器此Cookie只能靠Http协议传输</td>
-<td>cookie.setHttpOnly();</td>
-</tr>
-<tr>
-<td>Secure</td>
-<td>告诉浏览器此Cookie只能靠Https安全协议传输</td>
-<td>cookie.setSecure();</td>
-</tr>
-</tbody></table>
-<h2 id="Session"><a href="#Session" class="headerlink" title="Session"></a>Session</h2><blockquote>
-<p>从字面上讲就是<strong>会话</strong>，表明客户端与服务器的一次会话，与Cookie不一样，Session是由服务器进行维护的。当客户端向服务发送一个请求时，服务器会为发起这个请求的客户端创建一个对象并存储在服务器的一个集合中，同时生成一个唯一的<strong>SessionId</strong>来标识这个对象，而有关这个请求的客户端信息就保存在这个session中。当服务器给用户发送响应报文时，也会将<strong>sessionid</strong>放入<strong>set-cookie</strong>中，用户接收到响应报文后，保存这个cookie，当下一次向服务器发送请求的时候会带上这个cookie然后服务端进行验证<br>服务端<strong>不会一直维护session</strong>，它会在用户退出浏览器、或者在一段时间没有接收到这个用户的请求后将Session清除</p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/accdd55a24674db1b279b348074661a7.png" alt="在这里插入图片描述"></p>
+<p><strong>读策略</strong></p>
 <blockquote>
-<p>Session的缺点，对于每一个用户服务器都需要维护一个或多个Session，若一段时间内访问服务器的用户数量庞大，将导致服务器需要<strong>维护大量的Session对象，严重占用资源</strong> ，除此之外，当今的web服务器，都采用了集群的技术，集群中的每一台服务器的Session都是独立的，要实现<strong>Session共享比较麻烦</strong> 。</p>
+<p>如果读取的数据命中了缓存，则直接返回数据；<br>如果读取的数据没有命中缓存，则从数据库中读取数据，然后将数据写入到缓存，并且返回给用户</p>
 </blockquote>
-<h2 id="Token"><a href="#Token" class="headerlink" title="Token"></a>Token</h2><blockquote>
-<p>Token的主要作用是对用户做身份认证，我们一般称之为<strong>令牌</strong>。当我们登录一个网站的时候，输入账号密码发送到客户端，此时服务器擦哈寻数据库，验证账号密码，若验证成功服务器则根据一些加密算法加密一些不敏感的用户信息计算出一个Token然后返回给客户端。客户端收到Token后保存下来，接下来的每次请求都携带者走，然后解析Token，如果解析成功就验证成功获取服务器数据。</p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/83f50143ca0248dc9206293a05952bde.png" alt="在这里插入图片描述"></p>
-<blockquote>
-<p>但是Token如果一旦被别人截获，对方就可以使用你的身份，所以Token一般是基于HTTPS使用</p>
-</blockquote>
-<h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2><p><strong>Cookie与Session的区别</strong></p>
-<blockquote>
-<p>安全性：Session比Cookie安全，Session是存储在服务器端的，Cookie是存储在客户端的<br>存取值的类型不同：Cookie只支持存字符串数据，Session可以存任意数据类型<br>有效期不同：Cookie可以设置为长时间保存，Session一般时间较短，客户端关闭或者Session超时就会失效<br>存储大小不同：单个Cookie保存的数据不能超过4K.Session存储数据远大于Cookie但是当访问量过高的时候会占用更多的服务器资源</p>
-</blockquote>
-<h2 id="禁用Cookie后如何使用Session"><a href="#禁用Cookie后如何使用Session" class="headerlink" title="禁用Cookie后如何使用Session"></a>禁用Cookie后如何使用Session</h2><p><strong>URL重写</strong></p>
-<pre class="line-numbers language-java"><code class="language-java">http<span class="token operator">:</span><span class="token operator">/</span><span class="token operator">/</span>www<span class="token punctuation">.</span>test<span class="token punctuation">.</span>com<span class="token operator">/</span>test<span class="token punctuation">;</span>jsessionid<span class="token operator">=</span>ByOK3vjFD75aPnrF7C2HmdnV6QZcEbzWoWiBYEnLerjQ99zWpBng
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<blockquote>
-<p>如果重写URL则应该在应用程序的所有页面中都要对URL编码重写，包括超链接和表单action属性值<br>静态的HTML页面必须通过Servlet运行，在它将页面发送给客户时重写URL</p>
-</blockquote>
-<p><strong>表单隐藏字段</strong></p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token operator">&lt;</span>form name<span class="token operator">=</span><span class="token string">"testform"</span> action<span class="token operator">=</span><span class="token string">"/xxx"</span><span class="token operator">></span> <span class="token operator">&lt;</span>input type<span class="token operator">=</span><span class="token string">"hidden"</span> name<span class="token operator">=</span><span class="token string">"jsessionid"</span> value<span class="token operator">=</span><span class="token string">"ByOK3vjFD75aPnrF7C2HmdnV6QZcEbzWoWiBYEnLerjQ99zWpBng!-145788764″> &lt;input type="</span>text"<span class="token operator">></span> <span class="token operator">&lt;</span><span class="token operator">/</span>form<span class="token operator">></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<blockquote>
-<p>需要页面中含有表单或者自己构建一个表单来使用</p>
-</blockquote>
-<p><strong>localStorage</strong></p>
-<blockquote>
-<p>使用其它存储缓存sessionid</p>
-</blockquote>
+<p>注意，写策略的步骤的顺序顺序不能倒过来，即不能<strong>先删除缓存再更新数据库</strong>，原因是在「读+写」并发的时候，会出现缓存和数据库的数据不一致性的问题。</p>
+<p>举个例子，假设某个用户的年龄是 20，请求 A 要更新用户年龄为 21，所以它会删除缓存中的内容。这时，另一个请求 B 要读取这个用户的年龄，它查询缓存发现未命中后，会从数据库中读取到年龄为 20，并且写入到缓存中，然后请求 A 继续更改数据库，将用户的年龄更新为 21。</p>
+<p><img src="https://img-blog.csdnimg.cn/040b4171d8f64f36b1f49461c4580bea.png" alt="在这里插入图片描述"><br>最终，该用户年龄在缓存中是 20（旧值），在数据库中是 21（新值），缓存和数据库的数据不一致。</p>
+<p><strong>为什么在先更新数据库再删除缓存不会有数据不一致的问题</strong></p>
+<p>继续用「读 + 写」请求的并发的场景来分析。</p>
+<p>假如某个用户数据在缓存中不存在，请求 A 读取数据时从数据库中查询到年龄为 20，在未写入缓存中时另一个请求 B 更新数据。它更新数据库中的年龄为 21，并且清空缓存。这时请求 A 把从数据库中读到的年龄为 20 的数据写入到缓存中。</p>
+<p><img src="https://img-blog.csdnimg.cn/8f2231394e1941d18edc964a0f8802ac.png" alt="在这里插入图片描述"></p>
+<p>最终，该用户年龄在缓存中是 20（旧值），在数据库中是 21（新值），缓存和数据库数据不一致。 从上面的理论上分析，先更新数据库，再删除缓存也是会出现数据不一致性的问题，但是在实际中，这个问题出现的概率并不高。</p>
+<p>因为缓存的写入通常要远远快于数据库的写入，所以在实际中很难出现请求 B 已经更新了数据库并且删除了缓存，请求 A 才更新完缓存的情况。而一旦请求 A 早于请求 B 删除缓存之前更新了缓存，那么接下来的请求就会因为缓存不命中而从数据库中重新读取数据，所以不会出现这种不一致的情况。</p>
+<p>Cache Aside 策略适合<strong>读多写少</strong>的场景，不适合写多的场景，因为当写入比较频繁时，缓存中的数据会被频繁地清理，这样会对缓存的命中率有一些影响。如果业务对缓存命中率有严格的要求，那么可以考虑两种解决方案：</p>
+<ul>
+<li>一种做法是在更新数据时也更新缓存，只是在更新缓存前先加一个分布式锁，因为这样在同一时间只允许一个线程更新缓存，就不会产生并发问题了。当然这么做对于写入的性能会有一些影响；</li>
+<li>另一种做法同样也是在更新数据时更新缓存，只是给缓存加一个较短的过期时间，这样即使出现缓存不一致的情况，缓存的数据也会很快过期，对业务的影响也是可以接受。</li>
+</ul>
+<h2 id="Read-Write-Through（读穿-写穿）策略"><a href="#Read-Write-Through（读穿-写穿）策略" class="headerlink" title="Read/Write Through（读穿 / 写穿）策略"></a>Read/Write Through（读穿 / 写穿）策略</h2><p>Read/Write Through（读穿 / 写穿）策略原则是应用程序只和缓存交互，不再和数据库交互，而是由缓存和数据库交互，相当于更新数据库的操作由缓存自己代理了。</p>
+<p><strong>Read Through 策略</strong></p>
+<p>先查询缓存中数据是否存在，如果存在则直接返回，如果不存在，则由缓存组件负责从数据库查询数据，并将结果写入到缓存组件，最后缓存组件将数据返回给应用。</p>
+<p><strong>Write Through 策略</strong></p>
+<p>当有数据更新的时候，先查询要写入的数据在缓存中是否已经存在：</p>
+<ul>
+<li>如果缓存中数据已经存在，则更新缓存中的数据，并且由缓存组件同步更新到数据库中，然后缓存组件告知应用程序更新完成。</li>
+<li>如果缓存中数据不存在，直接更新数据库，然后返回；</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/41f0550267274b988bdf2d8e711f63ae.png" alt="在这里插入图片描述"></p>
+<p>Read Through/Write Through 策略的特点是由缓存节点而非应用程序来和数据库打交道，在我们开发过程中相比 Cache Aside 策略要少见一些，原因是我们经常使用的分布式缓存组件，无论是 Memcached 还是 Redis 都不提供写入数据库和自动加载数据库中的数据的功能。而我们在使用本地缓存的时候可以考虑使用这种策略。</p>
+<h2 id="Write-Back（写回）策略"><a href="#Write-Back（写回）策略" class="headerlink" title="Write Back（写回）策略"></a>Write Back（写回）策略</h2><p>Write Back（写回）策略在更新数据的时候，只更新缓存，同时将缓存数据设置为脏的，然后立马返回，并不会更新数据库。对于数据库的更新，会通过批量异步更新的方式进行。</p>
+<p>实际上，Write Back（写回）策略也不能应用到我们常用的数据库和缓存的场景中，因为 Redis 并没有异步更新数据库的功能。</p>
+<p>Write Back 是计算机体系结构中的设计，比如 CPU 的缓存、操作系统中文件系统的缓存都采用了 Write Back（写回）策略。</p>
+<p><strong>Write Back 策略特别适合写多的场景</strong>，因为发生写操作的时候， 只需要更新缓存，就立马返回了。比如，写文件的时候，实际上是写入到文件系统的缓存就返回了，并不会写磁盘。</p>
+<p>但是带来的问题是，<strong>数据不是强一致性</strong>的，而且会有<strong>数据丢失</strong>的风险，因为缓存一般使用内存，而内存是非持久化的，所以一旦缓存机器掉电，就会造成原本缓存中的脏数据丢失。所以你会发现系统在掉电之后，之前写入的文件会有部分丢失，就是因为 Page Cache 还没有来得及刷盘造成的。</p>
+<p><img src="https://img-blog.csdnimg.cn/f7194b3faf26464c8220d3db11e1010c.png" alt="在这里插入图片描述"></p>
 
                 
             </div>
@@ -468,7 +427,7 @@ Cookie其实是浏览器保存在电脑中的一些key-value结构形式的文�
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://cn-lixiaobo.github.io/2022/10/03/cookie-session-token-qu-bie/">http://cn-lixiaobo.github.io/2022/10/03/cookie-session-token-qu-bie/</a>
+                    <a href="http://cn-lixiaobo.github.io/2022/08/24/san-chong-huan-cun-ce-lue/">http://cn-lixiaobo.github.io/2022/08/24/san-chong-huan-cun-ce-lue/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -506,16 +465,8 @@ Cookie其实是浏览器保存在电脑中的一些key-value结构形式的文�
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/Cookie/">
-                                    <span class="chip bg-color">Cookie</span>
-                                </a>
-                            
-                                <a href="/tags/Session/">
-                                    <span class="chip bg-color">Session</span>
-                                </a>
-                            
-                                <a href="/tags/Token/">
-                                    <span class="chip bg-color">Token</span>
+                                <a href="/tags/%E7%BC%93%E5%AD%98/">
+                                    <span class="chip bg-color">缓存</span>
                                 </a>
                             
                         </div>
@@ -598,13 +549,13 @@ Cookie其实是浏览器保存在电脑中的一些key-value结构形式的文�
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2022/10/05/dns-cha-xun-liu-cheng/">
+                <a href="/2022/10/01/redis-chi-jiu-hua/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="DNS查询流程">
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="Redis持久化">
                         
-                        <span class="card-title">DNS查询流程</span>
+                        <span class="card-title">Redis持久化</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -615,14 +566,14 @@ Cookie其实是浏览器保存在电脑中的一些key-value结构形式的文�
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-10-05
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-10-01
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E8%AE%A1%E7%BD%91/" class="post-category">
-                                    计网
+                            <a href="/categories/Redis/" class="post-category">
+                                    Redis
                                 </a>
                             
                             
@@ -632,8 +583,12 @@ Cookie其实是浏览器保存在电脑中的一些key-value结构形式的文�
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/DNS/">
-                        <span class="chip bg-color">DNS</span>
+                    <a href="/tags/%E6%8C%81%E4%B9%85%E5%8C%96/">
+                        <span class="chip bg-color">持久化</span>
+                    </a>
+                    
+                    <a href="/tags/%E9%9D%A2%E8%AF%95/">
+                        <span class="chip bg-color">面试</span>
                     </a>
                     
                 </div>
@@ -647,13 +602,13 @@ Cookie其实是浏览器保存在电脑中的一些key-value结构形式的文�
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/10/03/dong-tai-huan-cun-re-dian-shu-ju/">
+                <a href="/2022/08/15/shao-bing-ji-qun-why-zhi-xu-yao-pei-zhi-zhu-jie-dian-ming-cheng-ip-yu-quorum/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="动态缓存热点数据">
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="哨兵集群why只需要配置主节点名称、ip与quorum">
                         
-                        <span class="card-title">动态缓存热点数据</span>
+                        <span class="card-title">哨兵集群why只需要配置主节点名称、ip与quorum</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -664,14 +619,14 @@ Cookie其实是浏览器保存在电脑中的一些key-value结构形式的文�
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-10-03
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-08-15
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E5%9C%BA%E6%99%AF/" class="post-category">
-                                    场景
+                            <a href="/categories/Redis/" class="post-category">
+                                    Redis
                                 </a>
                             
                             
@@ -681,8 +636,8 @@ Cookie其实是浏览器保存在电脑中的一些key-value结构形式的文�
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E7%83%AD%E7%82%B9%E7%BC%93%E5%AD%98/">
-                        <span class="chip bg-color">热点缓存</span>
+                    <a href="/tags/%E5%93%A8%E5%85%B5%E9%9B%86%E7%BE%A4/">
+                        <span class="chip bg-color">哨兵集群</span>
                     </a>
                     
                 </div>
