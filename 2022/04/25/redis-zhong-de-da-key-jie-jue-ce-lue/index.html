@@ -4,10 +4,10 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="MuziDB数据库—8.TBM以及客户端与服务端通信, 才疏学浅的木子">
-    <meta name="description" content="TBM就和IM相比要简单多了
-TBM中的文件其实是一个固定大小的文件，因为他保存的只是最新文件在.db文件中的UID
-表中字段表中存在字段，而字段是[FileldName][TypeName][IndexUid]，其中FiledName为表">
+    <meta name="keywords" content="Redis中的大key解决策略, 才疏学浅的木子">
+    <meta name="description" content="大key的定义首先大key不是key很大而是key对应的value值很大一般而言如果String类型值大于10KB，Hash，Set，Zset，List类型的元素的个数大于5000个都可以称之为大key
+大key的危害
+客户端超时等待：由于">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -19,7 +19,7 @@ TBM中的文件其实是一个固定大小的文件，因为他保存的只是�
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>MuziDB数据库—8.TBM以及客户端与服务端通信 | 才疏学浅的木子</title>
+    <title>Redis中的大key解决策略 | 才疏学浅的木子</title>
     <link rel="icon" type="image/png" href="/favicon1.png">
     
 
@@ -274,12 +274,12 @@ TBM中的文件其实是一个固定大小的文件，因为他保存的只是�
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/4.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">MuziDB数据库—8.TBM以及客户端与服务端通信</h1>
+                    <h1 class="description center-align post-title">Redis中的大key解决策略</h1>
                 </div>
             </div>
         </div>
@@ -303,8 +303,8 @@ TBM中的文件其实是一个固定大小的文件，因为他保存的只是�
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/MuziDB/">
-                                <span class="chip bg-color">MuziDB</span>
+                            <a href="/tags/%E5%A4%A7key/">
+                                <span class="chip bg-color">大key</span>
                             </a>
                         
                     </div>
@@ -315,8 +315,8 @@ TBM中的文件其实是一个固定大小的文件，因为他保存的只是�
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E4%BC%98%E8%B4%A8%E9%A1%B9%E7%9B%AE/" class="post-category">
-                                优质项目
+                            <a href="/categories/Redis/" class="post-category">
+                                Redis
                             </a>
                         
                     </div>
@@ -328,7 +328,7 @@ TBM中的文件其实是一个固定大小的文件，因为他保存的只是�
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-11-06
+                    2022-04-25
                 </div>
                 
 
@@ -337,7 +337,7 @@ TBM中的文件其实是一个固定大小的文件，因为他保存的只是�
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    676
+                    1.2k
                 </div>
                 
 
@@ -354,107 +354,51 @@ TBM中的文件其实是一个固定大小的文件，因为他保存的只是�
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>TBM就和IM相比要简单多了</p>
-<p>TBM中的文件其实是一个固定大小的文件，因为他保存的只是最新文件在.db文件中的UID</p>
-<h2 id="表中字段"><a href="#表中字段" class="headerlink" title="表中字段"></a>表中字段</h2><p>表中存在字段，而字段是[FileldName][TypeName][IndexUid]，其中FiledName为表中字段名，TypeName为字段类型，IndexUid为索引二叉树的根，否则为0<br>因为其中Field与TypeName都是字符串类型且Fileld的长度不同，所以都是以[String<br>Length]与[StringData]表示<br>其中StringLength占四个字节、IndexUid为8个字节</p>
-<p><img src="https://img-blog.csdnimg.cn/b9bc350c95bd4c1c89ec2d056d4a14e1.png" alt="在这里插入图片描述"></p>
-<p>  <strong>表的结构</strong></p>
-<p>表的结构是是[TableName][NextTable][FieldUid][FieldUid]….<br>其中TableName的名称也是上面的String类型,这个比较简单所以就不画图</p>
-<h2 id="parseWhere"><a href="#parseWhere" class="headerlink" title="parseWhere"></a>parseWhere</h2><p>虽然这不重要但是基本每个语句都要使用到它<br>这个是用来解析Where条件的<br>● 如果where条件为空，那么返回这个表中的第一个Index索引的UID<br>● 如果不为空则解析通过字段B+树查询，然后返回UIDS</p>
-<pre class="line-numbers language-java"><code class="language-java">    <span class="token keyword">private</span> List<span class="token operator">&lt;</span>Long<span class="token operator">></span> <span class="token function">parseWhere</span><span class="token punctuation">(</span>Where where<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
-        <span class="token keyword">long</span> l0<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span> r0<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span> l1<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span> r1<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
-        <span class="token keyword">boolean</span> single <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-        Field fd <span class="token operator">=</span> null<span class="token punctuation">;</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span>where <span class="token operator">==</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">for</span> <span class="token punctuation">(</span>Field field <span class="token operator">:</span> fields<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                <span class="token keyword">if</span><span class="token punctuation">(</span>field<span class="token punctuation">.</span><span class="token function">isIndexed</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                    fd <span class="token operator">=</span> field<span class="token punctuation">;</span>
-                    <span class="token keyword">break</span><span class="token punctuation">;</span>
-                <span class="token punctuation">}</span>
-            <span class="token punctuation">}</span>
-            l0 <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
-            r0 <span class="token operator">=</span> Long<span class="token punctuation">.</span>MAX_VALUE<span class="token punctuation">;</span>
-            single <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
-            <span class="token keyword">for</span> <span class="token punctuation">(</span>Field field <span class="token operator">:</span> fields<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                <span class="token keyword">if</span><span class="token punctuation">(</span>field<span class="token punctuation">.</span>fieldName<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>where<span class="token punctuation">.</span>singleExp1<span class="token punctuation">.</span>field<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span>field<span class="token punctuation">.</span><span class="token function">isIndexed</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                        <span class="token keyword">throw</span> Error<span class="token punctuation">.</span>FieldNotIndexedException<span class="token punctuation">;</span>
-                    <span class="token punctuation">}</span>
-                    fd <span class="token operator">=</span> field<span class="token punctuation">;</span>
-                    <span class="token keyword">break</span><span class="token punctuation">;</span>
-                <span class="token punctuation">}</span>
-            <span class="token punctuation">}</span>
-            <span class="token keyword">if</span><span class="token punctuation">(</span>fd <span class="token operator">==</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                <span class="token keyword">throw</span> Error<span class="token punctuation">.</span>FieldNotFoundException<span class="token punctuation">;</span>
-            <span class="token punctuation">}</span>
-            CalWhereRes res <span class="token operator">=</span> <span class="token function">calWhere</span><span class="token punctuation">(</span>fd<span class="token punctuation">,</span> where<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            l0 <span class="token operator">=</span> res<span class="token punctuation">.</span>l0<span class="token punctuation">;</span> r0 <span class="token operator">=</span> res<span class="token punctuation">.</span>r0<span class="token punctuation">;</span>
-            l1 <span class="token operator">=</span> res<span class="token punctuation">.</span>l1<span class="token punctuation">;</span> r1 <span class="token operator">=</span> res<span class="token punctuation">.</span>r1<span class="token punctuation">;</span>
-            single <span class="token operator">=</span> res<span class="token punctuation">.</span>single<span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-        List<span class="token operator">&lt;</span>Long<span class="token operator">></span> uids <span class="token operator">=</span> fd<span class="token punctuation">.</span><span class="token function">search</span><span class="token punctuation">(</span>l0<span class="token punctuation">,</span> r0<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span>single<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            List<span class="token operator">&lt;</span>Long<span class="token operator">></span> tmp <span class="token operator">=</span> fd<span class="token punctuation">.</span><span class="token function">search</span><span class="token punctuation">(</span>l1<span class="token punctuation">,</span> r1<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            uids<span class="token punctuation">.</span><span class="token function">addAll</span><span class="token punctuation">(</span>tmp<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-        <span class="token keyword">return</span> uids<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="客户端与服务端通信"><a href="#客户端与服务端通信" class="headerlink" title="客户端与服务端通信"></a>客户端与服务端通信</h2><p>MuziDB被设计为C/S结构，类似于MySQL，支持启动一个服务器，并有多个客户端去连接，通过socket通信，执行SQL返回结果<br>服务端与客户端的通信是比较简单的，就只有客户端发数据与服务端接收数据并返回数据给客户端，客户端接收数据后在解析</p>
-<h3 id="Server的实现"><a href="#Server的实现" class="headerlink" title="Server的实现"></a>Server的实现</h3><p>Server启动一个ServerSocket监听端口，当有请求到来时直接把请求丢给一个线程处理</p>
-<pre class="line-numbers language-java"><code class="language-java">   <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        InetSocketAddress address <span class="token operator">=</span> <span class="token punctuation">(</span>InetSocketAddress<span class="token punctuation">)</span>socket<span class="token punctuation">.</span><span class="token function">getRemoteSocketAddress</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Establish connection: "</span> <span class="token operator">+</span> address<span class="token punctuation">.</span><span class="token function">getAddress</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getHostAddress</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">":"</span><span class="token operator">+</span>address<span class="token punctuation">.</span><span class="token function">getPort</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        Packager packager <span class="token operator">=</span> null<span class="token punctuation">;</span>
-        <span class="token keyword">try</span> <span class="token punctuation">{</span>
-            Transporter t <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Transporter</span><span class="token punctuation">(</span>socket<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            Encoder e <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Encoder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            packager <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Packager</span><span class="token punctuation">(</span>t<span class="token punctuation">,</span> e<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span> <span class="token keyword">catch</span><span class="token punctuation">(</span>IOException e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">try</span> <span class="token punctuation">{</span>
-                socket<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e1<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                e1<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">}</span>
-            <span class="token keyword">return</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-        Executor exe <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Executor</span><span class="token punctuation">(</span>tbm<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            Package pkg <span class="token operator">=</span> null<span class="token punctuation">;</span>
-            <span class="token keyword">try</span> <span class="token punctuation">{</span>
-                pkg <span class="token operator">=</span> packager<span class="token punctuation">.</span><span class="token function">receive</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">}</span> <span class="token keyword">catch</span><span class="token punctuation">(</span>Exception e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                <span class="token keyword">break</span><span class="token punctuation">;</span>
-            <span class="token punctuation">}</span>
-            <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> sql <span class="token operator">=</span> pkg<span class="token punctuation">.</span><span class="token function">getData</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> result <span class="token operator">=</span> null<span class="token punctuation">;</span>
-            Exception e <span class="token operator">=</span> null<span class="token punctuation">;</span>
-            <span class="token keyword">try</span> <span class="token punctuation">{</span>
-                result <span class="token operator">=</span> exe<span class="token punctuation">.</span><span class="token function">execute</span><span class="token punctuation">(</span>sql<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e1<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                e <span class="token operator">=</span> e1<span class="token punctuation">;</span>
-                e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">}</span>
-            pkg <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Package</span><span class="token punctuation">(</span>result<span class="token punctuation">,</span> e<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">try</span> <span class="token punctuation">{</span>
-                packager<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span>pkg<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e1<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                e1<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token keyword">break</span><span class="token punctuation">;</span>
-            <span class="token punctuation">}</span>
-        <span class="token punctuation">}</span>
-        exe<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">try</span> <span class="token punctuation">{</span>
-            packager<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>其它就是SQL解析就是比较简单的就不再赘述</p>
-<p>好了写到这里都差不多了这个项目的大致就是这样了，如果有时间的话会把增删改查的具体操作流程写出来</p>
+                <h2 id="大key的定义"><a href="#大key的定义" class="headerlink" title="大key的定义"></a>大key的定义</h2><p>首先大key不是key很大而是key对应的value值很大<br>一般而言如果String类型值大于10KB，Hash，Set，Zset，List类型的元素的个数大于5000个都可以称之为大key</p>
+<h2 id="大key的危害"><a href="#大key的危害" class="headerlink" title="大key的危害"></a>大key的危害</h2><ul>
+<li><strong>客户端超时等待</strong>：由于Redis执行命令是单线程处理，然后在操作大key时会比较耗时，那么就会阻塞Redis，从客户端这一视角来看就是很久很久都没有响应</li>
+<li><strong>引发网络阻塞</strong>：每次获取大key产生的流量较大，如果一个key的大小是1MB，每秒访问量为1000，那么每秒会产生1000MB的流量这对于普通千兆网卡是灾难的</li>
+<li><strong>阻塞工作线程</strong>：如果使用del删除大key，会阻塞工作线程这样就没有办法处理后续的命令</li>
+<li><strong>内存分布不均匀</strong>：集群模型在slot分片均匀的情况下，会出现数据和查询倾斜情况，部分有大key的Redis节点占用内存多，QPS比较大<h2 id="定位大key"><a href="#定位大key" class="headerlink" title="定位大key"></a>定位大key</h2><h3 id="redi-cli-–bigkeys"><a href="#redi-cli-–bigkeys" class="headerlink" title="redi-cli –bigkeys"></a>redi-cli –bigkeys</h3></li>
+</ul>
+<p><strong>使用时注意事项</strong></p>
+<p> 最好在从节点上执行该命令或者在Redis实例业务压力的低峰阶段进行扫描查询，因为key很多时会很慢</p>
+<p><strong>不足之处</strong></p>
+<ul>
+<li>这个方法只能返回每种类型中最大的那个bigkey，无法得到大小排到前N位的bigkey</li>
+<li>对于集合类型来说，这个方法只统计集合元素的多少，而不是实际占用的内存量。因为一个集合中元素个数多，并不一定占用内存就多</li>
+</ul>
+<h3 id="使用SCAN命令查找大key"><a href="#使用SCAN命令查找大key" class="headerlink" title="使用SCAN命令查找大key"></a>使用SCAN命令查找大key</h3><p>使用SCAN命令对数据库进行扫描。然后用TYPE命令获取返回的每一个key的类型</p>
+<p>对于String类型，可以直接使用STRLEN命令获取字符串长度，也就是占用的内存空间字节数</p>
+<p>对于集合类型来说可以使用MEMORY USAGE命令，查询有关键值对占用的内存空间</p>
+<h3 id="使用RdbTools"><a href="#使用RdbTools" class="headerlink" title="使用RdbTools"></a>使用RdbTools</h3><p>使用第三方开源工具，可以解析Redis快照，找到其中的大key</p>
+<h2 id="删除大key"><a href="#删除大key" class="headerlink" title="删除大key"></a>删除大key</h2><h3 id="分批次删除"><a href="#分批次删除" class="headerlink" title="分批次删除"></a>分批次删除</h3><p>使用SCAN扫描key，比如删除Hash，先取100字段删除删除再取</p>
+<h3 id="异步删除"><a href="#异步删除" class="headerlink" title="异步删除"></a>异步删除</h3><p>在Redis4.0版本开始，可以采用异步删除法用unlink命令代替del删除</p>
+<p>这样Redis会将这个key放入到一个异步线程中进行删除，这样不会阻塞主线程</p>
+<h3 id="被动删除"><a href="#被动删除" class="headerlink" title="被动删除"></a>被动删除</h3><p>前面两种都是主动删除，这一种是通过配置参数，当认为需要删除的时候就删除了</p>
+<ul>
+<li>lazyfree-lazy-eviction：表示当 Redis 运行内存超过 maxmeory 时，是否开启 lazy free 机制删除；</li>
+<li>lazyfree-lazy-expire：表示设置了过期时间的键值，当过期之后是否开启 lazy free 机制删除；</li>
+<li>lazyfree-lazy-server-del：有些指令在处理已存在的键时，会带有一个隐式的 del 键的操作，比如 rename 命令，当目标键已存在，Redis 会先删除目标键，如果这些目标键是一个 big key，就会造成阻塞删除的问题，此配置表示在这种场景中是否开启 lazy free 机制删除；</li>
+<li>slave-lazy-flush：针对 slave (从节点) 进行全量数据同步，slave 在加载 master 的 RDB 文件前，会运行 flushall 来清理自己的数据，它表示此时是否开启 lazy free 机制删除。</li>
+</ul>
+<p>建议开启其中的 lazyfree-lazy-eviction、lazyfree-lazy-expire、lazyfree-lazy-server-del 等配置，这样就可以有效的提高主线程的执行效率</p>
+<h2 id="如何避免大key"><a href="#如何避免大key" class="headerlink" title="如何避免大key"></a>如何避免大key</h2><ol>
+<li><strong>对大key进行拆分</strong></li>
+</ol>
+<p>将一个Big Key拆分为多个key-value这样的小Key，并确保每个key的成员数量或者大小在合理范围内，然后再进行存储，通过get不同的key或者使用mget批量获取。</p>
+<ol start="2">
+<li><strong>对大key进行清理</strong></li>
+</ol>
+<p>对Redis中的大Key进行清理，从Redis中删除此类数据。Redis自4.0起提供了UNLINK命令，该命令能够以非阻塞的方式缓慢逐步的清理传入的Key，通过UNLINK，你可以安全的删除大Key甚至特大Key</p>
+<ol start="3">
+<li><strong>监控Redis内存、网络带宽、超时等指标</strong></li>
+</ol>
+<p>通过监控系统并设置合理的Redis内存报警阈值来提醒我们此时可能有大Key正在产生，如：Redis内存使用率超过70%，Redis内存1小时内增长率超过20%等。</p>
+<ol start="4">
+<li><strong>压缩value</strong></li>
+</ol>
+<p>使用序列化、压缩算法将key的大小控制在合理范围内，但是需要注意序列化、反序列化都会带来一定的消耗。如果压缩后，value还是很大，那么可以进一步对key进行拆分。</p>
 
                 
             </div>
@@ -481,7 +425,7 @@ TBM中的文件其实是一个固定大小的文件，因为他保存的只是�
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://cn-lixiaobo.github.io/2022/11/06/muzidb-shu-ju-ku-8-tbm-yi-ji-ke-hu-duan-yu-fu-wu-duan-tong-xin/">http://cn-lixiaobo.github.io/2022/11/06/muzidb-shu-ju-ku-8-tbm-yi-ji-ke-hu-duan-yu-fu-wu-duan-tong-xin/</a>
+                    <a href="http://cn-lixiaobo.github.io/2022/04/25/redis-zhong-de-da-key-jie-jue-ce-lue/">http://cn-lixiaobo.github.io/2022/04/25/redis-zhong-de-da-key-jie-jue-ce-lue/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -519,8 +463,8 @@ TBM中的文件其实是一个固定大小的文件，因为他保存的只是�
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/MuziDB/">
-                                    <span class="chip bg-color">MuziDB</span>
+                                <a href="/tags/%E5%A4%A7key/">
+                                    <span class="chip bg-color">大key</span>
                                 </a>
                             
                         </div>
@@ -599,18 +543,17 @@ TBM中的文件其实是一个固定大小的文件，因为他保存的只是�
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;本篇
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2022/11/06/muzidb-shu-ju-ku-8-tbm-yi-ji-ke-hu-duan-yu-fu-wu-duan-tong-xin/">
+                <a href="/2022/05/20/pai-xu-suan-fa/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="MuziDB数据库—8.TBM以及客户端与服务端通信">
+                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="排序算法">
                         
-                        <span class="card-title">MuziDB数据库—8.TBM以及客户端与服务端通信</span>
+                        <span class="card-title">排序算法</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -620,27 +563,26 @@ TBM中的文件其实是一个固定大小的文件，因为他保存的只是�
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-11-06
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-05-20
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E4%BC%98%E8%B4%A8%E9%A1%B9%E7%9B%AE/" class="post-category">
-                                    优质项目
+                            <a href="/categories/%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/" class="post-category">
+                                    常见算法
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/MuziDB/">
-                        <span class="chip bg-color">MuziDB</span>
+                    <a href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">
+                        <span class="chip bg-color">排序算法</span>
                     </a>
                     
                 </div>
@@ -654,13 +596,13 @@ TBM中的文件其实是一个固定大小的文件，因为他保存的只是�
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/11/06/muzidb-shu-ju-ku-7-im-de-shi-xian/">
+                <a href="/2022/02/04/xss-gong-ji-yu-yu-fang/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="MuziDB数据库—7.IM的实现">
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="XSS攻击与预防">
                         
-                        <span class="card-title">MuziDB数据库—7.IM的实现</span>
+                        <span class="card-title">XSS攻击与预防</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -671,14 +613,14 @@ TBM中的文件其实是一个固定大小的文件，因为他保存的只是�
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-11-06
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-02-04
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E4%BC%98%E8%B4%A8%E9%A1%B9%E7%9B%AE/" class="post-category">
-                                    优质项目
+                            <a href="/categories/%E8%AE%A1%E7%BD%91/" class="post-category">
+                                    计网
                                 </a>
                             
                             
@@ -688,8 +630,8 @@ TBM中的文件其实是一个固定大小的文件，因为他保存的只是�
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/MuziDB/">
-                        <span class="chip bg-color">MuziDB</span>
+                    <a href="/tags/XSS/">
+                        <span class="chip bg-color">XSS</span>
                     </a>
                     
                 </div>
