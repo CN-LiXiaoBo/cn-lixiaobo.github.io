@@ -4,9 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="CSRF理解与预防, 才疏学浅的木子">
-    <meta name="description" content="CSRF
-CSRF即跨站请求攻击。简单来说是攻击者通过一些技术手段欺骗用户浏览器去访问一个自己以前认证过的站点并运行一些操作，因为浏览器之前认证过，所以被访问的站点会觉得这是真正的用户操作。这就利用了web用户身份认证的一个漏洞：简单的身份">
+    <meta name="keywords" content="标签: 锁, 才疏学浅的木子">
+    <meta name="description" content="才疏学浅的木子">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -18,7 +17,7 @@ CSRF即跨站请求攻击。简单来说是攻击者通过一些技术手段欺�
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>CSRF理解与预防 | 才疏学浅的木子</title>
+    <title>标签: 锁 | 才疏学浅的木子</title>
     <link rel="icon" type="image/png" href="/favicon1.png">
     
 
@@ -269,486 +268,335 @@ CSRF即跨站请求攻击。简单来说是攻击者通过一些技术手段欺�
 
 </header>
 
-    
-
-
-
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
-    <div class="container" style="right: 0px;left: 0px;">
-        <div class="row">
-            <div class="col s12 m12 l12">
-                <div class="brand">
-                    <h1 class="description center-align post-title">CSRF理解与预防</h1>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-
-<main class="post-container content">
-
-    
+    <div class="bg-cover pd-header about-cover">
+    <div class="container">
     <div class="row">
-    <div id="main-content" class="col s12 m12 l9">
-        <!-- 文章内容详情 -->
-<div id="artDetail">
+    <div class="col s10 offset-s1 m8 offset-m2 l8 offset-l2">
+        <div class="brand">
+            <div class="title center-align">
+                
+                CN-LiXiaoBo
+                
+            </div>
+
+            <div class="description center-align">
+                
+                <span id="subtitle"></span>
+                <script src="/libs/typed/typed.js"></script>
+                <script>
+                    var typed = new Typed("#subtitle", {
+                        strings: [ 
+                            
+                                "从来没有真正的绝境, 只有心灵的迷途",
+                            
+                                "Never really desperate, only the lost of the soul",
+                            
+                        ],
+                        startDelay: 300,
+                        typeSpeed: 100,
+                        loop: true,
+                        backSpeed: 50,
+                        showCursor: true
+                    });
+                </script>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    // 每天切换 banner 图.  Switch banner image every day.
+    var bannerUrl = "/medias/banner/" + new Date().getDay() + '.jpg';
+    $('.bg-cover').css('background-image', 'url(' + bannerUrl + ')');
+</script>
+
+
+    </div>
+</div>
+
+<main class="content">
+
+    
+
+<div id="tags" class="container chip-container">
     <div class="card">
-        <div class="card-content article-info">
-            <div class="row tag-cate">
-                <div class="col s7">
-                    
-                    <div class="article-tag">
-                        
-                            <a href="/tags/CSRF/">
-                                <span class="chip bg-color">CSRF</span>
-                            </a>
-                        
-                    </div>
-                    
-                </div>
-                <div class="col s5 right-align">
-                    
-                    <div class="post-cate">
-                        <i class="fas fa-bookmark fa-fw icon-category"></i>
-                        
-                            <a href="/categories/%E8%AE%A1%E7%BD%91/" class="post-category">
-                                计网
-                            </a>
-                        
-                    </div>
-                    
-                </div>
+        <div class="card-content">
+            <div class="tag-title center-align">
+                <i class="fas fa-tags"></i>&nbsp;&nbsp;文章标签
             </div>
-
-            <div class="post-info">
+            <div class="tag-chips">
                 
-                <div class="post-date info-break-policy">
-                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-02-03
-                </div>
                 
-
+                <a href="/tags/Bean/" title="Bean: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="Bean" style="background-color: #F9EBEA;">Bean
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
                 
-
                 
-                <div class="info-break-policy">
-                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    461
-                </div>
+                <a href="/tags/BlockingQueue/" title="BlockingQueue: 2">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="BlockingQueue" style="background-color: #F5EEF8;">BlockingQueue
+                        <span class="tag-length">2</span>
+                    </span>
+                </a>
                 
-
                 
-
+                <a href="/tags/CSRF/" title="CSRF: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="CSRF" style="background-color: #D5F5E3;">CSRF
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/DNS/" title="DNS: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="DNS" style="background-color: #E8F8F5;">DNS
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/Cookie/" title="Cookie: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="Cookie" style="background-color: #FEF9E7;">Cookie
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/Session/" title="Session: 2">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="Session" style="background-color: #F8F9F9;">Session
+                        <span class="tag-length">2</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/Token/" title="Token: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="Token" style="background-color: #82E0AA;">Token
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/%E6%BA%90%E7%A0%81/" title="源码: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="源码" style="background-color: #D7BDE2;">源码
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/MuziDB/" title="MuziDB: 9">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="MuziDB" style="background-color: #A3E4D7;">MuziDB
+                        <span class="tag-length">9</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/%E6%8C%81%E4%B9%85%E5%8C%96/" title="持久化: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="持久化" style="background-color: #85C1E9;">持久化
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/%E9%9D%A2%E8%AF%95/" title="面试: 5">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="面试" style="background-color: #F8C471;">面试
+                        <span class="tag-length">5</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/%E5%8F%82%E6%95%B0%E6%A0%A1%E9%AA%8C/" title="参数校验: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="参数校验" style="background-color: #F9E79F;">参数校验
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B/" title="执行流程: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="执行流程" style="background-color: #F8C471;">执行流程
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/TCP/" title="TCP: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="TCP" style="background-color: #82E0AA;">TCP
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/XSS/" title="XSS: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="XSS" style="background-color: #D7BDE2;">XSS
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/%E7%83%AD%E7%82%B9%E7%BC%93%E5%AD%98/" title="热点缓存: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="热点缓存" style="background-color: #F5EEF8;">热点缓存
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/" title="动态代理: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="动态代理" style="background-color: #F5EEF8;">动态代理
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/%E5%93%A8%E5%85%B5%E9%9B%86%E7%BE%A4/" title="哨兵集群: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="哨兵集群" style="background-color: #F9E79F;">哨兵集群
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/IO%E6%A8%A1%E5%9E%8B/" title="IO模型: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="IO模型" style="background-color: #F8F9F9;">IO模型
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/SQL%E4%BC%98%E5%8C%96/" title="SQL优化: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="SQL优化" style="background-color: #E8F8F5;">SQL优化
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" title="排序算法: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="排序算法" style="background-color: #F5EEF8;">排序算法
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" title="多线程: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="多线程" style="background-color: #FEF9E7;">多线程
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/%E7%B4%A2%E5%BC%95/" title="索引: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="索引" style="background-color: #D5F5E3;">索引
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/%E7%BC%93%E5%AD%98/" title="缓存: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="缓存" style="background-color: #85C1E9;">缓存
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/%E9%94%81/" title="锁: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-active "
+                            data-tagname="锁" style="background-color: #E8F8F5;">锁
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
                 
             </div>
         </div>
-        <hr class="clearfix">
-
-        
-
-        
-
-        <div class="card-content article-card-content">
-            <div id="articleContent">
-                <h2 id="CSRF"><a href="#CSRF" class="headerlink" title="CSRF"></a>CSRF</h2><blockquote>
-<p>CSRF即跨站请求攻击。简单来说是<strong>攻击者通过一些技术手段欺骗用户浏览器去访问一个自己以前认证过的站点并运行一些操作</strong>，因为浏览器之前认证过，所以被访问的站点会觉得这是真正的用户操作。<br>这就利用了web用户身份认证的一个漏洞：简单的身份验证仅仅能保证请求发自某个用户的浏览器，却不能保证请求本身是用户自愿发出的<br>简单来说：<strong>CSRF就是攻击者盗用了你的身份，以你的名义发送恶意请求</strong></p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/10c366121a494ac6b28397e564aa74a8.png" alt="在这里插入图片描述"></p>
-<blockquote>
-<p><strong>必要条件</strong><br><br><br>登录受信任网站A，并在本地生成Cookie<br>在不登出A的情况下，访问危险网站B</p>
-</blockquote>
-<h2 id="CSRF代码演示-简单基于Get方式"><a href="#CSRF代码演示-简单基于Get方式" class="headerlink" title="CSRF代码演示(简单基于Get方式)"></a>CSRF代码演示(简单基于Get方式)</h2><blockquote>
-<p><strong>在127.0.0.1:8080服务器下</strong></p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/e1019fc4251a4dc2a54f596d319ee49d.png" alt="在这里插入图片描述"></p>
-<blockquote>
-<p>没有登录不能进行转账</p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/7eefd545d4574c98a43a9343add65882.png" alt="在这里插入图片描述"></p>
-<blockquote>
-<p>登录成功</p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/cbf43fc7685f44c7929025e16b3cb8df.png" alt="在这里插入图片描述"></p>
-<blockquote>
-<p>可以转账</p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/ec0a54569b954057a12dcaa6d9f432c2.png" alt="在这里插入图片描述"></p>
-<blockquote>
-<p><strong>在127.0.0.1:5000服务器下</strong></p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/aaa1f8006f3c4cfd922fa0c73570e3fe.png" alt="在这里插入图片描述"></p>
-<p><img src="https://img-blog.csdnimg.cn/4a2e8ac8b80f4ae7b671ea9295d182eb.png" alt="在这里插入图片描述"></p>
-<blockquote>
-<p>访问网站的时候请求了127.0.0.1:8080服务器下的trans</p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/a1c74c5d8ef54cdc904f37cb1d85b1c4.png" alt="在这里插入图片描述"></p>
-<h2 id="CSRF预防"><a href="#CSRF预防" class="headerlink" title="CSRF预防"></a>CSRF预防</h2><p><strong>提交验证码</strong></p>
-<blockquote>
-<p>在表单添加一个随机数字或验证码，通过强制用户与应用交互来有效遏制CSR攻击</p>
-</blockquote>
-<p><strong>Referer/Origin Check</strong></p>
-<blockquote>
-<p>在http请求头中有个字段为referer，如果是在正常站点A访问那么referer就是A，如果在恶意请求站点B中去请求A那么referer就是B，所以可以判断是否正常页面进来<br>但是referer可能可以被修改<br>Origin与Referer相比他不包含路径信息比如Referer是A/test所以Origin就是A</p>
-</blockquote>
-<p><strong>HTTP头中自定义属性并验证</strong></p>
-<blockquote>
-<p>因为CSRF是利用cookie来攻击的，当我们定义一个HTTP头部属性时候，这个B中的A请求就没有这个Header属性所以可以预防</p>
-</blockquote>
-
-                
-            </div>
-            <hr/>
-
-            
-
-    <div class="reprint" id="reprint-statement">
-        
-            <div class="reprint__author">
-                <span class="reprint-meta" style="font-weight: bold;">
-                    <i class="fas fa-user">
-                        文章作者:
-                    </i>
-                </span>
-                <span class="reprint-info">
-                    <a href="/about" rel="external nofollow noreferrer">才疏学浅的木子</a>
-                </span>
-            </div>
-            <div class="reprint__type">
-                <span class="reprint-meta" style="font-weight: bold;">
-                    <i class="fas fa-link">
-                        文章链接:
-                    </i>
-                </span>
-                <span class="reprint-info">
-                    <a href="http://cn-lixiaobo.github.io/2022/02/03/csrf-li-jie-yu-yu-fang/">http://cn-lixiaobo.github.io/2022/02/03/csrf-li-jie-yu-yu-fang/</a>
-                </span>
-            </div>
-            <div class="reprint__notice">
-                <span class="reprint-meta" style="font-weight: bold;">
-                    <i class="fas fa-copyright">
-                        版权声明:
-                    </i>
-                </span>
-                <span class="reprint-info">
-                    本博客所有文章除特別声明外，均采用
-                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
-                    许可协议。转载请注明来源
-                    <a href="/about" target="_blank">才疏学浅的木子</a>
-                    !
-                </span>
-            </div>
-        
     </div>
+</div>
 
-    <script async defer>
-      document.addEventListener("copy", function (e) {
-        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
-        M.toast({html: toastHTML})
-      });
+    
 
-      function navToReprintStatement() {
-        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
-      }
-    </script>
-
-
-
-            <div class="tag_share" style="display: block;">
-                <div class="post-meta__tag-list" style="display: inline-block;">
-                    
-                        <div class="article-tag">
+    <article id="articles" class="container articles">
+        <div class="row tags-posts">
+            
+            
+            <div class="article tag-post col s12 m6 l4" data-tags="锁" data-aos="fade-up">
+                <div class="card">
+                    <a href="/2022/09/07/park-yu-unpark/">
+                        <div class="card-image tag-image">
                             
-                                <a href="/tags/CSRF/">
-                                    <span class="chip bg-color">CSRF</span>
-                                </a>
                             
+                            <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="park与unpark">
+                            
+                            <span class="card-title">park与unpark</span>
                         </div>
-                    
-                </div>
-                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
-                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
-<div id="article-share">
-
-    
-    <div class="social-share" data-sites="qq,wechat" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
-    <script src="/libs/share/js/social-share.min.js"></script>
-    
-
-    
-
-</div>
-
-                </div>
-            </div>
-            
-                <div id="reward">
-    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
-
-    <!-- Modal Structure -->
-    <div id="rewardModal" class="modal">
-        <div class="modal-content">
-            <a class="close modal-close"><i class="fas fa-times"></i></a>
-            <h4 class="reward-title">你的赏识是我前进的动力</h4>
-            <div class="reward-content">
-                <div class="reward-tabs">
-                    <ul class="tabs row">
-                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
-                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
-                    </ul>
-                    <div id="alipay">
-                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
-                    </div>
-                    <div id="wechat">
-                        <img src="/medias/reward/wechat.jpg" class="reward-img" alt="微信打赏二维码">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    $(function () {
-        $('.tabs').tabs();
-    });
-</script>
-
-            
-        </div>
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-<article id="prenext-posts" class="prev-next articles">
-    <div class="row article-row">
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
-            <div class="card">
-                <a href="/2022/02/03/springboot-can-shu-xiao-yan/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="SpringBoot参数校验">
-                        
-                        <span class="card-title">SpringBoot参数校验</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-02-03
-                        </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/SpringBoot/" class="post-category">
-                                    SpringBoot
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/%E5%8F%82%E6%95%B0%E6%A0%A1%E9%AA%8C/">
-                        <span class="chip bg-color">参数校验</span>
                     </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                本篇&nbsp;<i class="far fa-dot-circle"></i>
-            </div>
-            <div class="card">
-                <a href="/2022/02/03/csrf-li-jie-yu-yu-fang/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="CSRF理解与预防">
-                        
-                        <span class="card-title">CSRF理解与预防</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
+                    <div class="card-content article-content">
+                        <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-02-03
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-09-07
                             </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/%E8%AE%A1%E7%BD%91/" class="post-category">
-                                    计网
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/Java/" class="post-category">
+                                Java
                                 </a>
-                            
-                            
-                        </span>
+                                
+                                
+                            </span>
+                        </div>
                     </div>
                 </div>
-
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/CSRF/">
-                        <span class="chip bg-color">CSRF</span>
-                    </a>
-                    
-                </div>
-                
             </div>
+            
         </div>
-        
-    </div>
-</article>
-
-</div>
-
-
-
-<!-- 代码块功能依赖 -->
-<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
-
-
-
-<!-- 代码语言 -->
-
-<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
-
-
-<!-- 代码块复制 -->
-
-<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
-
-
-<!-- 代码块收缩 -->
-
-<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
-
-
-
-    </div>
-    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
-        <div class="toc-widget card" style="background-color: white;">
-            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
-            <div id="toc-content"></div>
-        </div>
-    </div>
-</div>
-
-<!-- TOC 悬浮按钮. -->
-
-<div id="floating-toc-btn" class="hide-on-med-and-down">
-    <a class="btn-floating btn-large bg-color">
-        <i class="fas fa-list-ul"></i>
-    </a>
-</div>
-
-
-<script src="/libs/tocbot/tocbot.min.js"></script>
-<script>
-    $(function () {
-        tocbot.init({
-            tocSelector: '#toc-content',
-            contentSelector: '#articleContent',
-            headingsOffset: -($(window).height() * 0.4 - 45),
-            collapseDepth: Number('0'),
-            headingSelector: 'h2, h3, h4'
-        });
-
-        // Set scroll toc fixed.
-        let tocHeight = parseInt($(window).height() * 0.4 - 64);
-        let $tocWidget = $('.toc-widget');
-        $(window).scroll(function () {
-            let scroll = $(window).scrollTop();
-            /* add post toc fixed. */
-            if (scroll > tocHeight) {
-                $tocWidget.addClass('toc-fixed');
-            } else {
-                $tocWidget.removeClass('toc-fixed');
-            }
-        });
-
-        
-        /* 修复文章卡片 div 的宽度. */
-        let fixPostCardWidth = function (srcId, targetId) {
-            let srcDiv = $('#' + srcId);
-            if (srcDiv.length === 0) {
-                return;
-            }
-
-            let w = srcDiv.width();
-            if (w >= 450) {
-                w = w + 21;
-            } else if (w >= 350 && w < 450) {
-                w = w + 18;
-            } else if (w >= 300 && w < 350) {
-                w = w + 16;
-            } else {
-                w = w + 14;
-            }
-            $('#' + targetId).width(w);
-        };
-
-        // 切换TOC目录展开收缩的相关操作.
-        const expandedClass = 'expanded';
-        let $tocAside = $('#toc-aside');
-        let $mainContent = $('#main-content');
-        $('#floating-toc-btn .btn-floating').click(function () {
-            if ($tocAside.hasClass(expandedClass)) {
-                $tocAside.removeClass(expandedClass).hide();
-                $mainContent.removeClass('l9');
-            } else {
-                $tocAside.addClass(expandedClass).show();
-                $mainContent.addClass('l9');
-            }
-            fixPostCardWidth('artDetail', 'prenext-posts');
-        });
-        
-    });
-</script>
-
-    
-
+    </article>
 </main>
 
 
