@@ -4,17 +4,9 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="DNS查询流程, 才疏学浅的木子">
-    <meta name="description" content="查询服务器域名对应的IP地址其中域名的层级关系类似于一个树状结构
-
-根DNS服务器(.)
-顶级域名服务器(.com)
-权威DNS服务器(server.com)
-
-
-域名解析工作流程
-
-1. 客户端发起一个DNS请求，先查看本地浏览器是否有这">
+    <meta name="keywords" content="进程与线程, 才疏学浅的木子">
+    <meta name="description" content="进程与线程进程是计算机中一个独立的执行单位，它是操作系统分配资源和调度的基本单位，每个进程都有自己的内存空间，互相之间不会影响
+线程是进程中的一个执行流，是CPU调度和分派的基本单位，它是比进程更小的执行单元，线程可以理解为进程中的一条执行">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -26,7 +18,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>DNS查询流程 | 才疏学浅的木子</title>
+    <title>进程与线程 | 才疏学浅的木子</title>
     <link rel="icon" type="image/png" href="/favicon1.png">
     
 
@@ -281,12 +273,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">DNS查询流程</h1>
+                    <h1 class="description center-align post-title">进程与线程</h1>
                 </div>
             </div>
         </div>
@@ -310,8 +302,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/DNS/">
-                                <span class="chip bg-color">DNS</span>
+                            <a href="/tags/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B/">
+                                <span class="chip bg-color">进程与线程</span>
                             </a>
                         
                     </div>
@@ -322,8 +314,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E8%AE%A1%E7%BD%91/" class="post-category">
-                                计网
+                            <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-category">
+                                操作系统
                             </a>
                         
                     </div>
@@ -335,7 +327,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-10-05
+                    2022-04-15
                 </div>
                 
 
@@ -344,7 +336,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    366
+                    1.4k
                 </div>
                 
 
@@ -361,20 +353,41 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>查询服务器域名对应的IP地址<br>其中域名的层级关系类似于一个树状结构</p>
-<ul>
-<li>根DNS服务器(.)</li>
-<li>顶级域名服务器(.com)</li>
-<li>权威DNS服务器(server.com)</li>
-</ul>
-<p><img src="https://img-blog.csdnimg.cn/b245b4ca07494033aad56103c92e90c2.png" alt="在这里插入图片描述"></p>
-<p><strong>域名解析工作流程</strong><br><img src="https://img-blog.csdnimg.cn/63fb956ff3504d7a8d069e9bc5f1fc17.png" alt="在这里插入图片描述"></p>
-<blockquote>
-<p><strong>1. 客户端发起一个DNS请求，先查看本地浏览器是否有这个域名的缓存，有解析结束<br>2. 没有则去看操作系统是否有缓存，有解析结束<br>3. 没有则去看本地host文件，有解析结束<br>4. 没有则发送该请求到本地DNS服务器，如果本地DNS服务器存在则返回<br>5. 不存在本地DNS服务器则请求根域名服务器，比如请求”<a target="_blank" rel="noopener" href="http://www.baidu.com&quot;,根域名服务器告诉本地dns/">www.baidu.com&quot;，根域名服务器告诉本地DNS</a> “.com” 顶级域名服务器的位置<br>6. 本地DNS服务器收到顶级域名服务器位置后则向顶级域名服务器请求”<a target="_blank" rel="noopener" href="http://www.baidu.com&quot;的ip地址,顶级域名服务器收到后则告诉本地dns服务器&quot;www.baidu.com&quot;的权威域名服务器地址/">www.baidu.com&quot;的IP地址，顶级域名服务器收到后则告诉本地DNS服务器&quot;www.baidu.com&quot;的权威域名服务器地址</a><br>7. 本地DNS服务器再向权威DNS服务器发起请求，权威DNS服务器查询后将对应的IP地址告诉本地DNS<br>8. 本地DNS服务器缓存该域名与对应IP然后返回IP给客户端<br>9. 浏览器根据TTL缓存该值</strong></p>
-</blockquote>
-<blockquote>
-<p><strong>注意：其中1-4为递归查询，5-7为迭代查询</strong></p>
-</blockquote>
+                <h2 id="进程与线程"><a href="#进程与线程" class="headerlink" title="进程与线程"></a>进程与线程</h2><p>进程是计算机中一个独立的执行单位，它是操作系统分配资源和调度的基本单位，每个进程都有自己的内存空间，互相之间不会影响</p>
+<p>线程是进程中的一个执行流，是CPU调度和分派的基本单位，它是比进程更小的执行单元，线程可以理解为进程中的一条执行路径。线程被包括在进程之中，是进程中实际的运作单位，一个进程中可以包含多个线程，每个线程可以并行执行</p>
+<p>总的来说，进程和线程的主要区别在于它们是不同层次上的操作系统结构，进程是较大的执行单元，线程是较小的执行单元。进程拥有独立的内存空间，线程只能访问进程所拥有的内存空间。进程之间相互独立，线程之间可以共享数据。</p>
+<p><strong>根本区别</strong>：进程是操作系统资源分配的基本单位，而线程是处理器任务调度和执行的基本单位</p>
+<p><strong>资源开销</strong>：每个进程都有独立的代码和数据空间（程序上下文），程序之间的切换会有较大的开销；线程可以看做轻量级的进程，同一类线程共享代码和数据空间，每个线程都有自己独立的运行栈和程序计数器（PC），线程之间切换的开销小。</p>
+<p><strong>包含关系</strong>：如果一个进程内有多个线程，则执行过程不是一条线的，而是多条线（线程）共同完成的；线程是进程的一部分，所以线程也被称为轻权进程或者轻量级进程。</p>
+<p><strong>内存分配</strong>：同一进程的线程共享本进程的地址空间和资源，而进程之间的地址空间和资源是相互独立的</p>
+<p><strong>影响关系</strong>：一个进程崩溃后，在保护模式下不会对其他进程产生影响，但是一个线程崩溃整个进程都死掉。所以多进程要比多线程健壮。</p>
+<p><strong>执行过程</strong>：每个独立的进程有程序运行的入口、顺序执行序列和程序出口。但是线程不能独立执行，必须依存在应用程序中，由应用程序提供多个线程执行控制，两者均可并发执行</p>
+<p><img src="https://img-blog.csdnimg.cn/0353b48023bc426db6d72bdc08b6a82a.png" alt="在这里插入图片描述"></p>
+<h2 id="进程切换"><a href="#进程切换" class="headerlink" title="进程切换"></a>进程切换</h2><p>进程切换的详细步骤</p>
+<ol>
+<li>保存当前进程的上下文信息，包括寄存器值、程序计数器、栈指针等，这些信息用于在将来恢复进程的执行，这些信息保存到PCB中</li>
+<li>将当前进程的状态改为暂停状态，并将其放入就绪队列中等待调度</li>
+<li>通过一定的调度算法从就绪队列中选择一个待执行的进程</li>
+<li>读取新进程的上下文信息</li>
+<li>开始执行新进程  <h3 id="高级调度"><a href="#高级调度" class="headerlink" title="高级调度"></a>高级调度</h3><img src="https://img-blog.csdnimg.cn/a7aee5d96ca3497a92b66487c77245b1.png" alt="在这里插入图片描述"><h3 id="中级调度"><a href="#中级调度" class="headerlink" title="中级调度"></a>中级调度</h3><img src="https://img-blog.csdnimg.cn/d31dfc6805e440919f3873a2afebc087.png" alt="在这里插入图片描述"></li>
+</ol>
+<h3 id="进程的挂起与七状态模型"><a href="#进程的挂起与七状态模型" class="headerlink" title="进程的挂起与七状态模型"></a>进程的挂起与七状态模型</h3><p><img src="https://img-blog.csdnimg.cn/02531431f4254e92bd24c5a718bcdfc7.png" alt="在这里插入图片描述"></p>
+<h3 id="低级调度"><a href="#低级调度" class="headerlink" title="低级调度"></a>低级调度</h3><p><img src="https://img-blog.csdnimg.cn/e8208dfbbb874e15b648330d4155b564.png" alt="在这里插入图片描述"></p>
+<h2 id="进程调度算法"><a href="#进程调度算法" class="headerlink" title="进程调度算法"></a>进程调度算法</h2><h3 id="先来先服务-first-come-first-serverd（FCFS）"><a href="#先来先服务-first-come-first-serverd（FCFS）" class="headerlink" title="先来先服务 first-come first-serverd（FCFS）"></a>先来先服务 first-come first-serverd（FCFS）</h3><p>非抢占式的调度算法，按照请求的顺序进行调度。</p>
+<p>有利于长作业，但不利于短作业，因为短作业必须一直等待前面的长作业执行完毕才能执行，而长作业又需要执行很长时间，造成了短作业等待时间过长。</p>
+<h3 id="短作业优先-shortest-job-first（SJF）"><a href="#短作业优先-shortest-job-first（SJF）" class="headerlink" title="短作业优先 shortest job first（SJF）"></a>短作业优先 shortest job first（SJF）</h3><p>非抢占式的调度算法，按估计运行时间最短的顺序进行调度。</p>
+<p>长作业有可能会饿死，处于一直等待短作业执行完毕的状态。因为如果一直有短作业到来，那么长作业永远得不到调度。</p>
+<h3 id="时间片轮转"><a href="#时间片轮转" class="headerlink" title="时间片轮转"></a>时间片轮转</h3><p>将所有就绪进程按 FCFS 的原则排成一个队列，每次调度时，把 CPU 时间分配给队首进程，该进程可以执行一个时间片。</p>
+<p>当时间片用完时，由计时器发出时钟中断，调度程序便停止该进程的执行，并将它送往就绪队列的末尾，同时继续把 CPU 时间分配给队首的进程。</p>
+<p>时间片轮转算法的效率和时间片的大小有很大关系：</p>
+<p>因为进程切换都要保存进程的信息并且载入新进程的信息，如果时间片太小，会导致进程切换得太频繁，在进程切换上就会花过多时间。<br>而如果时间片过长，那么实时性就不能得到保证。</p>
+<h3 id="优先级调度"><a href="#优先级调度" class="headerlink" title="优先级调度"></a>优先级调度</h3><p>为每个进程分配一个优先级，按优先级进行调度。</p>
+<p>为了防止低优先级的进程永远等不到调度，可以随着时间的推移增加等待进程的优先级。</p>
+<h3 id="多级反馈队列"><a href="#多级反馈队列" class="headerlink" title="多级反馈队列"></a>多级反馈队列</h3><p>一个进程需要执行 100 个时间片，如果采用时间片轮转调度算法，那么需要交换 100 次。</p>
+<p>多级队列是为这种需要连续执行多个时间片的进程考虑，它设置了多个队列，每个队列时间片大小都不同，例如 1,2,4,8,..。进程在第一个队列没执行完，就会被移到下一个队列。</p>
+<p>这种方式下，之前的进程只需要交换 7 次。每个队列优先权也不同，最上面的优先权最高。因此只有上一个队列没有进程在排队，才能调度当前队列上的进程。</p>
+<p>可以将这种调度算法看成是时间片轮转调度算法和优先级调度算法的结合</p>
+<p><img src="https://img-blog.csdnimg.cn/0df542629f7a49adb4b2fb47217f685c.png" alt="在这里插入图片描述"></p>
 
                 
             </div>
@@ -401,7 +414,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://cn-lixiaobo.github.io/2022/10/05/dns-cha-xun-liu-cheng/">http://cn-lixiaobo.github.io/2022/10/05/dns-cha-xun-liu-cheng/</a>
+                    <a href="http://cn-lixiaobo.github.io/2022/04/15/jin-cheng-yu-xian-cheng/">http://cn-lixiaobo.github.io/2022/04/15/jin-cheng-yu-xian-cheng/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -439,8 +452,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/DNS/">
-                                    <span class="chip bg-color">DNS</span>
+                                <a href="/tags/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B/">
+                                    <span class="chip bg-color">进程与线程</span>
                                 </a>
                             
                         </div>
@@ -523,13 +536,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2022/11/01/muzidb-shu-ju-ku-0-xiang-mu-miao-shu/">
+                <a href="/2022/04/25/redis-zhong-de-da-key-jie-jue-ce-lue/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="MuziDB数据库—0.项目描述">
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="Redis中的大key解决策略">
                         
-                        <span class="card-title">MuziDB数据库—0.项目描述</span>
+                        <span class="card-title">Redis中的大key解决策略</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -540,14 +553,14 @@
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-11-01
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-04-25
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E4%BC%98%E8%B4%A8%E9%A1%B9%E7%9B%AE/" class="post-category">
-                                    优质项目
+                            <a href="/categories/Redis/" class="post-category">
+                                    Redis
                                 </a>
                             
                             
@@ -557,8 +570,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/MuziDB/">
-                        <span class="chip bg-color">MuziDB</span>
+                    <a href="/tags/%E5%A4%A7key/">
+                        <span class="chip bg-color">大key</span>
                     </a>
                     
                 </div>
@@ -572,13 +585,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/10/03/cookie-session-token-qu-bie/">
+                <a href="/2022/02/04/xss-gong-ji-yu-yu-fang/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="Cookie、Session、Token区别">
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="XSS攻击与预防">
                         
-                        <span class="card-title">Cookie、Session、Token区别</span>
+                        <span class="card-title">XSS攻击与预防</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -589,7 +602,7 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-10-03
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-02-04
                             </span>
                         <span class="publish-author">
                             
@@ -606,16 +619,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Cookie/">
-                        <span class="chip bg-color">Cookie</span>
-                    </a>
-                    
-                    <a href="/tags/Session/">
-                        <span class="chip bg-color">Session</span>
-                    </a>
-                    
-                    <a href="/tags/Token/">
-                        <span class="chip bg-color">Token</span>
+                    <a href="/tags/XSS/">
+                        <span class="chip bg-color">XSS</span>
                     </a>
                     
                 </div>
