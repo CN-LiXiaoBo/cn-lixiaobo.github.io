@@ -818,6 +818,31 @@
     
     
     <entry>
+      <title>HashMap</title>
+      <link href="/2022/04/06/hashmap/"/>
+      <url>/2022/04/06/hashmap/</url>
+      
+        <content type="html"><![CDATA[<h2 id="底层数据结构，1-7与1-8有何区别"><a href="#底层数据结构，1-7与1-8有何区别" class="headerlink" title="底层数据结构，1.7与1.8有何区别"></a>底层数据结构，1.7与1.8有何区别</h2><p>1.7数组 + 链表<br>1.8 数组 + 链表 | 红黑树</p><h2 id="为何要用红黑树，为何一上来不树化，树化阈值为何是8，何时树化，何时退化为链表"><a href="#为何要用红黑树，为何一上来不树化，树化阈值为何是8，何时树化，何时退化为链表" class="headerlink" title="为何要用红黑树，为何一上来不树化，树化阈值为何是8，何时树化，何时退化为链表"></a>为何要用红黑树，为何一上来不树化，树化阈值为何是8，何时树化，何时退化为链表</h2><ol><li>红黑树是用来避免Dos攻击，防止链表超长时性能下降，树化应当是偶然情况<br>hash表的查找，更新的时间复杂度是o(1)，而红黑树的查找,更新的时间复杂度为o(log2n)并且占用空间也比Node大<br>hash值如果足够随机，则在hash表内按泊松分布在负载因子0.75的情况下，长度超过8的链表出现概率很小,选择8就是为了让树化几率足够小</li><li>树化的两个条件：链表长度超过树化阈值；数组容量&gt;=64</li><li>退化情况1：在扩容时如果拆分树，树元素个数&lt;=6则会退化链表</li><li>退化情况2：remove节点时,如果root、root.left、root.right、root.left.left有一个为null,也会退化为链表</li></ol><h2 id="索引如何计算"><a href="#索引如何计算" class="headerlink" title="索引如何计算"></a>索引如何计算</h2><p>计算HashMap中的hash()方法然后与(容量减一)做&amp;运算</p><h2 id="为啥要二次Hash"><a href="#为啥要二次Hash" class="headerlink" title="为啥要二次Hash"></a>为啥要二次Hash</h2><p>为了综合高位数据让哈希分布更加均匀</p><h2 id="容量为啥是2的n次幂"><a href="#容量为啥是2的n次幂" class="headerlink" title="容量为啥是2的n次幂"></a>容量为啥是2的n次幂</h2><p>计算下标比较快，直接采用&amp;运算<br>扩容时hash&amp;oldCap == 0的元素留在原来位置,否则新位置 = 旧位置 + oldCap</p><h2 id="1-7与1-8扩容区别"><a href="#1-7与1-8扩容区别" class="headerlink" title="1.7与1.8扩容区别"></a>1.7与1.8扩容区别</h2><p>1.7中是采用头插法，1.8采用尾插法</p><p>1.8中只要大于阈值就会扩容。1.7是大等于阈值且没有空位的时候就会扩容</p><h2 id="为什么加载因子是0-75"><a href="#为什么加载因子是0-75" class="headerlink" title="为什么加载因子是0.75"></a>为什么加载因子是0.75</h2><p>过小造成空间浪费，过大造成冲突增多</p><h2 id="多线程下会有啥问题"><a href="#多线程下会有啥问题" class="headerlink" title="多线程下会有啥问题"></a>多线程下会有啥问题</h2><p>扩容死链(1.7)<br>数据丢失(1.7,1.8)</p><h2 id="key是否可以为null"><a href="#key是否可以为null" class="headerlink" title="key是否可以为null"></a>key是否可以为null</h2><p>HashMap的key可以为null<br>同时key应该是不可变的</p><h2 id="如何将容量设置为2的n次方"><a href="#如何将容量设置为2的n次方" class="headerlink" title="如何将容量设置为2的n次方"></a>如何将容量设置为2的n次方</h2><pre class="line-numbers language-java"><code class="language-java">    <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">int</span> <span class="token function">tableSizeFor</span><span class="token punctuation">(</span><span class="token keyword">int</span> cap<span class="token punctuation">)</span> <span class="token punctuation">{</span>        <span class="token keyword">int</span> n <span class="token operator">=</span> cap <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span>        n <span class="token operator">|=</span> n <span class="token operator">>>></span> <span class="token number">1</span><span class="token punctuation">;</span>        n <span class="token operator">|=</span> n <span class="token operator">>>></span> <span class="token number">2</span><span class="token punctuation">;</span>        n <span class="token operator">|=</span> n <span class="token operator">>>></span> <span class="token number">4</span><span class="token punctuation">;</span>        n <span class="token operator">|=</span> n <span class="token operator">>>></span> <span class="token number">8</span><span class="token punctuation">;</span>        n <span class="token operator">|=</span> n <span class="token operator">>>></span> <span class="token number">16</span><span class="token punctuation">;</span>        <span class="token keyword">return</span> <span class="token punctuation">(</span>n <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token operator">?</span> <span class="token number">1</span> <span class="token operator">:</span> <span class="token punctuation">(</span>n <span class="token operator">>=</span> MAXIMUM_CAPACITY<span class="token punctuation">)</span> <span class="token operator">?</span> MAXIMUM_CAPACITY <span class="token operator">:</span> n <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>    <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p><img src="https://img-blog.csdnimg.cn/9545ae7c978a489d88bbde018727c37f.png" alt="在这里插入图片描述"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Java </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> HashMap </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>XSS攻击与预防</title>
       <link href="/2022/02/04/xss-gong-ji-yu-yu-fang/"/>
       <url>/2022/02/04/xss-gong-ji-yu-yu-fang/</url>
