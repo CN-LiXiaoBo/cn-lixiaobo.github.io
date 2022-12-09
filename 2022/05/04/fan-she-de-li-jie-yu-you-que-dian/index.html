@@ -4,11 +4,9 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="SpringMVC执行流程, 才疏学浅的木子">
-    <meta name="description" content="
-SpringMVC的流程
-整个过程开始于客户端发出的一个HTTP请求，Web应用服务器接收到这个请求。如果匹配DispatcherServlet的请求映射路径，则Web容器将该请求转交给DispatcherServlet处理。
-Dispa">
+    <meta name="keywords" content="反射的理解与优缺点, 才疏学浅的木子">
+    <meta name="description" content="什么是反射反射是在运行状态中，对于任意一个类，都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意一个方法和属性；这种动态获取的信息以及动态调用对象的方法的功能称为 Java 语言的反射机制
+反射的使用反射的创建：三种创建">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -20,7 +18,7 @@ Dispa">
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>SpringMVC执行流程 | 才疏学浅的木子</title>
+    <title>反射的理解与优缺点 | 才疏学浅的木子</title>
     <link rel="icon" type="image/png" href="/favicon1.png">
     
 
@@ -275,12 +273,12 @@ Dispa">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/20.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">SpringMVC执行流程</h1>
+                    <h1 class="description center-align post-title">反射的理解与优缺点</h1>
                 </div>
             </div>
         </div>
@@ -304,8 +302,8 @@ Dispa">
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B/">
-                                <span class="chip bg-color">执行流程</span>
+                            <a href="/tags/%E5%8F%8D%E5%B0%84/">
+                                <span class="chip bg-color">反射</span>
                             </a>
                         
                     </div>
@@ -316,8 +314,8 @@ Dispa">
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/SpringMVC/" class="post-category">
-                                SpringMVC
+                            <a href="/categories/Java/" class="post-category">
+                                Java
                             </a>
                         
                     </div>
@@ -329,7 +327,7 @@ Dispa">
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-07-13
+                    2022-05-04
                 </div>
                 
 
@@ -338,7 +336,7 @@ Dispa">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    552
+                    1.1k
                 </div>
                 
 
@@ -355,24 +353,106 @@ Dispa">
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p><img src="https://img-blog.csdnimg.cn/53aa66e68fd444e1874b90f90ec8421e.png" alt="在这里插入图片描述"></p>
-<h2 id="SpringMVC的流程"><a href="#SpringMVC的流程" class="headerlink" title="SpringMVC的流程"></a>SpringMVC的流程</h2><ol>
-<li>整个过程开始于客户端发出的一个HTTP请求，Web应用服务器接收到这个请求。如果匹配DispatcherServlet的请求映射路径，则Web容器将该请求转交给DispatcherServlet处理。</li>
-<li>DispatcherServlet接收到这个请求后，将根据请求的信息（包括URL、HTTP方法、请求报文头、请求参数、Cookie等）及HandlerMapping的配置找到处理请求的处理器（Handler）。可将HandlerMapping看做路由控制器，将Handler看做目标主机。值得注意的是，在Spring MVC中并没有定义一个Handler接口，实际上任何一个Object都可以成为请求处理器。</li>
-<li>当DispatcherServlet根据HandlerMapping得到对应当前请求的Handler后，通过HandlerAdapter对Handler进行封装，再以统一的适配器接口调用Handler。HandlerAdapter是Spring MVC框架级接口，顾名思义，HandlerAdapter是一个适配器，它用统一的接口对各种Handler方法进行调用。</li>
-<li>处理器完成业务逻 辑的处理后，将返回一个ModelAndView给DispatcherServlet，ModelAndView包含了视图逻辑名和模型数据信息。</li>
-<li>ModelAndView中包含的是“逻辑视图名”而非真正的视图对象，DispatcherServlet借由ViewResolver完成逻辑视图名到真实视图对象的解析工作。</li>
-<li>当得到真实的视图对象View后，DispatcherServlet就使用这个View对象对ModelAndView中的模型数据进行视图渲染。</li>
-<li>最终客户端得到的响应消息可能是一个普通的HTML页面，也可能是一个XML或JSON串，甚至是一张图片或一个PDF文档等不同的媒体形式。</li>
+                <h2 id="什么是反射"><a href="#什么是反射" class="headerlink" title="什么是反射"></a>什么是反射</h2><p>反射是在运行状态中，对于任意一个类，都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意一个方法和属性；这种动态获取的信息以及动态调用对象的方法的功能称为 Java 语言的反射机制</p>
+<h2 id="反射的使用"><a href="#反射的使用" class="headerlink" title="反射的使用"></a>反射的使用</h2><h3 id="反射的创建：三种创建方式"><a href="#反射的创建：三种创建方式" class="headerlink" title="反射的创建：三种创建方式"></a>反射的创建：三种创建方式</h3><ol>
+<li>通过类名创建。                                                         <strong>类名.class</strong></li>
+<li>通过对象名 使用getClass（）方法创建。                 <strong>对象.getClass()</strong></li>
+<li>通过使用forName方法创建。                                    <strong>Class.forName(“类全名”)</strong></li>
 </ol>
-<h2 id="SpringMVC中重要组件"><a href="#SpringMVC中重要组件" class="headerlink" title="SpringMVC中重要组件"></a>SpringMVC中重要组件</h2><ul>
-<li>前端控制器 DispatcherServlet：接收请求、响应结果，相当于转发器，有了 DispatcherServlet 就减少了其它组件之间的耦合度</li>
-<li>处理器映射器 HandlerMapping：根据请求的 URL 来查找 Handler</li>
-<li>处理器适配器 HandlerAdapter：负责执行 Handler</li>
-<li>处理器 Handler：处理业务逻辑的 Java 类（我们自己写的 Controller 类）</li>
-<li>视图解析器 ViewResolver：进行视图的解析，根据视图逻辑名将 ModelAndView 解析成真正的视图（view） </li>
-<li>视图 View：View 是一个接口， 它的实现类支持不同的视图类型，如 jsp，freemarker， pdf 等</li>
-</ul>
+<h3 id="反射对类中各个属性方法的使用"><a href="#反射对类中各个属性方法的使用" class="headerlink" title="反射对类中各个属性方法的使用"></a>反射对类中各个属性方法的使用</h3><p>成员变量Field（Field[ ]）、成员方法Method(Method[ ])、构造方法Construction(Construction[ ])</p>
+<h3 id="反射获取构造方法（构造器）"><a href="#反射获取构造方法（构造器）" class="headerlink" title="反射获取构造方法（构造器）"></a>反射获取构造方法（构造器）</h3><ol>
+<li>Constructor&lt;?&gt;[ ] getConstructors()：返回public修饰的所有构造方法对象的数组（也会获取父类的）</li>
+<li>Constructor<T> getConstructor(Class&lt;?&gt;… parameterTypes)：返回public修饰的单个构造方法对象<br>Declared（声明，即为自己定义的）parameter（变量）</T></li>
+<li>Constructor&lt;?&gt;[ ] getDeclaredConstructors()：返回任意权限的所有构造方法对象的数组</li>
+<li>Constructor<T> getDeclaredConstructor(Class&lt;?&gt;… parameterTypes)：返回任意权限的单个构造方法对象</T></li>
+</ol>
+<h3 id="反射获取成员方法"><a href="#反射获取成员方法" class="headerlink" title="反射获取成员方法"></a>反射获取成员方法</h3><ol>
+<li>Method[ ] getMethods()：返回所有public的成员方法对象的数组，包括继承的。</li>
+<li>Method getMethod(String name, Class&lt;?&gt;… parameterTypes) ：返回单个public的成员方法对象。<br>参数name：表示方法名 ；参数parameterTypes：表示方法的形参类型</li>
+<li>Method[ ] getDeclaredMethods()：返回所有成员方法对象的数组，不包括继承的</li>
+<li>Method getDeclaredMethod(String name, Class&lt;?&gt;… parameterTypes)：返回单个成员方法对象。</li>
+</ol>
+<h2 id="反射的原理"><a href="#反射的原理" class="headerlink" title="反射的原理"></a>反射的原理</h2><pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RefTest</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+        Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> aClass <span class="token operator">=</span> Class<span class="token punctuation">.</span><span class="token function">forName</span><span class="token punctuation">(</span><span class="token string">"Test.Person"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Person o <span class="token operator">=</span> <span class="token punctuation">(</span>Person<span class="token punctuation">)</span>aClass<span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        o<span class="token punctuation">.</span><span class="token function">say</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="forName"><a href="#forName" class="headerlink" title="forName"></a>forName</h3><p>首先调用了 java.lang.Class 的静态方法，获取类信息！<br>forName()反射获取类信息，并没有将实现留给了java,而是交给了jvm去加载！<br>主要是先获取 ClassLoader, 然后调用 native 方法，获取信息，加载类则是回调 java.lang.ClassLoader.<br>最后，jvm又会回调 ClassLoader 进类加载！</p>
+<pre class="line-numbers language-java"><code class="language-java">    <span class="token keyword">public</span> <span class="token keyword">static</span> Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> <span class="token function">forName</span><span class="token punctuation">(</span>String className<span class="token punctuation">)</span>
+                <span class="token keyword">throws</span> ClassNotFoundException <span class="token punctuation">{</span>
+        Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> caller <span class="token operator">=</span> Reflection<span class="token punctuation">.</span><span class="token function">getCallerClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token function">forName0</span><span class="token punctuation">(</span>className<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">,</span> ClassLoader<span class="token punctuation">.</span><span class="token function">getClassLoader</span><span class="token punctuation">(</span>caller<span class="token punctuation">)</span><span class="token punctuation">,</span> caller<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>上面的Class对象是在加载类时由JVM构造的，JVM为每个类管理一个独一无二的Class对象，这份Class对象里维护着该类的所有Method，Field，Constructor的cache，这份cache也可以被称作根对象。</p>
+<p>如果调用newInstance()就直接生生成对象,接下来就调用新对象的方法</p>
+<h3 id="newInstance"><a href="#newInstance" class="headerlink" title="newInstance"></a>newInstance</h3><p>生成具体的对象</p>
+<ol>
+<li>权限检查，不通过就抛出异常</li>
+<li>查找无参构造器，并缓存下来</li>
+<li>调用具体方法的无参构造方法生成实例返回</li>
+</ol>
+<pre class="line-numbers language-java"><code class="language-java"> <span class="token keyword">public</span> T <span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">throws</span> InstantiationException<span class="token punctuation">,</span> IllegalAccessException
+    <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>System<span class="token punctuation">.</span><span class="token function">getSecurityManager</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token function">checkMemberAccess</span><span class="token punctuation">(</span>Member<span class="token punctuation">.</span>PUBLIC<span class="token punctuation">,</span> Reflection<span class="token punctuation">.</span><span class="token function">getCallerClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>cachedConstructor <span class="token operator">==</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span> <span class="token operator">==</span> Class<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IllegalAccessException</span><span class="token punctuation">(</span>
+                    <span class="token string">"Can not call newInstance() on the Class for java.lang.Class"</span>
+                <span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            <span class="token keyword">try</span> <span class="token punctuation">{</span>
+                Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span><span class="token punctuation">[</span><span class="token punctuation">]</span> empty <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+                <span class="token keyword">final</span> Constructor<span class="token operator">&lt;</span>T<span class="token operator">></span> c <span class="token operator">=</span> <span class="token function">getConstructor0</span><span class="token punctuation">(</span>empty<span class="token punctuation">,</span> Member<span class="token punctuation">.</span>DECLARED<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+                java<span class="token punctuation">.</span>security<span class="token punctuation">.</span>AccessController<span class="token punctuation">.</span><span class="token function">doPrivileged</span><span class="token punctuation">(</span>
+                    <span class="token keyword">new</span> <span class="token class-name">java<span class="token punctuation">.</span>security<span class="token punctuation">.</span>PrivilegedAction</span><span class="token operator">&lt;</span>Void<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                        <span class="token keyword">public</span> Void <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                                c<span class="token punctuation">.</span><span class="token function">setAccessible</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                                <span class="token keyword">return</span> null<span class="token punctuation">;</span>
+                            <span class="token punctuation">}</span>
+                        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                cachedConstructor <span class="token operator">=</span> c<span class="token punctuation">;</span>
+            <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">NoSuchMethodException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">throw</span> <span class="token punctuation">(</span>InstantiationException<span class="token punctuation">)</span>
+                    <span class="token keyword">new</span> <span class="token class-name">InstantiationException</span><span class="token punctuation">(</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">initCause</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        Constructor<span class="token operator">&lt;</span>T<span class="token operator">></span> tmpConstructor <span class="token operator">=</span> cachedConstructor<span class="token punctuation">;</span>
+        
+        <span class="token keyword">int</span> modifiers <span class="token operator">=</span> tmpConstructor<span class="token punctuation">.</span><span class="token function">getModifiers</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>Reflection<span class="token punctuation">.</span><span class="token function">quickCheckMemberAccess</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> modifiers<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            Class<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">></span> caller <span class="token operator">=</span> Reflection<span class="token punctuation">.</span><span class="token function">getCallerClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>newInstanceCallerCache <span class="token operator">!=</span> caller<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                Reflection<span class="token punctuation">.</span><span class="token function">ensureMemberAccess</span><span class="token punctuation">(</span>caller<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">,</span> null<span class="token punctuation">,</span> modifiers<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                newInstanceCallerCache <span class="token operator">=</span> caller<span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+     
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> tmpConstructor<span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token punctuation">(</span>Object<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span>null<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InvocationTargetException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            Unsafe<span class="token punctuation">.</span><span class="token function">getUnsafe</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">throwException</span><span class="token punctuation">(</span>e<span class="token punctuation">.</span><span class="token function">getTargetException</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">// Not reached</span>
+            <span class="token keyword">return</span> null<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="反射的优缺点"><a href="#反射的优缺点" class="headerlink" title="反射的优缺点"></a>反射的优缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><p>反射提高了程序的灵活性和扩展性，降低耦合性，提高自适应能力。它允许程序创和控制任何类的对象，无需提前硬编码目标类</p>
+<p>对于任意一个类，都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意一个方法</p>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><p><strong>性能问题</strong></p>
+<p>使用反射基本上是一种解释操作，用于字段和方法接入时要远慢于直接代码。因此Java反射机制主要应用在对灵活性和扩展性要求很高的系统框架上,普通程序不建议使用</p>
+<p><strong>代码可读性下降</strong></p>
+<p>程序人员希望在源代码中看到程序的逻辑，反射等绕过了源代码的技术，因而会带来维护问题。反射代码比相应的直接代码更复杂</p>
+<p><strong>安全问题</strong></p>
+<p>可以越过泛型检查，同时还可以获得私有变量</p>
 
                 
             </div>
@@ -399,7 +479,7 @@ Dispa">
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://cn-lixiaobo.github.io/2022/07/13/springmvc-zhi-xing-liu-cheng/">http://cn-lixiaobo.github.io/2022/07/13/springmvc-zhi-xing-liu-cheng/</a>
+                    <a href="http://cn-lixiaobo.github.io/2022/05/04/fan-she-de-li-jie-yu-you-que-dian/">http://cn-lixiaobo.github.io/2022/05/04/fan-she-de-li-jie-yu-you-que-dian/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -437,8 +517,8 @@ Dispa">
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B/">
-                                    <span class="chip bg-color">执行流程</span>
+                                <a href="/tags/%E5%8F%8D%E5%B0%84/">
+                                    <span class="chip bg-color">反射</span>
                                 </a>
                             
                         </div>
@@ -521,13 +601,13 @@ Dispa">
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2022/07/15/blockingqueue-yi/">
+                <a href="/2022/05/20/pai-xu-suan-fa/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="BlockingQueue壹">
+                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="排序算法">
                         
-                        <span class="card-title">BlockingQueue壹</span>
+                        <span class="card-title">排序算法</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -538,14 +618,14 @@ Dispa">
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-07-15
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-05-20
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Java/" class="post-category">
-                                    Java
+                            <a href="/categories/%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/" class="post-category">
+                                    常见算法
                                 </a>
                             
                             
@@ -555,8 +635,8 @@ Dispa">
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/BlockingQueue/">
-                        <span class="chip bg-color">BlockingQueue</span>
+                    <a href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">
+                        <span class="chip bg-color">排序算法</span>
                     </a>
                     
                 </div>
@@ -570,13 +650,13 @@ Dispa">
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/07/10/tcp-xiang-jie/">
+                <a href="/2022/04/25/redis-zhong-de-da-key-jie-jue-ce-lue/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="TCP详解">
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="Redis中的大key解决策略">
                         
-                        <span class="card-title">TCP详解</span>
+                        <span class="card-title">Redis中的大key解决策略</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -587,14 +667,14 @@ Dispa">
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-07-10
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-04-25
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E8%AE%A1%E7%BD%91/" class="post-category">
-                                    计网
+                            <a href="/categories/Redis/" class="post-category">
+                                    Redis
                                 </a>
                             
                             
@@ -604,12 +684,8 @@ Dispa">
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E9%9D%A2%E8%AF%95/">
-                        <span class="chip bg-color">面试</span>
-                    </a>
-                    
-                    <a href="/tags/TCP/">
-                        <span class="chip bg-color">TCP</span>
+                    <a href="/tags/%E5%A4%A7key/">
+                        <span class="chip bg-color">大key</span>
                     </a>
                     
                 </div>
