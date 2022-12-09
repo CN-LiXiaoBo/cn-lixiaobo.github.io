@@ -918,6 +918,25 @@
     
     
     <entry>
+      <title>进程和服务常见命令</title>
+      <link href="/2022/02/15/jin-cheng-he-fu-wu-chang-jian-ming-ling/"/>
+      <url>/2022/02/15/jin-cheng-he-fu-wu-chang-jian-ming-ling/</url>
+      
+        <content type="html"><![CDATA[<h2 id="PS-查看当前系统进程状态"><a href="#PS-查看当前系统进程状态" class="headerlink" title="PS 查看当前系统进程状态"></a>PS 查看当前系统进程状态</h2><h3 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h3><p><strong>ps aux | grep xxx</strong> （功能描述：<strong>查看系统中所有进程</strong>）<br><strong>ps -ef | grep xxx</strong> （功能描述：<strong>可以查看子父进程之间的关系</strong>）</p><h3 id="选项说明"><a href="#选项说明" class="headerlink" title="选项说明"></a>选项说明</h3><p><img src="https://img-blog.csdnimg.cn/b3b5871cc7cc47a9bb5d987b855c726f.png" alt="在这里插入图片描述"></p><h3 id="返回结果"><a href="#返回结果" class="headerlink" title="返回结果"></a>返回结果</h3><p><strong>PS -AUX</strong><br><img src="https://img-blog.csdnimg.cn/b6f43237c17449f88a411bb9e4289e46.png" alt="在这里插入图片描述"></p><p><strong>USER：</strong>  是那个用户产生的</p><p><strong>PID：</strong> 进程的ID号</p><p><strong>%CPU：</strong> 占用CPU资源的百分比</p><p><strong>%MEM：</strong> 占用物理内存的百分比</p><p><strong>VSZ：</strong> 占用虚拟内存大小</p><p><strong>RSS：</strong> 占用实际物理内存大小</p><p>TTY：该进程是在哪个终端中运行的。对于 CentOS 来说，tty1 是图形化终端，tty2-tty6 是本地的字符界面终端。pts/0-255 代表虚拟终端。</p><p>STAT：进程状态。常见的状态有：R：运行状态、S：睡眠状态、T：暂停状态、<br>Z：僵尸状态、s：包含子进程、l：多线程、+：前台显示</p><p>START：该进程的启动时间</p><p>TIME：该进程占用 CPU 的运算时间，注意不是系统时间</p><p>COMMAND：产生此进程的命令名</p><p><strong>PS -EF</strong></p><p><img src="https://img-blog.csdnimg.cn/e29e5ed9f3e04629b6f1766fa71c2266.png" alt="在这里插入图片描述"></p><p><strong>PPID：</strong> 父进程ID</p><p>C：CPU 用于计算执行优先级的因子。数值越大，表明进程是 CPU 密集型运算，执行优先级会降低；数值越小，表明进程是 I/O 密集型运算，执行优先级会提高</p><p>STIME：进程启动的时间</p><p>TTY：完整的终端名称</p><p>TIME：CPU 时间</p><p>CMD：启动进程所用的命令和参数</p><h2 id="Kill-终止进程"><a href="#Kill-终止进程" class="headerlink" title="Kill 终止进程"></a>Kill 终止进程</h2><h3 id="基本语法-1"><a href="#基本语法-1" class="headerlink" title="基本语法"></a>基本语法</h3><p>kill [选项] 进程号 （功能描述：通过进程号杀死进程）</p><p>killall 进程名称 （功能描述：通过进程名称杀死进程，也支持通配符，这在系统因负载过大而变得很慢时很有用）</p><h3 id="选项说明-1"><a href="#选项说明-1" class="headerlink" title="选项说明"></a>选项说明</h3><p><img src="https://img-blog.csdnimg.cn/d9b9f9d5721e4dc7aa956ae03c2c75dd.png" alt="在这里插入图片描述"></p><h2 id="PSTREE-查看进程树"><a href="#PSTREE-查看进程树" class="headerlink" title="PSTREE 查看进程树"></a>PSTREE 查看进程树</h2><h3 id="基本语法-2"><a href="#基本语法-2" class="headerlink" title="基本语法"></a>基本语法</h3><p>pstree [选项]</p><h3 id="选项说明-2"><a href="#选项说明-2" class="headerlink" title="选项说明"></a>选项说明</h3><p><img src="https://img-blog.csdnimg.cn/8faf81520751415182a4c5427c5c23af.png" alt="在这里插入图片描述"></p><h2 id="TOP-实时监控系统进程状态"><a href="#TOP-实时监控系统进程状态" class="headerlink" title="TOP 实时监控系统进程状态"></a>TOP 实时监控系统进程状态</h2><h3 id="基本语法-3"><a href="#基本语法-3" class="headerlink" title="基本语法"></a>基本语法</h3><p>top [选项]</p><h3 id="选项说明-3"><a href="#选项说明-3" class="headerlink" title="选项说明"></a>选项说明</h3><p><img src="https://img-blog.csdnimg.cn/3823cee25aea41f4a7bbeb065ca596a8.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/9ce572b1da5f412a8660df5b7f490a5c.png" alt="在这里插入图片描述"></p><h3 id="操作说明"><a href="#操作说明" class="headerlink" title="操作说明"></a>操作说明</h3><p><img src="https://img-blog.csdnimg.cn/ef7e7460d4614f72a7dd9e9162a8ea8d.png" alt="在这里插入图片描述"></p><h3 id="返回结果-1"><a href="#返回结果-1" class="headerlink" title="返回结果"></a>返回结果</h3><p><img src="https://img-blog.csdnimg.cn/8831dc65c7034e6d8291e4447f2138db.png" alt="在这里插入图片描述"></p><p>PR：任务调度优先级<br>NI： 用户指定优先级<br>VIRT： 虚拟内存<br>RES： 物理内存<br>SHR： 共享内存</p><h2 id="NETSTAT-网络状态与端口占用信息"><a href="#NETSTAT-网络状态与端口占用信息" class="headerlink" title="NETSTAT 网络状态与端口占用信息"></a>NETSTAT 网络状态与端口占用信息</h2><h3 id="基本语法-4"><a href="#基本语法-4" class="headerlink" title="基本语法"></a>基本语法</h3><p>netstat -anp | grep 进程号 （功能描述：查看该进程网络信息）</p><p>netstat –nlp | grep 端口号 （功能描述：查看网络端口号占用情况）</p><h3 id="选项说明-4"><a href="#选项说明-4" class="headerlink" title="选项说明"></a>选项说明</h3><p><img src="https://img-blog.csdnimg.cn/6b8bf361c1bc43028ed0d187d52d062e.png" alt="在这里插入图片描述"></p><h3 id="返回结果-2"><a href="#返回结果-2" class="headerlink" title="返回结果"></a>返回结果</h3><p><img src="https://img-blog.csdnimg.cn/9fde85891e3f49eea839be9498fbf8c8.png" alt="在这里插入图片描述"></p><p>Proto：协议<br>Recv-Q：还有多少字节未被取出<br>Send-Q：还有多少字节发出后未确认收到</p><p><img src="https://img-blog.csdnimg.cn/9469d954fcad4e10afb94f91eec41aa5.png" alt="在这里插入图片描述"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Linux </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>XSS攻击与预防</title>
       <link href="/2022/02/04/xss-gong-ji-yu-yu-fang/"/>
       <url>/2022/02/04/xss-gong-ji-yu-yu-fang/</url>
