@@ -693,6 +693,31 @@
     
     
     <entry>
+      <title>HTTP常见状态码</title>
+      <link href="/2022/05/23/http-chang-jian-zhuang-tai-ma/"/>
+      <url>/2022/05/23/http-chang-jian-zhuang-tai-ma/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>网上都有状态码的说明但是有些不全所以我特此在这里整理一下，这个图来自小林大佬的图</p></blockquote><p><img src="https://img-blog.csdnimg.cn/6d68723d618742f6a177f6e5e5d71bdf.jpeg" alt="在这里插入图片描述"></p><h2 id="1xx"><a href="#1xx" class="headerlink" title="1xx"></a>1xx</h2><p><strong>100</strong></p><p>表示客户还需要继续发送请求</p><p><strong>101</strong></p><p>客户要求服务器根据请求转换HTTP协议版本号</p><h2 id="2xx"><a href="#2xx" class="headerlink" title="2xx"></a>2xx</h2><p><strong>200</strong></p><p>成功</p><p><strong>201</strong></p><p>提示知道新文件的URL</p><p><strong>202</strong></p><p>接受和处理、但处理未完成</p><p><strong>203</strong></p><p>返回信息不确定或不完整</p><p><strong>204</strong></p><p>请求收到，但消息体为空</p><p><strong>205</strong></p><p>服务器完成了请求，用户代理必须复位当前已经浏览过的文件</p><p><strong>206</strong></p><p>响应返回其中一部分数据，在分块下载的时候会遇到</p><h2 id="3xx"><a href="#3xx" class="headerlink" title="3xx"></a>3xx</h2><p><strong>300</strong></p><p>请求的资源可在多处得到</p><p><strong>301</strong></p><p>表示永久重定向，说明请求的资源已经不存在了，需修改新的URL</p><p><strong>302</strong></p><p>表示临时重定向，说明请求资源还在但暂时需要用另一个URL访问</p><p><strong>304</strong></p><p>表示资源未修改，可以继续使用本地资源</p><h2 id="4xx"><a href="#4xx" class="headerlink" title="4xx"></a>4xx</h2><p><strong>400</strong></p><p>客户端错误</p><p><strong>401</strong></p><p>请求授权失败</p><p><strong>403</strong></p><p>请求被禁止</p><p><strong>404</strong></p><p>资源没有被找到</p><h2 id="5xx"><a href="#5xx" class="headerlink" title="5xx"></a>5xx</h2><p><strong>500</strong></p><p>服务器内部错误</p><p><strong>501</strong></p><p>服务暂时不支持</p><p><strong>502</strong></p><p>服务器作为网关或代理时返回的错误码</p><p><strong>503</strong></p><p>表示服务器很忙暂时无法响应请求</p><p><strong>504</strong></p><p>连接超时</p><p><strong>505</strong></p><p>服务不支持或拒绝请求头中的HTTP版本</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 计网 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> HTTP </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Bean的生命周期</title>
       <link href="/2022/05/21/bean-de-sheng-ming-zhou-qi/"/>
       <url>/2022/05/21/bean-de-sheng-ming-zhou-qi/</url>
